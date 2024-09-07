@@ -12,7 +12,7 @@
       >
       <v-btn
         class="sendButton"
-        color="#0582D2"
+        :color="BRANDCOLOR"
         flat
         @click="sendMessage"
       ><v-icon icon="mdi-send" /></v-btn>
@@ -31,6 +31,8 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  import { BRANDCOLOR } from '../../constants/constant'
+  import { handleErrors } from '../../utils/handlers'
 
   export default defineComponent({
     emits: ['addmessage'],
@@ -38,13 +40,18 @@
       const message = ref('')
 
       const sendMessage = () => {
-        emit('addmessage', message.value)
-        message.value = ''
+        if (message.value) {
+          emit('addmessage', message.value)
+          message.value = ''
+        } else {
+          handleErrors('You need to type something')
+        }
       }
 
       return {
         message,
         sendMessage,
+        BRANDCOLOR,
       }
     },
   })
