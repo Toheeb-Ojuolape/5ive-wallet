@@ -16,57 +16,72 @@
       >
         <SenderCard :messages="message" />
       </div>
+
+      <div
+        v-if="message.type == 'currency-pairing' && !offerings?.length"
+      >
+        <CurrencyPairings />
+      </div>
+
+      <div
+        v-if="message.type == 'offers' && offerings?.length"
+      >
+        <Offerings :offerings="offerings" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
-  import ReceiverCard from './ReceiverCard.vue'
-  import SenderCard from './SenderCard.vue'
+import { defineComponent, ref, watch } from "vue";
+import CurrencyPairings from "./CurrencyPairings.vue";
+import ReceiverCard from "./ReceiverCard.vue";
+import SenderCard from "./SenderCard.vue";
+import { useOfferingsStore } from "@/stores/offerings.store";
+import { storeToRefs } from "pinia";
+import Offerings from "./Offerings.vue";
 
-  export default defineComponent({
-    components: { ReceiverCard, SenderCard },
-    props: {
-      messages: {
-        type: Array,
-        default: () => [],
-      },
-      role: {
-        type: String,
-        default: '',
-      },
+export default defineComponent({
+  components: { ReceiverCard, SenderCard, CurrencyPairings, Offerings},
+  props: {
+    messages: {
+      type: Array,
+      default: () => [],
     },
-    setup (props) {
-      const containerRef = ref<HTMLDivElement | null>(null)
-
-      const scrollToBottom = () => {
-        const chatViewRef = document
-          .getElementById('chatview-container')
-        chatViewRef
-          ?.scrollTo(
-            0,
-            (chatViewRef?.scrollHeight) || 0
-          )
-      }
-
-      watch(props.messages, () => {
-        setTimeout(() => scrollToBottom(), 100)
-      })
-
-      return {
-        containerRef,
-        scrollToBottom,
-      }
+    role: {
+      type: String,
+      default: "",
     },
-  })
+  },
+  setup(props) {
+    const containerRef = ref<HTMLDivElement | null>(null);
+    const offeringsStore = useOfferingsStore()
+    const { offerings } = storeToRefs(offeringsStore)
+
+    const scrollToBottom = () => {
+      const chatViewRef = document.getElementById("chatview-container");
+      chatViewRef?.scrollTo(0, chatViewRef?.scrollHeight || 0);
+    };
+
+    watch(props.messages, () => {
+      setTimeout(() => scrollToBottom(), 100);
+    });
+
+    return {
+      containerRef,
+      scrollToBottom,
+      offerings
+    };
+  },
+});
 </script>
 
 <style scoped>
 .chatview-container {
   height: 70vh;
   overflow-y: auto;
-  padding: 10px;
+  overflow-x:hidden;
+  padding: 10px 10px 0px 0px
 }
 
 .timestamp {
