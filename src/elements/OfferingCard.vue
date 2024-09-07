@@ -1,0 +1,56 @@
+<template>
+  <v-card rounded="xl" flat class="pa-6 pt-4 my-3" width="300px" min-height="250px">
+    <div v-if="index === 0" class="d-flex justify-end">
+      <v-chip size="small" color="black">Recommmended</v-chip>
+    </div>
+    <h3>{{ getPFIName(offering) }}</h3>
+    <div>
+      <ExchangeRate
+        :payin="offering.data.payin.currencyCode"
+        :payout="offering.data.payout.currencyCode"
+      />
+    </div>
+
+    <p class="my-4">
+      {{ offering.data.description }}
+    </p>
+
+    <div class="my-3">
+      <strong>Exchange rate: </strong
+      >{{ offering.data.payoutUnitsPerPayinUnit }}
+    </div>
+
+    <v-btn @click="selectOffer" block variant="outlined" rounded="pill">
+      Request Quote</v-btn
+    >
+  </v-card>
+</template>
+
+<script>
+import { Offering } from "@tbdex/http-client";
+import pfis from "../pfis/pfis.json";
+import ExchangeRate from "./ExchangeRate.vue";
+import { useOfferingsStore } from '@/stores/offerings.store';
+export default {
+  components: { ExchangeRate },
+  props: {
+    offering: Offering,
+    index: {
+      type: Number,
+    },
+  },
+
+  methods: {
+    getPFIName() {
+      console.log(this.offering);
+      return pfis.pfis.find((pfi) => pfi.did === this.offering.metadata.from)
+        .name;
+    },
+
+    selectOffer(offer) {
+        const offeringsStore = useOfferingsStore();
+        offeringsStore.selectOffer(offer); 
+    },
+  },
+};
+</script>

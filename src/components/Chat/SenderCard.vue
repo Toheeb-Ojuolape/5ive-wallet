@@ -7,7 +7,7 @@
         padding: 10px 20px 10px 20px;
         border-radius: 15px 15px 15px 0px;
         float: left;
-        margin: 10px 20px 0px 20px;
+        margin: 10px 0px 0px 0px;
       "
   >
     <!-- <div style="font-weight: 600">{{ messages.name }}</div> -->
