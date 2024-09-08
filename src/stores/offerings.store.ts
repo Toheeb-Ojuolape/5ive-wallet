@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import pfiData from "../pfis/pfis.json";
-import { Offering } from "@tbdex/http-client";
+import { Offering, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import { handleErrors } from "@/utils/handlers";
 import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
-import { currentTime } from "@/utils/formatter";
-import { DidDht } from "@web5/dids";
+import { BearerDid, DidDht } from "@web5/dids";
+import { Jwt, PresentationExchange } from "@web5/credentials";
+import { retrieveCredentials } from "@/utils/credentials";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
@@ -13,6 +14,14 @@ export const useOfferingsStore = defineStore("offeringStore", {
     isVcActive: false,
     loading: false,
     offerings: [] as Offering[],
+    isVcLoading: false,
+    vcstep: 1,
+    vcs: (JSON.parse(localStorage.getItem("vc")) as string[]) || [],
+    offering: Offering,
+    customerCredential: [] as string[],
+    amount: "",
+    did: BearerDid,
+    rfq: Rfq,
   }),
 
   actions: {
@@ -57,18 +66,30 @@ export const useOfferingsStore = defineStore("offeringStore", {
           `We found ${this.offerings.length} offer${
             this.offerings.length > 1 ? "s" : ""
           } matching your currency pair request`,
-          currentTime(),
           "text"
         );
 
-        messageStore.addMessage("", "", currentTime(), "offers");
+        messageStore.addMessage("", "", "offers");
       } catch (error) {
         handleErrors(error.message);
       }
     },
 
     selectOffer(offer) {
-      this.offer = offer;
+      this.offering = offer;
+
+      // check if the customer has a VC, if they don't request for one
+      if (this.customerCredential.length) {
+        const messageStore = useMessageStore();
+        messageStore.addMessage(
+          "Seller",
+          "Great, we have received your Verifiable Credential, now kindly enter the amount you would like to send",
+          "text"
+        );
+
+        messageStore.setStage("ENTER AMOUNT");
+        return;
+      }
       this.toggleVc();
     },
 
@@ -76,23 +97,96 @@ export const useOfferingsStore = defineStore("offeringStore", {
       this.isVcActive = !this.isVcActive;
     },
 
-    async requestQuote(user) {
-      this.btnloading = true;
+    async requestVc(user) {
+      this.isVcLoading = true;
       const { name, country } = user;
       //request did for user here
+
       //TODO: move did request to first instance of signing on to the platform
       try {
-        const did = await DidDht.create({
+        this.did = await DidDht.create({
           options: {
             publish: true,
           },
         });
-        await offeringsService.requestVc({ name, country, did });
+        const response = await offeringsService.requestVc({
+          name,
+          country,
+          did: this.did,
+        });
+
+        console.log(this.vcs);
+        this.vcs.push(response.data);
+
+        console.log(this.vcs);
+
+        // save the Verifiable credentials to local storage
+        localStorage.setItem("vc", JSON.stringify(this.vcs));
+        console.log(this.offering);
+        // this.customerCredential = this.vcs.map((jwt) => retrieveCredentials(jwt))
+
+        this.customerCredential = PresentationExchange.selectCredentials({
+          vcJwts: this.vcs,
+          presentationDefinition: this.offering.data.requiredClaims,
+        });
+
+        this.vcstep = 2;
+        const messageStore = useMessageStore();
+        messageStore.setStage("ENTER AMOUNT");
       } catch (error) {
+        console.log(error);
         handleErrors(error.message);
-      } finally{
-        this.btnloading = false
+      } finally {
+        this.isVcLoading = false;
       }
     },
+
+    async requestQuote(amount) {
+      /// now we have all the details to request for quote, I think
+      this.amount = amount;
+
+      console.log("the did", this.did.uri);
+      console.log("the offering", this.offering);
+
+      try {
+        const rfq = Rfq.create({
+          metadata: {
+            to: this.offering.metadata.from, // PFI's DID
+            from: this.did.uri, // Customer DID
+            protocol: "1.0", // Version of tbDEX protocol you're using
+          },
+          data: {
+            offeringId: this.offering.metadata.id, // The ID of the selected offering
+            payin: {
+              kind: "USD_BANK_TRANSFER", // The method of payment
+              amount: this.amount, // The amount of the payin currency
+              paymentDetails: {
+                accountNumber: "1234567890",
+                routingNumber: "123456789",
+              },
+            },
+            payout: {
+              kind: "KES_BANK_TRANSFER", // The method for receiving payout
+              paymentDetails: {
+                accountNumber: "3245231234", // Details required to execute payment
+              },
+            },
+            claims: this.customerCredential, // Array of signed VCs required by the PFI
+          },
+        });
+
+        await rfq.sign(this.did);
+
+        const response = await TbdexHttpClient.createExchange(rfq);
+        console.log("exchange", response);
+      } catch (error) {
+        handleErrors(error.message);
+      }
+    },
+
+    //
+    createExchange() {},
+
+    cancelRfq() {},
   },
 });

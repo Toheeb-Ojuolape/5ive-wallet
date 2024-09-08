@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useMessageStore = defineStore('messageStore', {
   state: () => ({
+    stage:'',
     messages: [
       {
         role: 'Seller',
@@ -25,8 +26,12 @@ export const useMessageStore = defineStore('messageStore', {
   },
 
   actions: {
-    addMessage (role, message, time, type) {
-      this.messages.push({ role, message, time, type })
+    addMessage (role, message, type) {
+      this.messages.push({ role, message, type, time: currentTime() })
     },
+
+    setStage(stage){
+      this.stage = stage
+    }
   },
 })

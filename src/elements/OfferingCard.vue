@@ -20,7 +20,14 @@
       >{{ offering.data.payoutUnitsPerPayinUnit }}
     </div>
 
-    <v-btn @click="selectOffer" block variant="outlined" rounded="pill">
+    <div class="my-3">
+      <div><strong>Payment Methods</strong></div>
+      <div v-for="(method,i) in offering.data.payin.methods" :key="i">
+        <v-chip label size="small">{{ method.kind }}</v-chip>
+      </div>
+    </div>
+
+    <v-btn @click="selectOffer(offering)" block variant="outlined" rounded="pill">
       Request Quote</v-btn
     >
   </v-card>

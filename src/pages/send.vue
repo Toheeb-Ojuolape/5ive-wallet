@@ -16,24 +16,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, handleError, ref } from "vue";
 import { useMessageStore } from "@/stores/message.store";
 import { storeToRefs } from "pinia";
 import ChatView from "../components/Chat/ChatView.vue";
 import overlayloader from "@/elements/overlayloader.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
 import VcForm from "@/components/BottomSheet/VcForm.vue";
+import { handleErrors } from "@/utils/handlers";
 
 export default defineComponent({
   components: { ChatView, overlayloader, VcForm },
   setup() {
     const messageStore = useMessageStore();
     const offeringStore = useOfferingsStore();
-    const { messages } = storeToRefs(messageStore);
+    const { messages, stage } = storeToRefs(messageStore);
     const { loading, isVcActive: isActive } = storeToRefs(offeringStore)
 
     const addMessage = (message: string) => {
-      messageStore.addMessage("Buyer", message, "2:00 PM", 'text');
+      if(messageStore.stage === 'ENTER AMOUNT'){
+        if(isNaN(parseFloat(message))){
+          return handleErrors("Please enter a valid amount")
+        }
+        offeringStore.requestQuote(message)
+      }
+      messageStore.addMessage("Buyer", message, 'text');
     };
 
     const closeBtn = () =>{

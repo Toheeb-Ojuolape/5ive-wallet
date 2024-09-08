@@ -1,6 +1,6 @@
 <template>
   <div class="formContainer">
-    <form @submit.prevent="sendButton">
+    <form @submit.prevent="sendMessage">
       <input
         ref="chatBox"
         v-model="message"

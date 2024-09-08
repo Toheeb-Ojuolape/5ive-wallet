@@ -1,6 +1,6 @@
 <template>
   <div class="country-select">
-    <v-menu v-model:opened="showmenu" offset-y :close-on-content-click="false">
+    <v-menu v-model="showmenu" offset-y :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <label>Select Country</label>
         <div
@@ -50,7 +50,7 @@ export default {
 
     const selectCountry = (selectedCountry) => {
       country.value = selectedCountry;
-      showmenu.value = false;
+      showmenu.value = false; // Close the menu after selecting a country
       emit("handleInput", { [props.name]: selectedCountry.code });
     };
 

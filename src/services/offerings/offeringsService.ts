@@ -26,6 +26,7 @@ export default {
         `https://mock-idv.tbddev.org/kcc?name=${name}&country=${country}&did=${did}`
       );
       console.log(response);
+      return response
     } catch (error) {
       handleErrors(error.message);
     }
