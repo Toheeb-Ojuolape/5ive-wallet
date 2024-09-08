@@ -6,7 +6,6 @@
           density="compact"
           icon="mdi-bell-outline"
           size="x-large"
-          @click="testTbdex"
         />
       </v-col>
     </div>

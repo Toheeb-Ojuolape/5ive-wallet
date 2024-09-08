@@ -35,7 +35,7 @@
           emit('addmessage', message.value)
           message.value = ''
         } else {
-          handleErrors('You need to type something')
+          handleErrors({message:'You need to type something'})
         }
       }
 

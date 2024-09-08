@@ -31,28 +31,28 @@ export default defineComponent({
     const messageStore = useMessageStore();
     const offeringStore = useOfferingsStore();
     const { messages, stage } = storeToRefs(messageStore);
-    const { loading, isVcActive: isActive } = storeToRefs(offeringStore)
+    const { loading, isVcActive: isActive } = storeToRefs(offeringStore);
 
     const addMessage = (message: string) => {
-      if(messageStore.stage === 'ENTER AMOUNT'){
-        if(isNaN(parseFloat(message))){
-          return handleErrors("Please enter a valid amount")
+      if (messageStore.stage === "ENTER AMOUNT") {
+        if (isNaN(parseFloat(message))) {
+          return handleErrors({ message: "Please enter a valid amount" });
         }
-        offeringStore.requestQuote(message)
+        offeringStore.requestQuote(message);
       }
-      messageStore.addMessage("Buyer", message, 'text');
+      messageStore.addMessage("Buyer", message, "text");
     };
 
-    const closeBtn = () =>{
-      offeringStore.toggleVc()
-    }
+    const closeBtn = () => {
+      offeringStore.toggleVc();
+    };
 
     return {
       messages,
       addMessage,
       loading,
       isActive,
-      closeBtn
+      closeBtn,
     };
   },
 });

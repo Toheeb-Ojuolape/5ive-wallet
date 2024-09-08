@@ -7,6 +7,7 @@ import { useMessageStore } from "./message.store";
 import { BearerDid, DidDht } from "@web5/dids";
 import { Jwt, PresentationExchange } from "@web5/credentials";
 import { retrieveCredentials } from "@/utils/credentials";
+import { sendMessage } from "./client";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
@@ -45,7 +46,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
       const allOfferings: Offering[] = [];
       try {
         for (const did of dids) {
-          const fetchedOfferings = await offeringsService.fetchOfferings(did);
+          const fetchedOfferings = await offeringsService.getOfferings(did);
 
           allOfferings.push(...fetchedOfferings);
         }
@@ -158,18 +159,19 @@ export const useOfferingsStore = defineStore("offeringStore", {
           data: {
             offeringId: this.offering.metadata.id, // The ID of the selected offering
             payin: {
-              kind: "USD_BANK_TRANSFER", // The method of payment
+              kind: this.offering.data.payin.methods[0].kind, // The method of payment
               amount: this.amount, // The amount of the payin currency
               paymentDetails: {
-                accountNumber: "1234567890",
-                routingNumber: "123456789",
+                accountNumber: "123456789",
+                routingNumber: "123455533"
               },
             },
             payout: {
-              kind: "KES_BANK_TRANSFER", // The method for receiving payout
+              kind: this.offering.data.payout.methods[0].kind, // The method for receiving payout
               paymentDetails: {
-                accountNumber: "3245231234", // Details required to execute payment
-              },
+                accountNumber: '123456789',
+                IBAN: '1323233234'
+              }, // Details required to execute payment
             },
             claims: this.customerCredential, // Array of signed VCs required by the PFI
           },
@@ -177,7 +179,11 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         await rfq.sign(this.did);
 
-        const response = await TbdexHttpClient.createExchange(rfq);
+        // await rfq.sign(this.did);
+        const requestBody = JSON.stringify({ message: rfq })
+        console.log(requestBody)
+        const response = await sendMessage(this.offering.metadata.id, 'POST', `/exchanges`, requestBody)
+
         console.log("exchange", response);
       } catch (error) {
         handleErrors(error.message);
