@@ -6,7 +6,7 @@ export const useMessageStore = defineStore('messageStore', {
     stage:'',
     messages: [
       {
-        role: 'Seller',
+        role: 'SELLER',
         message: 'To get started, please select your pay-in and pay-out currency pair',
         time: currentTime(),
         type: 'text'

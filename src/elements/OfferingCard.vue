@@ -3,7 +3,7 @@
     <div v-if="index === 0" class="d-flex justify-end">
       <v-chip size="small" color="black">Recommmended</v-chip>
     </div>
-    <h3>{{ getPFIName(offering) }}</h3>
+    <h3>{{ pfiName(offering) }}</h3>
     <div>
       <ExchangeRate
         :payin="offering.data.payin.currencyCode"
@@ -35,9 +35,9 @@
 
 <script>
 import { Offering } from "@tbdex/http-client";
-import pfis from "../pfis/pfis.json";
 import ExchangeRate from "./ExchangeRate.vue";
 import { useOfferingsStore } from '@/stores/offerings.store';
+import { getPFIName } from "@/utils/formatter";
 export default {
   components: { ExchangeRate },
   props: {
@@ -47,13 +47,13 @@ export default {
     },
   },
 
-  methods: {
-    getPFIName() {
-      console.log(this.offering);
-      return pfis.pfis.find((pfi) => pfi.did === this.offering.metadata.from)
-        .name;
-    },
 
+
+  methods: {
+    pfiName(offering){
+      return getPFIName(offering)
+    },
+    
     selectOffer(offer) {
         const offeringsStore = useOfferingsStore();
         offeringsStore.selectOffer(offer); 

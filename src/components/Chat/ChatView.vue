@@ -11,22 +11,22 @@
 
       <!-- Sender/Wallet component -->
       <div
-        v-if="message.role == 'Seller'"
+        v-if="message.role == 'SELLER'"
         class="d-flex align-start flex-column mb-3"
       >
         <SenderCard :messages="message" />
       </div>
 
-      <div
-        v-if="message.type == 'currency-pairing' && !offerings?.length"
-      >
+      <div v-if="message.type == 'currency-pairing' && !offerings?.length">
         <CurrencyPairings />
       </div>
 
-      <div
-        v-if="message.type == 'offers' && offerings?.length"
-      >
+      <div v-if="message.type == 'offers' && offerings?.length">
         <Offerings :offerings="offerings" />
+      </div>
+
+      <div v-if="message.type == 'order' && offerings?.length">
+        <OrderCard />
       </div>
     </div>
   </div>
@@ -40,12 +40,14 @@ import SenderCard from "./SenderCard.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
 import { storeToRefs } from "pinia";
 import Offerings from "./Offerings.vue";
+import { Message } from "@/interfaces/message";
+import OrderCard from "@/elements/OrderCard.vue";
 
 export default defineComponent({
-  components: { ReceiverCard, SenderCard, CurrencyPairings, Offerings},
+  components: { ReceiverCard, SenderCard, CurrencyPairings, Offerings, OrderCard},
   props: {
     messages: {
-      type: Array,
+      type: Array<Message>,
       default: () => [],
     },
     role: {
@@ -55,8 +57,8 @@ export default defineComponent({
   },
   setup(props) {
     const containerRef = ref<HTMLDivElement | null>(null);
-    const offeringsStore = useOfferingsStore()
-    const { offerings } = storeToRefs(offeringsStore)
+    const offeringsStore = useOfferingsStore();
+    const { offerings } = storeToRefs(offeringsStore);
 
     const scrollToBottom = () => {
       const chatViewRef = document.getElementById("chatview-container");
@@ -70,7 +72,7 @@ export default defineComponent({
     return {
       containerRef,
       scrollToBottom,
-      offerings
+      offerings,
     };
   },
 });
@@ -80,8 +82,8 @@ export default defineComponent({
 .chatview-container {
   height: 70vh;
   overflow-y: auto;
-  overflow-x:hidden;
-  padding: 10px 10px 0px 0px
+  overflow-x: hidden;
+  padding: 10px 10px 0px 0px;
 }
 
 .timestamp {
@@ -96,7 +98,7 @@ export default defineComponent({
   margin: 10px 0px 0px 0px;
 }
 
-.sellerImageContainer {
+.SELLERImageContainer {
   background: #dedfe3;
   color: black;
   padding: 9px;

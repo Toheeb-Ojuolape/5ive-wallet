@@ -1,19 +1,24 @@
 import { defineStore } from "pinia";
 import pfiData from "../pfis/pfis.json";
-import { Offering, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import {
+  Close,
+  Offering,
+  Order,
+  Rfq,
+  TbdexHttpClient,
+} from "@tbdex/http-client";
 import { handleErrors } from "@/utils/handlers";
 import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
 import { BearerDid, DidDht } from "@web5/dids";
-import { Jwt, PresentationExchange } from "@web5/credentials";
-import { retrieveCredentials } from "@/utils/credentials";
-import { sendMessage } from "./client";
+import { PresentationExchange } from "@web5/credentials";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
     currencypair: "",
     isVcActive: false,
     loading: false,
+    loadingMessage: "",
     offerings: [] as Offering[],
     isVcLoading: false,
     vcstep: 1,
@@ -23,6 +28,9 @@ export const useOfferingsStore = defineStore("offeringStore", {
     amount: "",
     did: BearerDid,
     rfq: Rfq,
+    order: Order,
+    reason: "",
+    isRating: false,
   }),
 
   actions: {
@@ -33,6 +41,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
     async fetchOfferings() {
       this.loading = true;
+      this.loadingMessage = "Fetching available offers";
       let offering = this.currencypair.from + " to " + this.currencypair.to;
 
       // check the pfis that offer the user's offering request
@@ -46,7 +55,9 @@ export const useOfferingsStore = defineStore("offeringStore", {
       const allOfferings: Offering[] = [];
       try {
         for (const did of dids) {
-          const fetchedOfferings = await offeringsService.getOfferings(did);
+          const fetchedOfferings = await TbdexHttpClient.getOfferings({
+            pfiDid: did,
+          });
 
           allOfferings.push(...fetchedOfferings);
         }
@@ -63,7 +74,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         const messageStore = useMessageStore();
         messageStore.addMessage(
-          "Seller",
+          "SELLER",
           `We found ${this.offerings.length} offer${
             this.offerings.length > 1 ? "s" : ""
           } matching your currency pair request`,
@@ -83,7 +94,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
       if (this.customerCredential.length) {
         const messageStore = useMessageStore();
         messageStore.addMessage(
-          "Seller",
+          "SELLER",
           "Great, we have received your Verifiable Credential, now kindly enter the amount you would like to send",
           "text"
         );
@@ -96,6 +107,14 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
     toggleVc() {
       this.isVcActive = !this.isVcActive;
+    },
+
+    closeRating() {
+      this.isRating = !this.isRating;
+    },
+
+    submitRating(rating) {
+      localStorage.setItem("rating", JSON.stringify(rating));
     },
 
     async requestVc(user) {
@@ -145,54 +164,156 @@ export const useOfferingsStore = defineStore("offeringStore", {
     async requestQuote(amount) {
       /// now we have all the details to request for quote, I think
       this.amount = amount;
-
-      console.log("the did", this.did.uri);
-      console.log("the offering", this.offering);
+      this.loading = true;
+      this.loadingMessage = "Creating Order...";
 
       try {
         const rfq = Rfq.create({
           metadata: {
-            to: this.offering.metadata.from, // PFI's DID
-            from: this.did.uri, // Customer DID
-            protocol: "1.0", // Version of tbDEX protocol you're using
+            to: this.offering.metadata.from,
+            from: this.did.uri,
+            protocol: "1.0",
           },
           data: {
-            offeringId: this.offering.metadata.id, // The ID of the selected offering
+            offeringId: this.offering.metadata.id,
             payin: {
-              kind: this.offering.data.payin.methods[0].kind, // The method of payment
-              amount: this.amount, // The amount of the payin currency
+              kind: this.offering.data.payin.methods[0].kind,
+              amount: this.amount,
               paymentDetails: {
                 accountNumber: "123456789",
-                routingNumber: "123455533"
+                routingNumber: "123455533",
               },
             },
             payout: {
-              kind: this.offering.data.payout.methods[0].kind, // The method for receiving payout
+              kind: this.offering.data.payout.methods[0].kind,
               paymentDetails: {
-                accountNumber: '123456789',
-                IBAN: '1323233234'
-              }, // Details required to execute payment
+                accountNumber: "123456789",
+                IBAN: "1323233234",
+              },
             },
-            claims: this.customerCredential, // Array of signed VCs required by the PFI
+            claims: this.customerCredential,
           },
         });
 
         await rfq.sign(this.did);
+        this.rfq = rfq;
 
         // await rfq.sign(this.did);
-        const requestBody = JSON.stringify({ message: rfq })
-        console.log(requestBody)
-        const response = await sendMessage(this.offering.metadata.id, 'POST', `/exchanges`, requestBody)
+        console.log(rfq.exchangeId);
 
-        console.log("exchange", response);
+        await TbdexHttpClient.createExchange(rfq);
+
+        const exchange = await TbdexHttpClient.getExchange({
+          exchangeId: rfq.exchangeId,
+          pfiDid: this.offering.metadata.from,
+          did: this.did,
+        });
+
+        console.log(exchange);
+
+        this.order = Order.create({
+          metadata: {
+            from: this.did.uri,
+            to: this.offering.metadata.from,
+            exchangeId: rfq.exchangeId,
+            protocol: "1.0",
+          },
+        });
+
+        console.log(this.order);
+
+        this.loading = false;
+
+        const messageStore = useMessageStore();
+        messageStore.addMessage(
+          "SELLER",
+          "Order created succcessfully, find the details of your order below: ",
+          "text"
+        );
+
+        messageStore.addMessage("", "", "order");
       } catch (error) {
+        console.log(error);
         handleErrors(error.message);
+        this.loading = false;
       }
     },
 
     //
-    createExchange() {},
+    async submitOrder() {
+      // handle submit order
+      this.loading = true;
+      this.loadingMessage = "Submitting order..";
 
-    cancelRfq() {},
+      try {
+        const order = Order.create({
+          metadata: {
+            from: this.did.uri,
+            to: this.offering.metadata.from,
+            exchangeId: this.rfq.exchangeId,
+            protocol: "1.0",
+          },
+        });
+
+        await order.sign(this.did);
+
+        const response = await TbdexHttpClient.submitOrder(order);
+
+        console.log(response);
+        this.loading = false;
+
+        const messageStore = useMessageStore();
+
+        messageStore.addMessage(
+          "SELLER",
+          "Order submitted successfully. You can track the status of your order on the transaction page",
+          "text"
+        );
+
+        setTimeout(() => {
+          this.isRating = true;
+        }, 2000);
+      } catch (error) {
+        handleErrors(error);
+        this.loading = false;
+      }
+    },
+
+    async closeOrder(reason) {
+      // handle cancel order
+      this.reason = reason;
+      this.loading = true;
+      this.loadingMessage = "Cancelling order..";
+
+      const close = Close.create({
+        metadata: {
+          from: this.did.uri,
+          to: this.offering.metadata.from,
+          exchangeId: this.rfq.exchangeId,
+          protocol: "1.0",
+        },
+        data: {
+          reason,
+        },
+      });
+
+      try {
+        await close.sign(this.did);
+
+        await TbdexHttpClient.submitClose(close);
+
+        this.loading = false;
+        const messageStore = useMessageStore();
+        messageStore.addMessage(
+          "SELLER",
+          "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
+          "text"
+        );
+        setTimeout(() => location.reload(), 3000);
+      } catch (error) {
+        this.loading = false;
+        handleErrors(error);
+      }
+    },
   },
 });

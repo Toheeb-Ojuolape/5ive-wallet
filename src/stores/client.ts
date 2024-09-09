@@ -12,8 +12,6 @@ export async function sendMessage(
     pfiDid
   );
   const apiRoute = `${pfiServiceEndpoint}${path}`;
-
-  console.log(requestBody)
   
   let response: Response;
   try {
@@ -29,9 +27,25 @@ export async function sendMessage(
   }
 
   console.log(response)
-
-  if (!response.ok) {
-    const errorDetails = (await response.json()) as ErrorDetail[];
-    console.log(errorDetails);
-  }
 }
+
+
+
+
+// const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Get current Unix timestamp in seconds
+// const expirationTime = currentTimeInSeconds + 600; // Add 600 seconds (10 minutes)
+
+// const jwtPayload: JwtPayload = {
+//   aud: this.offering.metadata.from,
+//   iss: this.did.uri,
+//   exp: expirationTime, // Set expiration to 10 minutes from now
+//   iat: currentTimeInSeconds, // Issued at current time
+//   jti: "01j79x5y1xf9mabkpey352e1tw", // unique identifier for the token
+// };
+
+// // Sign the JWT with the correct header
+// const token = await Jwt.sign({
+//   signerDid: this.did,
+//   payload: jwtPayload,
+//   header: { typ: 'JWT' }, // Set typ field in the header
+// });
