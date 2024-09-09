@@ -10,6 +10,7 @@
   "dependencies": {
     "@mdi/font": "7.4.47",
     "@tbdex/http-client": "^1.1.0",
+    "@web5/api": "^0.10.0",
     "@web5/common": "^1.0.2",
     "@web5/credentials": "^1.0.3",
     "@web5/crypto": "^1.0.4",

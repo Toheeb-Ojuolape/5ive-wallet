@@ -21,7 +21,7 @@
 
     <div class="dashboard-actions">
       <v-btn rounded="pill" size="large"> Send</v-btn>
-      <v-btn rounded="pill" size="large" variant="outlined"> Swap</v-btn>
+      <v-btn @click="selectCurrency" rounded="pill" size="large" variant="outlined"> Swap</v-btn>
     </div>
   </div>
 </template>
@@ -35,6 +35,11 @@
         amount: '1000',
       }
     },
+    methods:{
+      selectCurrency(){
+        this.$emit("selectCurrency")
+      }
+    }
   })
 </script>
 

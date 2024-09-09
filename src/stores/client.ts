@@ -1,5 +1,7 @@
 import { handleErrors } from "@/utils/handlers";
-import { ErrorDetail, TbdexHttpClient } from "@tbdex/http-client";
+import {  TbdexHttpClient } from "@tbdex/http-client";
+import { Jwt } from "@web5/credentials";
+import { JwtPayload } from "@web5/crypto";
 import axios from "axios";
 
 export async function sendMessage(
@@ -32,20 +34,24 @@ export async function sendMessage(
 
 
 
-// const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Get current Unix timestamp in seconds
-// const expirationTime = currentTimeInSeconds + 600; // Add 600 seconds (10 minutes)
+export async function generateToken(offering, did){
 
-// const jwtPayload: JwtPayload = {
-//   aud: this.offering.metadata.from,
-//   iss: this.did.uri,
-//   exp: expirationTime, // Set expiration to 10 minutes from now
-//   iat: currentTimeInSeconds, // Issued at current time
-//   jti: "01j79x5y1xf9mabkpey352e1tw", // unique identifier for the token
-// };
+const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Get current Unix timestamp in seconds
+const expirationTime = currentTimeInSeconds + 600; // Add 600 seconds (10 minutes)
 
-// // Sign the JWT with the correct header
-// const token = await Jwt.sign({
-//   signerDid: this.did,
-//   payload: jwtPayload,
-//   header: { typ: 'JWT' }, // Set typ field in the header
-// });
+const jwtPayload: JwtPayload = {
+  aud: offering.metadata.from,
+  iss: did.uri,
+  exp: expirationTime, // Set expiration to 10 minutes from now
+  iat: currentTimeInSeconds, // Issued at current time
+  jti: "01j79x5y1xf9mabkpey352e1tw", // unique identifier for the token
+};
+
+// Sign the JWT with the correct header
+const token = await Jwt.sign({
+  signerDid: did,
+  payload: jwtPayload,
+});
+
+return token
+}

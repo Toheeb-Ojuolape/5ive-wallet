@@ -1,16 +1,15 @@
 <template>
-    <div class="country-select">
+    <div class="country-select currency">
       <v-menu v-model="showmenu" offset-y :close-on-content-click="false">
         <template v-slot:activator="{ props }">
-          <label>Select Country</label>
           <div
             v-bind="props"
-            class="countries-dropdown"
+            class="currencies-dropdown"
             block
           >
             <div>
-              <span :class="`fi fi-${country.code.toLowerCase()}`"></span>
-              <span class="ml-2">{{ country.name }}</span>
+              <span :class="`fi fi-${country.country}`"></span>
+              <span class="ml-2">{{ country.code }}</span>
             </div>
             <div>
               <v-icon icon="mdi-chevron-down" />
@@ -19,19 +18,19 @@
         </template>
   
         <!-- Country List Component -->
-        <CountriesList @selectCountry="selectCountry" />
+        <CurrenciesList @selectCountry="selectCountry" />
       </v-menu>
     </div>
   </template>
   
   <script>
   import { ref } from "vue";
-  import CountriesList from "./CountriesList.vue";
+  import CurrenciesList from "./CurrenciesList.vue";
   
   export default {
-    name: "CountrySelector",
+    name: "CurrencySelector",
     components: {
-      CountriesList,
+      CurrenciesList,
     },
     props: {
       name: {
@@ -42,8 +41,9 @@
     emits: ["handleInput"],
     setup(props, { emit }) {
       const country = ref({
-        code: "NG",
-        name: "Nigeria",
+        code: "NGN",
+        name: "Nigerian Naira",
+        country: "ng"
       });
       const showmenu = ref(false);
   
