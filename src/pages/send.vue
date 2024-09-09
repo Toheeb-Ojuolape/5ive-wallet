@@ -9,43 +9,68 @@
       <ChatInput @addmessage="addMessage" />
     </div>
 
-    <vc-form :isActive="isActive" @closeBtn="closeBtn" />
+    <VcForm :isActive="isVcActive" @closeBtn="closeVc" />
 
-    <overlayloader :loading="loading" :text="'Fetching available offers'" />
+    <RateForm :isActive="isRating" :offering="offering" @closeBtn="closeRating"/>
+
+    <overlayloader :loading="loading" :text="loadingMessage" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, handleError, ref } from "vue";
 import { useMessageStore } from "@/stores/message.store";
 import { storeToRefs } from "pinia";
 import ChatView from "../components/Chat/ChatView.vue";
 import overlayloader from "@/elements/overlayloader.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
-import VcForm from "@/components/BottomSheet/VcForm.vue";
+import VcForm from "@/elements/Forms/VcForm.vue";
+import { handleErrors } from "@/utils/handlers";
+import RateForm from "@/elements/Forms/RateForm.vue";
 
 export default defineComponent({
-  components: { ChatView, overlayloader, VcForm },
+  components: { ChatView, overlayloader, VcForm, RateForm },
   setup() {
     const messageStore = useMessageStore();
     const offeringStore = useOfferingsStore();
     const { messages } = storeToRefs(messageStore);
-    const { loading, isVcActive: isActive } = storeToRefs(offeringStore)
+    const { loading, isVcActive, isRating, loadingMessage, offering } = storeToRefs(offeringStore);
 
     const addMessage = (message: string) => {
-      messageStore.addMessage("Buyer", message, "2:00 PM", 'text');
+      if (messageStore.stage === "ENTER AMOUNT") {
+        if (isNaN(parseFloat(message))) {
+          return handleErrors({ message: "Please enter a valid amount" });
+        }
+        offeringStore.requestQuote(message);
+      }
+
+      if (messageStore.stage === "CLOSE") {
+        if (!message) {
+          return handleErrors({ message: "Please enter a valid reason" });
+        }
+        offeringStore.closeOrder(message)
+      }
+      messageStore.addMessage("Buyer", message, "text");
     };
 
-    const closeBtn = () =>{
-      offeringStore.toggleVc()
+    const closeVc = () => {
+      offeringStore.toggleVc();
+    };
+
+    const closeRating = () =>{
+      offeringStore.closeRating()
     }
 
     return {
       messages,
       addMessage,
       loading,
-      isActive,
-      closeBtn
+      loadingMessage,
+      isVcActive,
+      isRating,
+      closeVc,
+      offering,
+      closeRating
     };
   },
 });

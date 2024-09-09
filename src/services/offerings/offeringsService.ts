@@ -4,7 +4,7 @@ import { DidServiceEndpoint } from "@web5/dids";
 import { TbdexHttpClient } from "@tbdex/http-client";
 
 export default {
-  async fetchOfferings(did) {
+  async getOfferings(did) {
     try {
       // first create the url for the offering
       const response: DidServiceEndpoint | DidServiceEndpoint[] =
@@ -16,7 +16,7 @@ export default {
       const offers = await axios.get(apiRoute);
       return offers.data.data;
     } catch (error) {
-      handleErrors(error.message);
+      handleErrors(error);
     }
   },
 
@@ -26,6 +26,7 @@ export default {
         `https://mock-idv.tbddev.org/kcc?name=${name}&country=${country}&did=${did}`
       );
       console.log(response);
+      return response
     } catch (error) {
       handleErrors(error.message);
     }

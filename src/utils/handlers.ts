@@ -1,6 +1,6 @@
 import { useToast } from 'vue-toastification'
 
-export const handleErrors = (message: string) => {
+export const handleErrors = (error: Error | any) => {
   const toast = useToast()
-  toast.error(message)
+  toast.error(error.message)
 }

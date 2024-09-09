@@ -1,6 +1,6 @@
 <template>
   <div class="formContainer">
-    <form @submit.prevent="sendButton">
+    <form @submit.prevent="sendMessage">
       <input
         ref="chatBox"
         v-model="message"
@@ -35,7 +35,7 @@
           emit('addmessage', message.value)
           message.value = ''
         } else {
-          handleErrors('You need to type something')
+          handleErrors({message:'You need to type something'})
         }
       }
 

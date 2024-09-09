@@ -41,7 +41,7 @@
     margin:10px 0px 0px 0px
   }
 
-  .sellerImageContainer{
+  .SELLERImageContainer{
     background:#DEDFE3;
     color:black;
     padding:9px;
