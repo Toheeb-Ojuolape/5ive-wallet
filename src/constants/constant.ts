@@ -50,3 +50,58 @@ export const CURRENCYPAIRS = [
     to: "MXN",
   },
 ];
+
+
+export const CURRENCIES = [
+  {
+    code: "GHS",
+    name: "Ghanaian Cedi",
+    country: "gh",
+  },
+  {
+    code: "USDC",
+    name: "USD Coin",
+    country: "us",
+  },
+  {
+    code: "NGN",
+    name: "Nigerian Naira",
+    country: "ng",
+  },
+  {
+    code: "KES",
+    name: "Kenyan Shilling",
+    country: "ke",
+  },
+  {
+    code: "USD",
+    name: "United States Dollar",
+    country: "us",
+  },
+  {
+    code: "EUR",
+    name: "Euro",
+    country: "eu", // The Euro is used by many European countries
+  },
+  {
+    code: "GBP",
+    name: "British Pound Sterling",
+    country: "gb",
+  },
+  {
+    code: "BTC",
+    name: "Bitcoin",
+    country: "btc", // Decentralized currency, no specific country
+  },
+  {
+    code: "AUD",
+    name: "Australian Dollar",
+    country: "au",
+  },
+  {
+    code: "MXN",
+    name: "Mexican Peso",
+    country: "mx",
+  },
+];
+

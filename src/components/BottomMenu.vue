@@ -17,13 +17,13 @@
       <span>Send</span>
     </v-btn>
 
-    <v-btn value="favorites">
+    <v-btn to="/history">
       <v-icon>mdi-bank-outline</v-icon>
 
       <span>History</span>
     </v-btn>
 
-    <v-btn value="nearby">
+    <v-btn to="/profile">
       <v-icon>mdi-account-circle-outline</v-icon>
 
       <span>Profile</span>

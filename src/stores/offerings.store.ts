@@ -12,6 +12,7 @@ import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
 import { BearerDid, DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
+import dwn from "@/utils/dwn";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
@@ -26,7 +27,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
     offering: Offering,
     customerCredential: [] as string[],
     amount: "",
-    did: BearerDid,
+    storedDid: localStorage.getItem("customerDid"),
     rfq: Rfq,
     order: Order,
     reason: "",
@@ -90,6 +91,8 @@ export const useOfferingsStore = defineStore("offeringStore", {
     selectOffer(offer) {
       this.offering = offer;
 
+      localStorage.setItem("offering", JSON.stringify(offer));
+
       // check if the customer has a VC, if they don't request for one
       if (this.customerCredential.length) {
         const messageStore = useMessageStore();
@@ -124,11 +127,22 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
       //TODO: move did request to first instance of signing on to the platform
       try {
-        this.did = await DidDht.create({
-          options: {
-            publish: true,
-          },
-        });
+       
+        if (this.storedDid) {
+          this.did = await DidDht.import({
+            portableDid: JSON.parse(this.storedDid),
+          });
+        } else {
+          const did = await DidDht.create({
+            options: { publish: true },
+          });
+          this.did = did
+          const exportedDid = await did.export();
+          await dwn.createDidRecord(exportedDid)
+
+          localStorage.setItem("customerDid", JSON.stringify(exportedDid));
+        }
+
         const response = await offeringsService.requestVc({
           name,
           country,
@@ -195,10 +209,11 @@ export const useOfferingsStore = defineStore("offeringStore", {
           },
         });
 
-        await rfq.sign(this.did);
+        localStorage.setItem("rfq", JSON.stringify(rfq));
+
         this.rfq = rfq;
 
-        // await rfq.sign(this.did);
+        await rfq.sign(this.did);
         console.log(rfq.exchangeId);
 
         await TbdexHttpClient.createExchange(rfq);
@@ -221,6 +236,14 @@ export const useOfferingsStore = defineStore("offeringStore", {
         });
 
         console.log(this.order);
+
+        const getExchange = await TbdexHttpClient.getExchange({
+          pfiDid: this.offering.metadata.from,
+          did: this.did,
+          exchangeId: rfq.exchangeId,
+        });
+
+        console.log("the exchange", getExchange);
 
         this.loading = false;
 
@@ -270,9 +293,9 @@ export const useOfferingsStore = defineStore("offeringStore", {
           "text"
         );
 
-        setTimeout(() => {
-          this.isRating = true;
-        }, 2000);
+        // setTimeout(() => {
+        //   this.isRating = true;
+        // }, 2000);
       } catch (error) {
         handleErrors(error);
         this.loading = false;
@@ -280,40 +303,49 @@ export const useOfferingsStore = defineStore("offeringStore", {
     },
 
     async closeOrder(reason) {
-      // handle cancel order
-      this.reason = reason;
-      this.loading = true;
-      this.loadingMessage = "Cancelling order..";
+      console.log(reason);
 
-      const close = Close.create({
-        metadata: {
-          from: this.did.uri,
-          to: this.offering.metadata.from,
-          exchangeId: this.rfq.exchangeId,
-          protocol: "1.0",
-        },
-        data: {
-          reason,
-        },
+      const getExchanges = await TbdexHttpClient.getExchanges({
+        pfiDid: this.offering.metadata.from,
+        did: this.did,
       });
 
-      try {
-        await close.sign(this.did);
+      console.log("the exchanges", getExchanges);
 
-        await TbdexHttpClient.submitClose(close);
+      // handle cancel order
+      // this.reason = reason;
+      // this.loading = true;
+      // this.loadingMessage = "Cancelling order..";
 
-        this.loading = false;
-        const messageStore = useMessageStore();
-        messageStore.addMessage(
-          "SELLER",
-          "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
-          "text"
-        );
-        setTimeout(() => location.reload(), 3000);
-      } catch (error) {
-        this.loading = false;
-        handleErrors(error);
-      }
+      // const close = Close.create({
+      //   metadata: {
+      //     from: this.did.uri,
+      //     to: this.offering.metadata.from,
+      //     exchangeId: this.rfq.exchangeId,
+      //     protocol: "1.0",
+      //   },
+      //   data: {
+      //     reason,
+      //   },
+      // });
+
+      // try {
+      //   await close.sign(this.did);
+
+      //   await TbdexHttpClient.submitClose(close);
+
+      //   this.loading = false;
+      //   const messageStore = useMessageStore();
+      //   messageStore.addMessage(
+      //     "SELLER",
+      //     "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
+      //     "text"
+      //   );
+      //   setTimeout(() => location.reload(), 3000);
+      // } catch (error) {
+      //   this.loading = false;
+      //   handleErrors(error);
+      // }
     },
   },
 });
