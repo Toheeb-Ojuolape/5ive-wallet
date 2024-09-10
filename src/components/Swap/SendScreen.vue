@@ -72,7 +72,7 @@
             <v-text-field
               v-if="payout"
               :label="payout"
-              v-model="paymentout"
+              v-model="paymentDetails[payout]"
               variant="outlined"
             />
           </div>
@@ -85,6 +85,7 @@
         size="x-large"
         rounded="pill"
         @click="submitSwap"
+        :loading="isSubmitLoading"
       >
         Submit</v-btn
       >
@@ -120,14 +121,15 @@ export default {
       payout: "",
       payin: "",
       DEFAULTPAYIN,
+      paymentDetails: {},
     };
   },
 
   setup() {
     const swapStore = useSwapStore();
-    const { bestOffer } = storeToRefs(swapStore);
+    const { bestOffer, isSubmitLoading } = storeToRefs(swapStore);
 
-    return { swapStore, bestOffer };
+    return { swapStore, bestOffer, isSubmitLoading };
   },
 
   methods: {
@@ -159,7 +161,7 @@ export default {
 
     async submitSwap() {
       try {
-        await this.swapStore.submitSwap();
+        await this.swapStore.submitSwap(this.paymentDetails);
       } catch (error) {
         handleErrors(error);
       }

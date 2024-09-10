@@ -1,6 +1,6 @@
 <template>
   <div class="swap-screen">
-    <v-window v-model="step">
+    <v-window :model-value="swapStep">
       <v-window-item :value="1">
         <SendScreen
           :currency="currency"
@@ -9,33 +9,40 @@
         />
       </v-window-item>
 
-      <v-window :value="2">
-        <CompleteOrder />
-      </v-window>
+      <v-window-item :value="2">
+        <SubmitOrder v-if="bestOffer" />
+      </v-window-item>
 
-      <v-window :value="3">
-        <success-screen />
-      </v-window>
+      <v-window-item :value="3">
+        <SuccessScreen
+          :title="'Order submitted Successfully'"
+          :message="'You have successfully submitted your order. You can track it on the transactions page'"
+          @handleContinue="handleContinue"
+        />
+      </v-window-item>
     </v-window>
 
     <Overlayloader :loading="loading" :text="loadingMessage" />
-    <vc-form
+    <VcForm
       :isActive="isVcActive"
       :isVcLoading="isVcLoading"
       :vcstep="vcstep"
       @handleCreateVc="handleCreateVc"
       @handleContinue="handleContinue"
+      @closeBtn="closeVc"
     />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import SendScreen from "@/components/Swap/SendScreen.vue";
 import SubmitOrder from "@/components/Swap/SubmitOrder.vue";
 import Overlayloader from "@/elements/overlayloader.vue";
 import VcForm from "@/elements/Forms/VcForm.vue";
 import { useSwapStore } from "@/stores/swap.store";
 import { storeToRefs } from "pinia";
+import SuccessScreen from "@/elements/SuccessScreen.vue";
+import router from "@/router";
 
 export default {
   setup() {
@@ -47,24 +54,22 @@ export default {
       loadingMessage,
       receiverAmount,
       vcstep,
-      isVcLoading,
       isVcActive,
+      isVcLoading,
+      swapStep,
+      bestOffer,
     } = storeToRefs(swapStore);
 
     const handleCreateVc = ({ name, country }) => {
-      const offeringStore = useOfferingsStore();
-
-      offeringStore.requestVc({
+      swapStore.requestVc({
         name: name,
         country: country,
       });
     };
 
-    const handleContinue = () =>{
-      //handle continue
-    }
-
-   
+    const handleContinue = () => {
+      swapStore.toggleVc();
+    };
 
     return {
       loading,
@@ -74,18 +79,29 @@ export default {
       loadingMessage,
       receiverAmount,
       vcstep,
-      isVcLoading,
-      isVcActive,
       handleCreateVc,
-      handleContinue
+      handleContinue,
+      isVcActive,
+      isVcLoading,
+      swapStep,
+      bestOffer,
     };
   },
 
-  components: { SendScreen, SubmitOrder, Overlayloader, VcForm },
+  components: { SendScreen, SubmitOrder, Overlayloader, VcForm, SuccessScreen },
   data() {
     return {
       step: 1,
     };
+  },
+
+  methods: {
+    closeVc() {
+      this.isVcActive = false;
+    },
+    handleContinue() {
+      router.push("/history");
+    },
   },
 };
 </script>

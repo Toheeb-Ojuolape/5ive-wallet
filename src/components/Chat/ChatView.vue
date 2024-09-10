@@ -26,7 +26,11 @@
       </div>
 
       <div v-if="message.type == 'order' && offerings?.length">
-        <OrderCard />
+        <OrderCard
+          :offering="offering"
+          :amount="amount"
+          @closeOrder="closeOrder"
+        />
       </div>
     </div>
   </div>
@@ -38,13 +42,20 @@ import CurrencyPairings from "./CurrencyPairings.vue";
 import ReceiverCard from "./ReceiverCard.vue";
 import SenderCard from "./SenderCard.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
-import { storeToRefs } from "pinia";
+import { mapState, storeToRefs } from "pinia";
 import Offerings from "./Offerings.vue";
 import { Message } from "@/interfaces/message";
 import OrderCard from "@/elements/OrderCard.vue";
+import { useMessageStore } from "@/stores/message.store";
 
 export default defineComponent({
-  components: { ReceiverCard, SenderCard, CurrencyPairings, Offerings, OrderCard},
+  components: {
+    ReceiverCard,
+    SenderCard,
+    CurrencyPairings,
+    Offerings,
+    OrderCard,
+  },
   props: {
     messages: {
       type: Array<Message>,
@@ -74,6 +85,30 @@ export default defineComponent({
       scrollToBottom,
       offerings,
     };
+  },
+
+  computed: {
+    ...mapState(useOfferingsStore, {
+      offering: "offering",
+      amount: "amount",
+    }),
+  },
+
+  methods: {
+    closeOrder() {
+      const messageStore = useMessageStore();
+      messageStore.addMessage(
+        "SELLER",
+        "Please enter your reason for cancelling",
+        "text"
+      );
+      messageStore.setStage("CLOSE");
+    },
+
+    submitOrder() {
+      const offeringsStore = useOfferingsStore();
+      offeringsStore.submitOrder();
+    },
   },
 });
 </script>

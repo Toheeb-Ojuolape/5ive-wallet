@@ -51,8 +51,6 @@
 
 <script>
 import CountrySelector from "@/elements/Countries/CountrySelector.vue";
-import { useMessageStore } from "@/stores/message.store";
-import { useOfferingsStore } from "@/stores/offerings.store";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
 export default {
@@ -80,8 +78,13 @@ export default {
       this.country = e.country;
     },
 
+    closeBtn(){
+      this.$emit('closeBtn')
+    },
+
     handleCreateVc() {
-      this.$emit("handleCreateVC", { name: this.name, country: this.country });
+      console.log('lg')
+      this.$emit("handleCreateVc", { name: this.name, country: this.country });
     },
 
     handleContinue() {

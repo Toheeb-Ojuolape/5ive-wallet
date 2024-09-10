@@ -1,7 +1,7 @@
 import axios from "axios";
 import { handleErrors } from "@/utils/handlers";
 import { DidServiceEndpoint } from "@web5/dids";
-import { Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import { Close, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import { DEFAULTPAYIN } from "@/constants/constant";
 
 export default {
@@ -54,7 +54,7 @@ export default {
           paymentDetails: DEFAULTPAYIN,
         },
         payout: {
-          kind: this.offering.data.payout.methods[0].kind,
+          kind: offering.data.payout.methods[0].kind,
           paymentDetails: paymentDetails,
         },
         claims: customerCredential,
@@ -63,22 +63,53 @@ export default {
 
     localStorage.setItem("rfq", JSON.stringify(rfq));
 
-    await rfq.sign(this.did);
+    await rfq.sign(did);
 
     await TbdexHttpClient.createExchange(rfq);
 
     const order = Order.create({
       metadata: {
-        from: this.did.uri,
-        to: this.offering.metadata.from,
+        from: did.uri,
+        to: offering.metadata.from,
         exchangeId: rfq.exchangeId,
         protocol: "1.0",
       },
     });
-    return order;
+    return { order, rfq };
   },
 
-  async submitOrder() {},
+  async submitOrder(offer, did, rfq) {
+    const order = Order.create({
+      metadata: {
+        from: did.uri,
+        to: offer.metadata.from,
+        exchangeId: rfq.exchangeId,
+        protocol: "1.0",
+      },
+    });
 
-  async cancelOrder() {},
+    await order.sign(did);
+    const response = await TbdexHttpClient.submitOrder(order);
+    return response;
+  },
+
+  
+  async cancelOrder(offer, did, rfq, reason) {
+    const close = Close.create({
+      metadata: {
+        from: did.uri,
+        to: offer.metadata.from,
+        exchangeId: rfq.exchangeId,
+        protocol: "1.0",
+      },
+      data: {
+        reason,
+      },
+    });
+
+    await close.sign(this.did);
+    await TbdexHttpClient.submitClose(close);
+
+    return close;
+  },
 };
