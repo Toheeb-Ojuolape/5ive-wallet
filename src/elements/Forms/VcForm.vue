@@ -53,7 +53,6 @@
 import CountrySelector from "@/elements/Countries/CountrySelector.vue";
 import { useMessageStore } from "@/stores/message.store";
 import { useOfferingsStore } from "@/stores/offerings.store";
-import { mapState } from "pinia";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
 export default {
@@ -68,13 +67,12 @@ export default {
     isActive: {
       type: Boolean,
     },
-  },
-
-  computed: {
-    ...mapState(useOfferingsStore, {
-      isVcLoading: "isVcLoading",
-      vcstep: "vcstep",
-    }),
+    isVcLoading: {
+      type: Boolean,
+    },
+    vcstep: {
+      type: Number,
+    },
   },
 
   methods: {
@@ -83,20 +81,11 @@ export default {
     },
 
     handleCreateVc() {
-      const offeringStore = useOfferingsStore();
-      offeringStore.requestVc({
-        name: this.name,
-        country: this.country,
-      });
+      this.$emit("handleCreateVC", { name: this.name, country: this.country });
     },
 
     handleContinue() {
-      const messageStore = useMessageStore();
-      messageStore.addMessage(
-        "SELLER",
-        "Great, we have received your Verifiable Credential, now kindly enter the amount you would like to send"
-      );
-      this.$emit("closeBtn");
+      this.$emit("handleContinue")
     },
   },
 };

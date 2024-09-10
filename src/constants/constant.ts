@@ -51,7 +51,6 @@ export const CURRENCYPAIRS = [
   },
 ];
 
-
 export const CURRENCIES = [
   {
     code: "GHS",
@@ -105,3 +104,20 @@ export const CURRENCIES = [
   },
 ];
 
+export const CURRENCY = {
+  code: "BTC",
+  name: "Bitcoin",
+  country: "btc", // Decentralized currency, no specific country
+};
+
+export const DEFAULTCURRENCY = {
+  code: "NGN",
+  name: "Nigerian Naira",
+  country: "ng",
+};
+
+
+export const DEFAULTPAYIN = {
+  accountNumber: '1234567890',
+  routingNumber: '1234567890'
+}

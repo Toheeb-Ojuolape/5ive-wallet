@@ -1,7 +1,8 @@
 import axios from "axios";
 import { handleErrors } from "@/utils/handlers";
 import { DidServiceEndpoint } from "@web5/dids";
-import { TbdexHttpClient } from "@tbdex/http-client";
+import { Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import { DEFAULTPAYIN } from "@/constants/constant";
 
 export default {
   async getOfferings(did) {
@@ -26,9 +27,58 @@ export default {
         `https://mock-idv.tbddev.org/kcc?name=${name}&country=${country}&did=${did}`
       );
       console.log(response);
-      return response
+      return response;
     } catch (error) {
       handleErrors(error.message);
     }
   },
+
+  async requestQuote(
+    offering,
+    did,
+    amount,
+    paymentDetails,
+    customerCredential
+  ) {
+    const rfq = Rfq.create({
+      metadata: {
+        to: offering.metadata.from,
+        from: did.uri,
+        protocol: "1.0",
+      },
+      data: {
+        offeringId: offering.metadata.id,
+        payin: {
+          kind: offering.data.payin.methods[0].kind,
+          amount: amount,
+          paymentDetails: DEFAULTPAYIN,
+        },
+        payout: {
+          kind: this.offering.data.payout.methods[0].kind,
+          paymentDetails: paymentDetails,
+        },
+        claims: customerCredential,
+      },
+    });
+
+    localStorage.setItem("rfq", JSON.stringify(rfq));
+
+    await rfq.sign(this.did);
+
+    await TbdexHttpClient.createExchange(rfq);
+
+    const order = Order.create({
+      metadata: {
+        from: this.did.uri,
+        to: this.offering.metadata.from,
+        exchangeId: rfq.exchangeId,
+        protocol: "1.0",
+      },
+    });
+    return order;
+  },
+
+  async submitOrder() {},
+
+  async cancelOrder() {},
 };

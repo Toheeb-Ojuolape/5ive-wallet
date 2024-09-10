@@ -19,6 +19,7 @@ function selectCurrency() {
 }
 
 function setCurrency(currency){
+  console.log('from ui', currency)
   swapStore.setCurrency(currency);
 }
 </script>

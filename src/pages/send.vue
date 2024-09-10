@@ -9,9 +9,20 @@
       <ChatInput @addmessage="addMessage" />
     </div>
 
-    <VcForm :isActive="isVcActive" @closeBtn="closeVc" />
+    <VcForm
+      :isActive="isVcActive"
+      @closeBtn="closeVc"
+      :isVcLoading="isVcLoading"
+      :vcstep="vcstep"
+      @handleCreateVc="handleCreateVc"
+      @handleContinue="handleContinue"
+    />
 
-    <RateForm :isActive="isRating" :offering="offering" @closeBtn="closeRating"/>
+    <RateForm
+      :isActive="isRating"
+      :offering="offering"
+      @closeBtn="closeRating"
+    />
 
     <overlayloader :loading="loading" :text="loadingMessage" />
   </div>
@@ -30,11 +41,20 @@ import RateForm from "@/elements/Forms/RateForm.vue";
 
 export default defineComponent({
   components: { ChatView, overlayloader, VcForm, RateForm },
+
   setup() {
     const messageStore = useMessageStore();
     const offeringStore = useOfferingsStore();
     const { messages } = storeToRefs(messageStore);
-    const { loading, isVcActive, isRating, loadingMessage, offering } = storeToRefs(offeringStore);
+    const {
+      loading,
+      isVcActive,
+      isRating,
+      loadingMessage,
+      offering,
+      isVcLoading,
+      vcstep,
+    } = storeToRefs(offeringStore);
 
     const addMessage = (message: string) => {
       if (messageStore.stage === "ENTER AMOUNT") {
@@ -48,7 +68,7 @@ export default defineComponent({
         if (!message) {
           return handleErrors({ message: "Please enter a valid reason" });
         }
-        offeringStore.closeOrder(message)
+        offeringStore.closeOrder(message);
       }
       messageStore.addMessage("Buyer", message, "text");
     };
@@ -57,9 +77,28 @@ export default defineComponent({
       offeringStore.toggleVc();
     };
 
-    const closeRating = () =>{
-      offeringStore.closeRating()
-    }
+    const handleCreateVc = ({ name, country }) => {
+      const offeringStore = useOfferingsStore();
+
+      offeringStore.requestVc({
+        name: name,
+        country: country,
+      });
+    };
+
+    const handleContinue = () => {
+      const messageStore = useMessageStore();
+      messageStore.addMessage(
+        "SELLER",
+        "Great, we have received your Verifiable Credential, now kindly enter the amount you would like to send",
+        "text"
+      );
+      offeringStore.toggleVc();
+    };
+
+    const closeRating = () => {
+      offeringStore.closeRating();
+    };
 
     return {
       messages,
@@ -69,8 +108,12 @@ export default defineComponent({
       isVcActive,
       isRating,
       closeVc,
+      handleCreateVc,
+      handleContinue,
       offering,
-      closeRating
+      closeRating,
+      isVcLoading,
+      vcstep,
     };
   },
 });
