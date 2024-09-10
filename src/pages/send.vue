@@ -21,7 +21,8 @@
     <RateForm
       :isActive="isRating"
       :offering="offering"
-      @closeBtn="closeRating"
+      @handleContinue="closeRating"
+      @closeBtn = "isRating = false"
     />
 
     <overlayloader :loading="loading" :text="loadingMessage" />

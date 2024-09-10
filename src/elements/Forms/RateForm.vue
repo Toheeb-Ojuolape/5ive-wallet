@@ -35,6 +35,7 @@
           :title="'PFI rated successfully!'"
           :message="'Great, you have successfully rated this PFI'"
           @handleContinue="handleContinue"
+          :btnTitle="'Continue'"
         />
       </v-window-item>
     </v-window>
@@ -82,7 +83,7 @@ export default {
     },
 
     handleContinue(){
-        this.$emit('closeBtn')
+        this.$emit('handleContinue')
     }
   },
 };

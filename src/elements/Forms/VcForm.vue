@@ -43,6 +43,7 @@
           :title="'Verifiable Credentials Created!'"
           :message="'Great, now that we can share your VC with your selected PFI, you can now request a quote'"
           @handleContinue="handleContinue"
+          :btnTitle="'Continue'"
         />
       </v-window-item>
     </v-window>

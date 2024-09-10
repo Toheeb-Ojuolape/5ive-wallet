@@ -17,7 +17,14 @@
         <SuccessScreen
           :title="'Order submitted Successfully'"
           :message="'You have successfully submitted your order. You can track it on the transactions page'"
+          @handleContinue="isRating = true"
+          :btnTitle="'Rate PFI'"
+        />
+        <RateForm
+          :isActive="isRating"
           @handleContinue="handleContinue"
+          @closeBtn="isRating = false"
+          :offering="bestOffer"
         />
       </v-window-item>
     </v-window>
@@ -43,6 +50,7 @@ import { useSwapStore } from "@/stores/swap.store";
 import { storeToRefs } from "pinia";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
 import router from "@/router";
+import RateForm from "@/elements/Forms/RateForm.vue";
 
 export default {
   setup() {
@@ -88,10 +96,18 @@ export default {
     };
   },
 
-  components: { SendScreen, SubmitOrder, Overlayloader, VcForm, SuccessScreen },
+  components: {
+    SendScreen,
+    SubmitOrder,
+    Overlayloader,
+    VcForm,
+    SuccessScreen,
+    RateForm,
+  },
   data() {
     return {
       step: 1,
+      isRating: false,
     };
   },
 
