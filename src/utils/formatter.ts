@@ -16,3 +16,10 @@ export const getCountry = (country: string) => {
 export const getPFIName = (offering) => {
   return pfis.pfis.find((pfi) => pfi.did === offering.metadata.from).name;
 };
+
+export const formatAmount = (number) => {
+  return number.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

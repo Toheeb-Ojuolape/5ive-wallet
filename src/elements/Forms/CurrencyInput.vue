@@ -1,38 +1,85 @@
 <template>
-    <div class="relative">
-        <input class="currency-input" type="number" inputmode="numeric"/>
-        <CurrencySelector :name="'country'" @handleInput="handleInput"/>
-    </div>
+  <div style="position: relative">
+    <p class="currency-input-label">{{ label }}</p>
+    <input
+      @input="handleInput"
+      class="currency-input"
+      :type="type"
+      inputmode="numeric"
+      :readonly="readonly"
+      :value="amount"
+    />
+    <CurrencySelector
+      :name="'country'"
+      :currency="country ? country : currency"
+      @handleInput="handleSelectCountry"
+    />
+  </div>
 </template>
 
-
 <script>
-import CurrencySelector from '../Currencies/CurrencySelector.vue';
+import CurrencySelector from "../Currencies/CurrencySelector.vue";
 
 export default {
   components: { CurrencySelector },
+  props: {
+    label: {
+      type: String,
+    },
+    currency: {
+      type: Object,
+    },
+    readonly: {
+      type: Boolean,
+    },
+    amount: {
+      type: String,
+    },
+    type: {
+      type: String,
+    },
+  },
 
-  methods:{
-    handleInput(country){
-        console.log(country)
-    }
-  }
-    
-}
+  data() {
+    return {
+      country: null,
+    };
+  },
+
+  methods: {
+    handleInput(e) {
+      this.$emit("handleInput", e.target.value);
+    },
+
+    handleSelectCountry(country) {
+      this.country = country;
+      this.$emit("handleSelectCountry", country);
+    },
+  },
+};
 </script>
 
-
 <style scoped>
-.currency-input{
-    padding: 20px 16px;
-    width: 100%;
-    border: 0px; 
-    border-radius: 8px;
-    background: white
+.currency-input {
+  padding: 0px 16px 0px 16px;
+  width: 100%;
+  border: 0px;
+  border-radius: 8px;
+  background: white;
+  height: 80px;
+  font-size: 20px;
 }
 
-.currency-input:focus{
-    outline: 0;
-    border: 0
+.currency-input:focus {
+  outline: 0;
+  border: 0;
+}
+
+.currency-input-label {
+  position: absolute;
+  top: 0;
+  margin: 5px 0px 0px 9px;
+  font-weight: bold;
+  font-size: 15px;
 }
 </style>

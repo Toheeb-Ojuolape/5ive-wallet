@@ -16,7 +16,7 @@
       },
       text:{
         type: String
-      }
+      },
     },
   };
   </script>

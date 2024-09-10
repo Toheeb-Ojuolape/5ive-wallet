@@ -13,10 +13,11 @@ import { useMessageStore } from "./message.store";
 import { BearerDid, DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
 import dwn from "@/utils/dwn";
+import { CurrencyPair } from "@/interfaces/currency";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
-    currencypair: "",
+    currencypair: {} as CurrencyPair,
     isVcActive: false,
     loading: false,
     loadingMessage: "",
@@ -32,10 +33,11 @@ export const useOfferingsStore = defineStore("offeringStore", {
     order: Order,
     reason: "",
     isRating: false,
+    did: ""
   }),
 
   actions: {
-    setCurrencypair(currencypair: string) {
+    setCurrencypair(currencypair: CurrencyPair) {
       this.currencypair = currencypair;
       this.fetchOfferings();
     },
@@ -84,6 +86,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         messageStore.addMessage("", "", "offers");
       } catch (error) {
+        console.log(error)
         handleErrors(error.message);
       }
     },
@@ -176,7 +179,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
     },
 
     async requestQuote(amount) {
-      /// now we have all the details to request for quote, I think
       this.amount = amount;
       this.loading = true;
       this.loadingMessage = "Creating Order...";
@@ -214,17 +216,8 @@ export const useOfferingsStore = defineStore("offeringStore", {
         this.rfq = rfq;
 
         await rfq.sign(this.did);
-        console.log(rfq.exchangeId);
 
         await TbdexHttpClient.createExchange(rfq);
-
-        const exchange = await TbdexHttpClient.getExchange({
-          exchangeId: rfq.exchangeId,
-          pfiDid: this.offering.metadata.from,
-          did: this.did,
-        });
-
-        console.log(exchange);
 
         this.order = Order.create({
           metadata: {
@@ -234,16 +227,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
             protocol: "1.0",
           },
         });
-
-        console.log(this.order);
-
-        const getExchange = await TbdexHttpClient.getExchange({
-          pfiDid: this.offering.metadata.from,
-          did: this.did,
-          exchangeId: rfq.exchangeId,
-        });
-
-        console.log("the exchange", getExchange);
 
         this.loading = false;
 
@@ -305,47 +288,40 @@ export const useOfferingsStore = defineStore("offeringStore", {
     async closeOrder(reason) {
       console.log(reason);
 
-      const getExchanges = await TbdexHttpClient.getExchanges({
-        pfiDid: this.offering.metadata.from,
-        did: this.did,
+      // handle cancel order
+      this.reason = reason;
+      this.loading = true;
+      this.loadingMessage = "Cancelling order..";
+
+      const close = Close.create({
+        metadata: {
+          from: this.did.uri,
+          to: this.offering.metadata.from,
+          exchangeId: this.rfq.exchangeId,
+          protocol: "1.0",
+        },
+        data: {
+          reason,
+        },
       });
 
-      console.log("the exchanges", getExchanges);
+      try {
+        await close.sign(this.did);
 
-      // handle cancel order
-      // this.reason = reason;
-      // this.loading = true;
-      // this.loadingMessage = "Cancelling order..";
+        await TbdexHttpClient.submitClose(close);
 
-      // const close = Close.create({
-      //   metadata: {
-      //     from: this.did.uri,
-      //     to: this.offering.metadata.from,
-      //     exchangeId: this.rfq.exchangeId,
-      //     protocol: "1.0",
-      //   },
-      //   data: {
-      //     reason,
-      //   },
-      // });
-
-      // try {
-      //   await close.sign(this.did);
-
-      //   await TbdexHttpClient.submitClose(close);
-
-      //   this.loading = false;
-      //   const messageStore = useMessageStore();
-      //   messageStore.addMessage(
-      //     "SELLER",
-      //     "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
-      //     "text"
-      //   );
-      //   setTimeout(() => location.reload(), 3000);
-      // } catch (error) {
-      //   this.loading = false;
-      //   handleErrors(error);
-      // }
+        this.loading = false;
+        const messageStore = useMessageStore();
+        messageStore.addMessage(
+          "SELLER",
+          "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
+          "text"
+        );
+        setTimeout(() => location.reload(), 3000);
+      } catch (error) {
+        this.loading = false;
+        handleErrors(error);
+      }
     },
   },
 });
