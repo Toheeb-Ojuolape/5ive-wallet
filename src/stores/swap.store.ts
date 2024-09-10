@@ -2,8 +2,14 @@ import { Currency } from "@/interfaces/currency";
 import { defineStore } from "pinia";
 import router from "@/router";
 import { CURRENCY, DEFAULTCURRENCY } from "@/constants/constant";
-import { handleErrors } from "@/utils/handlers";
-import { Offering, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import { handleErrors, handleSuccess } from "@/utils/handlers";
+import {
+  Close,
+  Offering,
+  Order,
+  Rfq,
+  TbdexHttpClient,
+} from "@tbdex/http-client";
 import pfiData from "../pfis/pfis.json";
 import { formatAmount } from "@/utils/formatter";
 import { PresentationExchange } from "@web5/credentials";
@@ -35,6 +41,8 @@ export const useSwapStore = defineStore("swapStore", {
     vcstep: 1,
     isVcActive: false,
     isVcLoading: false,
+    swapStep: 1,
+    isCancel: false,
   }),
 
   actions: {
@@ -46,8 +54,14 @@ export const useSwapStore = defineStore("swapStore", {
       router.push("/swap");
     },
 
+    toggleVc() {
+      console.log(this.isVcActive);
+      this.isVcActive = !this.isVcActive;
+    },
+
     async fetchBestOffering(senderInput) {
       const { amount, from, to } = senderInput;
+      this.amount = amount;
       console.log(amount, from, to);
 
       if (!this.bestOffer) {
@@ -132,10 +146,11 @@ export const useSwapStore = defineStore("swapStore", {
           });
           this.did = did;
           const exportedDid = await did.export();
-          await dwn.createDidRecord(exportedDid);
 
           localStorage.setItem("customerDid", JSON.stringify(exportedDid));
         }
+
+        console.log("the did", this.did);
 
         const response = await offeringsService.requestVc({
           name,
@@ -150,12 +165,11 @@ export const useSwapStore = defineStore("swapStore", {
 
         // save the Verifiable credentials to local storage
         localStorage.setItem("vc", JSON.stringify(this.vcs));
-        console.log(this.offering);
         // this.customerCredential = this.vcs.map((jwt) => retrieveCredentials(jwt))
 
         this.customerCredential = PresentationExchange.selectCredentials({
           vcJwts: this.vcs,
-          presentationDefinition: this.offering.data.requiredClaims,
+          presentationDefinition: this.bestOffer.data.requiredClaims,
         });
 
         this.vcstep = 2;
@@ -169,27 +183,76 @@ export const useSwapStore = defineStore("swapStore", {
 
     async submitSwap(paymentDetails) {
       try {
-        console.log('sb')
         this.isSubmitLoading = true;
 
         if (!this.storedDid) {
           this.isVcActive = true;
-          return 
+          return;
         }
 
-        try {
-          const response = await offeringsService.requestQuote(
-            this.bestOffer,
-            this.did,
-            this.amount,
-            paymentDetails,
-            this.customerCredential
-          );
-          console.log(response);
-        } catch (error) {
-          handleErrors(error);
+        if (this.storedDid) {
+          this.did = await DidDht.import({
+            portableDid: JSON.parse(this.storedDid),
+          });
+        } else {
+          const did = await DidDht.create({
+            options: { publish: true },
+          });
+          this.did = did;
+          const exportedDid = await did.export();
+
+          localStorage.setItem("customerDid", JSON.stringify(exportedDid));
         }
+
+        this.customerCredential = PresentationExchange.selectCredentials({
+          vcJwts: this.vcs,
+          presentationDefinition: this.bestOffer.data.requiredClaims,
+        });
+        const response = await offeringsService.requestQuote(
+          this.bestOffer,
+          this.did,
+          this.amount.toString(),
+          paymentDetails,
+          this.customerCredential
+        );
+
+        this.order = response.order;
+        this.rfq = response.rfq;
+
+        console.log(this.order);
+        this.isSubmitLoading = false;
+        this.swapStep = 2;
       } catch (error) {
+        handleErrors(error);
+        this.isSubmitLoading = false;
+      }
+    },
+
+    async closeOrder(reason) {
+      try {
+        this.reason = reason;
+        this.loading = true;
+        this.loadingMessage = "Cancelling order..";
+
+        await offeringsService.cancelOrder(this.bestOffer,this.did,this.rfq, reason)
+        this.loading = false;
+        handleSuccess("Order closed successfully");
+        setTimeout(() => location.reload(), 3000);
+      } catch (error) {
+        this.loading = false;
+        handleErrors(error);
+      }
+    },
+
+    async submitOrder() {
+      try {
+        this.loading = true;
+        this.loadingMessage = "Submitting order..";
+        await offeringsService.submitOrder(this.bestOffer,this.did,this.rfq)
+        this.loading = false
+        this.swapStep = 3
+      } catch (error) {
+        this.loading = false;
         handleErrors(error);
       }
     },

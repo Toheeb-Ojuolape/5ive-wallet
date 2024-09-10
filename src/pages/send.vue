@@ -21,7 +21,8 @@
     <RateForm
       :isActive="isRating"
       :offering="offering"
-      @closeBtn="closeRating"
+      @handleContinue="closeRating"
+      @closeBtn = "isRating = false"
     />
 
     <overlayloader :loading="loading" :text="loadingMessage" />
@@ -29,9 +30,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, handleError, ref } from "vue";
+import { defineComponent } from "vue";
 import { useMessageStore } from "@/stores/message.store";
-import { storeToRefs } from "pinia";
+import { mapState, storeToRefs } from "pinia";
 import ChatView from "../components/Chat/ChatView.vue";
 import overlayloader from "@/elements/overlayloader.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
@@ -48,12 +49,12 @@ export default defineComponent({
     const { messages } = storeToRefs(messageStore);
     const {
       loading,
-      isVcActive,
       isRating,
       loadingMessage,
       offering,
-      isVcLoading,
       vcstep,
+      isVcActive,
+      isVcLoading,
     } = storeToRefs(offeringStore);
 
     const addMessage = (message: string) => {
@@ -71,10 +72,6 @@ export default defineComponent({
         offeringStore.closeOrder(message);
       }
       messageStore.addMessage("Buyer", message, "text");
-    };
-
-    const closeVc = () => {
-      offeringStore.toggleVc();
     };
 
     const handleCreateVc = ({ name, country }) => {
@@ -105,16 +102,21 @@ export default defineComponent({
       addMessage,
       loading,
       loadingMessage,
-      isVcActive,
       isRating,
-      closeVc,
       handleCreateVc,
       handleContinue,
       offering,
       closeRating,
-      isVcLoading,
       vcstep,
+      isVcLoading,
+      isVcActive,
     };
+  },
+
+  methods: {
+    closeVc() {
+      this.isVcActive = false;
+    },
   },
 });
 </script>

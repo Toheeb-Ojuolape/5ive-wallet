@@ -50,11 +50,14 @@ import { useOfferingsStore } from "@/stores/offerings.store";
 import { mapState } from "pinia";
 export default {
   components: { ExchangeRate },
-  computed: {
-    ...mapState(useOfferingsStore, {
-      offering: "offering",
-      amount: "amount",
-    }),
+
+  props: {
+    offering: {
+      type: Object,
+    },
+    amount: {
+      type: String,
+    },
   },
 
   methods: {
@@ -65,16 +68,12 @@ export default {
     },
 
     closeOrder() {
-      // request for user to enter reason for cancelling
-      const messageStore = useMessageStore()
-      messageStore.addMessage('SELLER', 'Please enter your reason for cancelling', 'text')
-      messageStore.setStage('CLOSE')
-
+      this.$emit('closeOrder')
+      
     },
 
     submitOrder() {
-      const offeringsStore = useOfferingsStore();
-      offeringsStore.submitOrder();
+      this.$emit("submitOrder")
     },
   },
 };

@@ -9,7 +9,7 @@
     </div>
 
     <div>
-      <v-btn @click="handleContinue" block :color="BRANDCOLOR" size="x-large" rounded="pill"> Continue</v-btn>
+      <v-btn @click="handleContinue" block :color="BRANDCOLOR" size="x-large" rounded="pill"> {{ btnTitle }}</v-btn>
     </div>
     </div>
   </div>
@@ -26,6 +26,9 @@ export default {
     message: {
       type: String,
     },
+    btnTitle:{
+      type: String
+    }
   },
   data() {
     return {

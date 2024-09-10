@@ -12,7 +12,7 @@ import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
 import { BearerDid, DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
-import dwn from "@/utils/dwn";
+// import dwn from "@/utils/dwn";
 import { CurrencyPair } from "@/interfaces/currency";
 
 export const useOfferingsStore = defineStore("offeringStore", {
@@ -33,7 +33,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
     order: Order,
     reason: "",
     isRating: false,
-    did: ""
   }),
 
   actions: {
@@ -141,7 +140,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
           });
           this.did = did
           const exportedDid = await did.export();
-          await dwn.createDidRecord(exportedDid)
 
           localStorage.setItem("customerDid", JSON.stringify(exportedDid));
         }
@@ -179,6 +177,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
     },
 
     async requestQuote(amount) {
+      /// now we have all the details to request for quote, I think
       this.amount = amount;
       this.loading = true;
       this.loadingMessage = "Creating Order...";
@@ -216,8 +215,17 @@ export const useOfferingsStore = defineStore("offeringStore", {
         this.rfq = rfq;
 
         await rfq.sign(this.did);
+        console.log(rfq.exchangeId);
 
         await TbdexHttpClient.createExchange(rfq);
+
+        const exchange = await TbdexHttpClient.getExchange({
+          exchangeId: rfq.exchangeId,
+          pfiDid: this.offering.metadata.from,
+          did: this.did,
+        });
+
+        console.log(exchange);
 
         this.order = Order.create({
           metadata: {
@@ -227,6 +235,16 @@ export const useOfferingsStore = defineStore("offeringStore", {
             protocol: "1.0",
           },
         });
+
+        console.log(this.order);
+
+        const getExchange = await TbdexHttpClient.getExchange({
+          pfiDid: this.offering.metadata.from,
+          did: this.did,
+          exchangeId: rfq.exchangeId,
+        });
+
+        console.log("the exchange", getExchange);
 
         this.loading = false;
 
@@ -287,7 +305,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
     async closeOrder(reason) {
       console.log(reason);
-
+      
       // handle cancel order
       this.reason = reason;
       this.loading = true;
