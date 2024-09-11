@@ -8,7 +8,7 @@
         style="background: #f8fafc"
       >
         <router-view />
-        <BottomMenu  v-if="$route.path != '/'"/>
+        <BottomMenu />
       </v-responsive>
   </v-app>
 </template>
