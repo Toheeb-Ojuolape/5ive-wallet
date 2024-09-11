@@ -13,6 +13,7 @@
       :name="'country'"
       :currency="country ? country : currency"
       @handleInput="handleSelectCountry"
+      :classname="'currency'"
     />
   </div>
 </template>

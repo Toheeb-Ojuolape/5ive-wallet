@@ -1,26 +1,26 @@
 <template>
-  <v-bottom-navigation :elevation="2" fixed grow rounded="large">
+  <v-bottom-navigation :elevation="2" fixed grow rounded="large" class="bottom-navigation">
     <v-btn to="/">
-      <v-icon>mdi-home</v-icon>
+      <v-icon icon="mdi-security"></v-icon>
       <span>Home</span>
     </v-btn>
 
     <v-btn to="/swap">
-      <v-icon>mdi-reload</v-icon>
+      <v-icon>mdi-sync</v-icon>
 
       <span>Swap</span>
     </v-btn>
 
     <v-btn to="/send">
-      <v-icon>mdi-send</v-icon>
+      <v-icon>mdi-trending-up</v-icon>
 
       <span>Send</span>
     </v-btn>
 
     <v-btn to="/history">
-      <v-icon>mdi-bank-outline</v-icon>
+      <v-icon>mdi-swap-vertical</v-icon>
 
-      <span>History</span>
+      <span>Payments</span>
     </v-btn>
 
     <v-btn to="/profile">
@@ -30,3 +30,11 @@
     </v-btn>
   </v-bottom-navigation>
 </template>
+
+
+
+<style scoped>
+.bottom-navigation{
+  border-radius: 12px 12px 0px 0px
+}
+</style>

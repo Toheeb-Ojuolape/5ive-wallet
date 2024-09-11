@@ -1,5 +1,5 @@
 <template>
-  <div class="country-select currency">
+  <div class="country-select" :class="classname">
     <v-menu v-model="showmenu" offset-y :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <div v-bind="props" class="currencies-dropdown" block>
@@ -42,6 +42,10 @@ export default {
 
     currency: {
       type: Object,
+    },
+
+    classname: {
+      type: String,
     },
   },
   emits: ["handleInput"],
