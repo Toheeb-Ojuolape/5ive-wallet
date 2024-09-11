@@ -1,6 +1,6 @@
 <template>
   <v-bottom-navigation :elevation="2" fixed grow rounded="large" class="bottom-navigation">
-    <v-btn to="/">
+    <v-btn to="/home">
       <v-icon icon="mdi-security"></v-icon>
       <span>Home</span>
     </v-btn>
@@ -20,7 +20,7 @@
     <v-btn to="/history">
       <v-icon>mdi-swap-vertical</v-icon>
 
-      <span>Payments</span>
+      <span>Activity</span>
     </v-btn>
 
     <v-btn to="/profile">

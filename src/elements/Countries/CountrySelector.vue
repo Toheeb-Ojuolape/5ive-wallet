@@ -35,8 +35,7 @@
     },
     props: {
       name: {
-        type: String,
-        required: true,
+        type: String
       },
     },
     emits: ["handleInput"],

@@ -2,9 +2,9 @@
   "compilerOptions": {
     "allowJs": true,
     "target": "es5",
-    "module": "esnext",
+    "module": "CommonJS",
     "baseUrl": "./",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"]
