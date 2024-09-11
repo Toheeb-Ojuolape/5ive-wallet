@@ -1,16 +1,15 @@
 <template>
   <v-app>
-    <v-main>
       <v-responsive
         class="align-centerfill-height mx-auto"
-        height="95vh"
-        max-width="500"
+        height="99vh"
+        max-width="500px"
+        width="100%"
         style="background: #f8fafc"
       >
         <router-view />
         <BottomMenu />
       </v-responsive>
-    </v-main>
   </v-app>
 </template>
 

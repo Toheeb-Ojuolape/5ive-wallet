@@ -12,7 +12,6 @@
     props: {
       loading: {
         type: Boolean,
-        required: true
       },
       text:{
         type: String
