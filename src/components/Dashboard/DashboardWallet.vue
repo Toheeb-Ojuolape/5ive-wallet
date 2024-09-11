@@ -21,7 +21,9 @@
         @handleInput="handleSelectCountry"
         :classname="'dashboard-currency-selector'"
       />
-      <h1 class="dashboard-amount">{{ currency.code }} {{ formattedAmount(amount) }}</h1>
+      <h1 class="dashboard-amount">
+        {{ currency.code }} {{ formattedAmount() }}
+      </h1>
     </div>
 
     <div class="dashboard-actions">
@@ -63,9 +65,9 @@ export default defineComponent({
       this.currency = e;
     },
 
-    formattedAmount(amount){
-      return formatAmount(parseFloat(this.amount))
-    }
+    formattedAmount() {
+      return formatAmount(parseFloat(this.amount));
+    },
   },
 });
 </script>

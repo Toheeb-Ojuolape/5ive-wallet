@@ -10,6 +10,44 @@
 // );
 
 
+:root {
+    --brandcolor: #1e90ff;
+  }
+  
+  @font-face {
+    font-family: "InterDisplay";
+    src: url("../src/assets/fonts/InterDisplay-Medium.otf");
+  }
+  
+  @font-face {
+    font-family: "SFPRO Display";
+    src: url("../src/assets/fonts/SFPRODISPLAYBOLD.OTF");
+  }
+
 .v-btn{
     text-transform: none;
+}
+
+iframe{
+    border: 0px;
+    outline: 0px
+}
+
+h1,
+h2,
+h4,
+h5,
+h6 {
+  font-family: "InterDisplay" !important;
+}
+
+p,
+div,
+body,
+.v-btn {
+  font-family: "InterDisplay";
+}
+
+h3{
+    font-family: "SFPRO Display";
 }
