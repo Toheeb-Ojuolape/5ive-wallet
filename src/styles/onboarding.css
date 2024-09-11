@@ -1,0 +1,53 @@
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+
+.active-dot {
+  width: 40px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.inactive-dot {
+  background-color: #aaa;
+}
+.onboarding {
+  color: white;
+
+  padding: 30px 20px;
+}
+
+.button {
+  font-size: 15px;
+  width: 200px;
+}
+
+.onboarding .container {
+  margin: 70px 0px 0px 0px;
+}
+
+.onboarding h2 {
+  font-size: 26px;
+  margin: 10px 0px;
+}
+
+.onboarding p {
+  max-width: 300px;
+  margin: auto;
+  color: #b0afb4;
+}
+
+.onboarding button {
+  font-size: 15px;
+  width: 200px;
+}
