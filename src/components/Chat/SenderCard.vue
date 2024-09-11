@@ -32,22 +32,4 @@
   .timestamp {
     font-size: 9px;
   }
-
-  .buyerImageContainer{
-    background:#207CFE;
-    color:white;
-    padding:9px;
-    border-radius:10px;
-    margin:10px 0px 0px 0px
-  }
-
-  .SELLERImageContainer{
-    background:#DEDFE3;
-    color:black;
-    padding:9px;
-    border-radius:10px;
-    max-width:180px;
-    margin:10px 0px 0px 0px
-  }
-
   </style>

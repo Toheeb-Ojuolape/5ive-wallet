@@ -186,7 +186,7 @@ export default {
   font-size: 16px; /* Font size */
   border: 1px solid #ccc; /* Border style */
   border-radius: 4px; /* Rounded corners */
-  background-color: white; /* Background color */
+  /* background-color: white; */
   appearance: none; /* Remove default styling */
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%204%205%27%3E%3Cpath%20fill%3D%27%23333%27%20d%3D%27M2%200L0%202h4zM2%205l2-2H0z%27%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;

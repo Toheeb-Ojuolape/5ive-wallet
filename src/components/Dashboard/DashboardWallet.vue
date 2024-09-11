@@ -1,9 +1,13 @@
 <template>
   <div class="bg-black text-center px-9 py-6">
     <div class="d-flex justify-space-between mb-3">
-      <v-avatar size="50"
-        ><v-img src="../../assets/avatars/avatar1.svg"
-      /></v-avatar>
+      <v-avatar>
+        <v-icon
+          v-if="!user?.image"
+          icon="mdi-account-circle"
+        ></v-icon>
+        <v-img v-if="user?.image" :src="user?.image"></v-img>
+      </v-avatar>
       <v-btn
         density="compact"
         icon="mdi-bell-outline"
@@ -45,7 +49,9 @@
 import { DEFAULTCURRENCY } from "@/constants/constant";
 import CurrencySelector from "@/elements/Currencies/CurrencySelector.vue";
 import { Currency } from "@/interfaces/currency";
+import { useUserStore } from "@/stores/user.store";
 import { formatAmount } from "@/utils/formatter";
+import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -55,6 +61,12 @@ export default defineComponent({
       amount: "1000",
       currency: DEFAULTCURRENCY as Currency,
     };
+  },
+
+  computed: {
+    ...mapState(useUserStore, {
+      user: "user",
+    }),
   },
   methods: {
     selectCurrency() {

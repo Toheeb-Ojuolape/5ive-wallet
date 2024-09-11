@@ -66,9 +66,9 @@ export default {
   width: 100%;
   border: 0px;
   border-radius: 8px;
-  background: white;
   height: 80px;
   font-size: 20px;
+  border:1px solid #b6b6b6;
 }
 
 .currency-input:focus {

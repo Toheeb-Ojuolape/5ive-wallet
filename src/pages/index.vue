@@ -1,6 +1,6 @@
 <template>
   <v-main
-    class="d-flex justify-center text-center"
+    class="d-flex justify-center text-center overflow-y-auto"
     style="height: 100vh; background: #15141a"
   >
     <div>

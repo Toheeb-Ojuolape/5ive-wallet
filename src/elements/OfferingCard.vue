@@ -1,7 +1,7 @@
 <template>
   <v-card rounded="xl" flat class="pa-6 pt-4 my-3" width="300px" min-height="250px">
     <div v-if="index === 0" class="d-flex justify-end">
-      <v-chip size="small" color="black">Recommmended</v-chip>
+      <v-chip size="small">Recommmended</v-chip>
     </div>
     <h3>{{ pfiName(offering) }}</h3>
     <div>
