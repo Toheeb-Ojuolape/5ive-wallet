@@ -117,28 +117,11 @@ export default defineComponent({
 .chatview-container {
   height: 70vh;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   padding: 10px 10px 0px 0px;
 }
 
 .timestamp {
   font-size: 9px;
-}
-
-.buyerImageContainer {
-  background: #207cfe;
-  color: white;
-  padding: 9px;
-  border-radius: 10px;
-  margin: 10px 0px 0px 0px;
-}
-
-.SELLERImageContainer {
-  background: #dedfe3;
-  color: black;
-  padding: 9px;
-  border-radius: 10px;
-  max-width: 180px;
-  margin: 10px 0px 0px 0px;
 }
 </style>

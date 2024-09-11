@@ -26,8 +26,8 @@
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  color: white;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  color: white;
 }
 
 /* Hover state */
@@ -39,7 +39,6 @@
 .dashboard-currency-selector{
     max-width: 120px;
     margin: auto;
-    color: black
 }
 
 

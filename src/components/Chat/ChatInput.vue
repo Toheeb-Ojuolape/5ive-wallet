@@ -56,7 +56,6 @@
 }
 
 .chatBox {
-  background: #f8f8f9 !important;
   width: 100%;
   padding: 0px 0px 0px 10px;
   height: 50px;
@@ -84,7 +83,6 @@ input:focus {
 
 .sendButton {
   position: absolute;
-  color: white !important;
   right: 0;
   margin: 5px 10px 0px 10px;
 }

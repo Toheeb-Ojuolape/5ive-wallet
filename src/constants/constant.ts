@@ -117,6 +117,11 @@ export const DEFAULTCURRENCY = {
 };
 
 
+export const DEFAULTCOUNTRY = {
+  name: "Nigerian Naira",
+  code: "NG",
+};
+
 export const DEFAULTPAYIN = {
   accountNumber: '1234567890',
   routingNumber: '1234567890'
