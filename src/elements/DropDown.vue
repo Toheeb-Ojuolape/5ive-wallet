@@ -2,7 +2,7 @@
   <v-menu transition="scale-transition">
     <template v-slot:activator="{ props }">
       <v-btn variant="outlined" rounded="pill" v-bind="props">
-        {{ type }}{{': ' + selected }}
+        {{ type }}{{ ": " + selected }}
       </v-btn>
     </template>
 
@@ -20,22 +20,23 @@
 
 <script>
 export default {
-    data:()=>({
-        selected: ""
-    }),
+  data: () => ({
+    selected: "",
+  }),
   props: {
     items: {
       type: Array,
     },
-    type:{
-        type: String
-    }
+    type: {
+      type: String,
+    },
   },
 
-  methods:{
-    selectedItem(item){
-        this.selected = item
-    }
-  }
+  methods: {
+    selectedItem(item) {
+      this.selected = item;
+      this.$emit("handleFilter", { [this.type]: this.selected });
+    },
+  },
 };
 </script>

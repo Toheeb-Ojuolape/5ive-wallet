@@ -1,33 +1,42 @@
 <template>
   <div class="swap-screen">
-    <v-window :model-value="swapStep">
-      <v-window-item :value="1">
+    <v-stepper
+      complete-icon=""
+      bg-color="transparent"
+      flat
+      :model-value="swapStep"
+      :items="headers"
+      hide-actions
+    >
+      <template v-if="swapStep === 1">
         <SendScreen
           :currency="currency"
           :defaultcurrency="defaultcurrency"
           :receiverAmount="receiverAmount"
         />
-      </v-window-item>
-
-      <v-window-item :value="2">
+      </template>
+      <template v-if="swapStep === 2">
         <SubmitOrder v-if="bestOffer" />
-      </v-window-item>
+      </template>
 
-      <v-window-item :value="3">
+      <template v-if="swapStep === 3">
+        <v-card flat class="rounded-xl pa-7">
         <SuccessScreen
           :title="'Order submitted Successfully'"
           :message="'You have successfully submitted your order. You can track it on the transactions page'"
           @handleContinue="isRating = true"
           :btnTitle="'Rate PFI'"
         />
+
+      </v-card>
         <RateForm
           :isActive="isRating"
-          @handleContinue="handleContinue"
+          @handleContinue="handleRating"
           @closeBtn="isRating = false"
           :offering="bestOffer"
         />
-      </v-window-item>
-    </v-window>
+      </template>
+    </v-stepper>
 
     <Overlayloader :loading="loading" :text="loadingMessage" />
     <VcForm
@@ -49,7 +58,6 @@ import VcForm from "@/elements/Forms/VcForm.vue";
 import { useSwapStore } from "@/stores/swap.store";
 import { storeToRefs } from "pinia";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
-import router from "@/router";
 import RateForm from "@/elements/Forms/RateForm.vue";
 
 export default {
@@ -104,26 +112,32 @@ export default {
     SuccessScreen,
     RateForm,
   },
-  data() {
-    return {
-      step: 1,
-      isRating: false,
-    };
-  },
+  data: () => ({
+    headers: ["Payment Details", "Confirmation", "Success"],
+    isRating: false,
+  }),
 
   methods: {
     closeVc() {
       this.isVcActive = false;
     },
     handleContinue() {
-      router.push("/history");
+      this.isVcActive = false
+      this.loading = false
     },
+
+    handleRating(){
+      window.location.href='/history'
+    }
   },
 };
 </script>
 
 <style scoped>
 .swap-screen {
-  margin: auto 15px;
+  margin: auto 0px;
+  overflow-y: auto;
+  height: 90vh;
+  padding: 0px 15px
 }
 </style>

@@ -7,7 +7,12 @@
       </v-form>
 
       <div class="my-4">
-        <v-btn @click="submitClose" block rounded="pill" size="x-large"
+        <v-btn
+          :loading="loading"
+          @click="submitClose"
+          block
+          rounded="pill"
+          size="x-large"
           >Submit</v-btn
         >
       </div>
@@ -17,6 +22,8 @@
 
 <script>
 import BottomSheet from "@/components/BottomSheet/BottomSheet.vue";
+import { useSwapStore } from "@/stores/swap.store";
+import { mapState } from "pinia";
 export default {
   data() {
     return {
@@ -26,6 +33,12 @@ export default {
 
   components: {
     BottomSheet,
+  },
+
+  computed: {
+    ...mapState(useSwapStore, {
+      loading: "loading",
+    }),
   },
 
   methods: {

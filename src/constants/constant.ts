@@ -1,3 +1,5 @@
+export const PROTOCOL = "1.0";
+
 export const BRANDCOLOR = "#0582D2";
 
 export const CURRENCYPAIRS = [
@@ -105,9 +107,9 @@ export const CURRENCIES = [
 ];
 
 export const CURRENCY = {
-  code: "BTC",
-  name: "Bitcoin",
-  country: "btc", // Decentralized currency, no specific country
+  code: "KES",
+  name: "Kenyan Shilling",
+  country: "ke", // Decentralized currency, no specific country
 };
 
 export const DEFAULTCURRENCY = {
@@ -116,13 +118,12 @@ export const DEFAULTCURRENCY = {
   country: "ng",
 };
 
-
 export const DEFAULTCOUNTRY = {
-  name: "Nigerian Naira",
+  name: "Nigeria",
   code: "NG",
 };
 
 export const DEFAULTPAYIN = {
-  accountNumber: '1234567890',
-  routingNumber: '1234567890'
-}
+  accountNumber: "1234567890",
+  routingNumber: "1234567890",
+};

@@ -54,12 +54,13 @@
 import CountrySelector from "@/elements/Countries/CountrySelector.vue";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
+import { DEFAULTCOUNTRY } from "@/constants/constant";
 export default {
   components: { CountrySelector, SuccessScreen, BottomSheet },
   data() {
     return {
       name: "",
-      country: "NG",
+      country: DEFAULTCOUNTRY,
     };
   },
   props: {
@@ -76,7 +77,7 @@ export default {
 
   methods: {
     handleInput(e) {
-      this.country = e.country;
+      this.country = e;
     },
 
     closeBtn(){

@@ -4,37 +4,29 @@
       <h4>History</h4>
 
       <div class="drop-down">
-        <DropDown :type="'type'" :items="TYPES" />
-
-        <DropDown :type="'status'" :items="STATUS" />
+        <DropDown
+          :type="'status'"
+          :items="STATUS"
+          @handleFilter="handleFilter"
+        />
       </div>
     </div>
 
-    <v-sheet elevation="2" class="transaction-sheet">
-      <div v-if="loading">
-        <div v-for="(_, i) in 5" :key="i">
-          <TransactionCardLoading />
-        </div>
-      </div>
-
-      <div v-if="!loading">
-        <div v-for="(transaction, i) in transactions" :key="i">
-          <TransactionCard :transaction="transaction" />
-        </div>
-      </div>
-    </v-sheet>
+    <Transaction :length="5" />
   </div>
 </template>
 
 <script>
+import Transaction from "@/components/History/Transaction.vue";
 import DropDown from "@/elements/DropDown.vue";
-import TransactionCard from "@/elements/Transaction/TransactionCard.vue";
-import TransactionCardLoading from "@/elements/Transaction/TransactionCardLoading.vue";
 import { useTransactionStore } from "@/stores/transactions.store";
 import { mapState } from "pinia";
 
 export default {
-  components: { TransactionCard, TransactionCardLoading, DropDown },
+  components: {
+    DropDown,
+    Transaction,
+  },
   setup() {
     const transactionStore = useTransactionStore();
 
@@ -52,13 +44,14 @@ export default {
 
   data() {
     return {
-      TYPES: ["Rfq", "order", "close", "quote"],
-      STATUS: ['TRANSFERING_FUNDS', 'IN_PROGRESS', 'SUCCESS']
+      STATUS: ["TRANSFERING_FUNDS", "IN_PROGRESS", "SUCCESS"],
     };
   },
 
-  created() {
-    this.transactionStore.fetchTransactions();
+  methods: {
+    handleFilter(e) {
+      this.transactionStore.filterTransactions(e);
+    },
   },
 };
 </script>
@@ -67,8 +60,9 @@ export default {
 .transaction-sheet {
   border-radius: 50px 50px 0px 0px;
   margin: 20px 0px 0px 0px;
-  padding: 10px 15px;
+  padding: 10px 15px 90px 15px;
   height: 90vh;
+  overflow-y: auto;
 }
 
 .history-container {
@@ -76,11 +70,11 @@ export default {
   width: 100%;
 }
 
-.drop-down{
+.drop-down {
   margin: 10px 0px;
 }
 
 .drop-down > * {
-  margin: 0px 10px 0px 0px
+  margin: 0px 10px 0px 0px;
 }
 </style>

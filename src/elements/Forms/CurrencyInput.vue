@@ -13,7 +13,7 @@
       :name="'country'"
       :currency="country ? country : currency"
       @handleInput="handleSelectCountry"
-      :classname="'currency'"
+      :classname="'currency currency-black'"
     />
   </div>
 </template>
@@ -62,13 +62,14 @@ export default {
 
 <style scoped>
 .currency-input {
-  padding: 0px 16px 0px 16px;
+  padding: 15px 16px 0px 16px;
   width: 100%;
   border: 0px;
   border-radius: 8px;
   height: 80px;
   font-size: 20px;
-  border:1px solid #b6b6b6;
+  color: black;
+  background: white
 }
 
 .currency-input:focus {
@@ -79,8 +80,13 @@ export default {
 .currency-input-label {
   position: absolute;
   top: 0;
-  margin: 5px 0px 0px 9px;
+  margin: 10px 0px 0px 13px;
   font-weight: bold;
   font-size: 15px;
+  color: black
+}
+
+.currency-black{
+  color: black
 }
 </style>

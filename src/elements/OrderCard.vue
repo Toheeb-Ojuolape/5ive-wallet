@@ -3,8 +3,6 @@
     rounded="xl"
     flat
     class="pa-6 pt-4 my-3"
-    width="300px"
-    min-height="250px"
   >
     <h3>{{ getPFIName(offering) }}</h3>
     <div>
@@ -35,7 +33,7 @@
         Close Order</v-btn
       >
 
-      <v-btn flat @click="submitOrder" rounded="pill" color="black">
+      <v-btn flat @click="submitOrder" :loading="loading" rounded="pill" color="black">
         Submit Order</v-btn
       >
     </div>
@@ -43,11 +41,8 @@
 </template>
 
 <script>
-import { useMessageStore } from "@/stores/message.store";
 import pfis from "../pfis/pfis.json";
 import ExchangeRate from "./ExchangeRate.vue";
-import { useOfferingsStore } from "@/stores/offerings.store";
-import { mapState } from "pinia";
 export default {
   components: { ExchangeRate },
 
@@ -58,6 +53,9 @@ export default {
     amount: {
       type: String,
     },
+    loading:{
+      type: Boolean
+    }
   },
 
   methods: {
@@ -83,6 +81,6 @@ export default {
 .button-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px;
+  gap: 12px;
 }
 </style>

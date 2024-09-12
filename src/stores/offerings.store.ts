@@ -12,8 +12,9 @@ import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
 import { DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
-// import dwn from "@/utils/dwn";
 import { CurrencyPair } from "@/interfaces/currency";
+import { PROTOCOL } from "@/constants/constant";
+import authService from "@/services/authService";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
@@ -85,8 +86,8 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         messageStore.addMessage("", "", "offers");
       } catch (error) {
-        console.log(error)
-        handleErrors(error.message);
+        console.log(error);
+        handleErrors(error);
       }
     },
 
@@ -119,7 +120,9 @@ export const useOfferingsStore = defineStore("offeringStore", {
     },
 
     submitRating(rating) {
-      localStorage.setItem("rating", JSON.stringify(rating));
+      let ratings = JSON.parse(localStorage.getItem("rating")) || [];
+      ratings.push(rating);
+      localStorage.setItem("rating", JSON.stringify(ratings));
     },
 
     async requestVc(user) {
@@ -129,25 +132,12 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
       //TODO: move did request to first instance of signing on to the platform
       try {
-       
-        if (this.storedDid) {
-          this.did = await DidDht.import({
-            portableDid: JSON.parse(this.storedDid),
-          });
-        } else {
-          const did = await DidDht.create({
-            options: { publish: true },
-          });
-          this.did = did
-          const exportedDid = await did.export();
+        const did = await authService.getDid();
 
-          localStorage.setItem("customerDid", JSON.stringify(exportedDid));
-        }
-
-        const response = await offeringsService.requestVc({
+        const response = await authService.requestVc({
           name,
           country,
-          did: this.did,
+          did,
         });
 
         console.log(this.vcs);
@@ -170,7 +160,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
         messageStore.setStage("ENTER AMOUNT");
       } catch (error) {
         console.log(error);
-        handleErrors(error.message);
+        handleErrors(error);
       } finally {
         this.isVcLoading = false;
       }
@@ -187,7 +177,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
           metadata: {
             to: this.offering.metadata.from,
             from: this.did.uri,
-            protocol: "1.0",
+            protocol: PROTOCOL,
           },
           data: {
             offeringId: this.offering.metadata.id,
@@ -232,7 +222,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
             from: this.did.uri,
             to: this.offering.metadata.from,
             exchangeId: rfq.exchangeId,
-            protocol: "1.0",
+            protocol: PROTOCOL,
           },
         });
 
@@ -258,7 +248,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
         messageStore.addMessage("", "", "order");
       } catch (error) {
         console.log(error);
-        handleErrors(error.message);
+        handleErrors(error);
         this.loading = false;
       }
     },
@@ -275,7 +265,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
             from: this.did.uri,
             to: this.offering.metadata.from,
             exchangeId: this.rfq.exchangeId,
-            protocol: "1.0",
+            protocol: PROTOCOL,
           },
         });
 
@@ -305,7 +295,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
     async closeOrder(reason) {
       console.log(reason);
-      
+
       // handle cancel order
       this.reason = reason;
       this.loading = true;
@@ -316,7 +306,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
           from: this.did.uri,
           to: this.offering.metadata.from,
           exchangeId: this.rfq.exchangeId,
-          protocol: "1.0",
+          protocol: PROTOCOL,
         },
         data: {
           reason,

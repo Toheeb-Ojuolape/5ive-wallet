@@ -6,7 +6,7 @@
     position="relative"
     persistent=""
   >
-    <v-card class="mx-auto bottom-sheet pa-6" height="500px" width="100%" max-width="500px">
+    <v-card class="mx-auto bottom-sheet pa-6" height="550px" width="100%" max-width="500px">
       <div class="d-flex justify-end pa-3">
         <v-col cols="auto">
           <v-btn

@@ -1,38 +1,59 @@
 <template>
   <div class="transaction-card">
     <div class="d-flex">
-    <div>
-      <v-btn icon>
-        <v-icon> {{ getTransactionIconValue(transaction?.kind) }}</v-icon>
-      </v-btn>
+      <div>
+        <v-btn
+        flat
+        variant="outlined"
+          :class="transaction[transaction.length - 2]?.data.orderStatus || ''"
+          icon
+        >
+          <v-icon> mdi-cube-send </v-icon>
+        </v-btn>
       </div>
 
       <div class="ml-3">
-        <h3>{{ pfiName(transaction) }}</h3>
-        <span style="font-size:14px">kind: {{ transaction?.kind }} </span>
-        <div class="date">{{ getDateValue(transaction?.metadata.createdAt) }}</div>
+        <h3>{{ pfiName(transaction[0]) }}</h3>
+        <div class="date">
+          {{
+            getDateValue(
+              transaction[transaction.length - 1]?.metadata.createdAt
+            )
+          }}
+        </div>
+        <v-chip
+          :class="transaction[transaction.length - 2]?.data.orderStatus"
+          v-if="transaction[transaction.length - 2]?.data.orderStatus"
+          label
+          size="x-small"
+          >{{
+            transaction[transaction.length - 2]?.data.orderStatus || ""
+          }}</v-chip
+        >
       </div>
-
     </div>
     <div>
-      
-
       <div class="text-end">
-        <h3>{{ transaction?.data.payin?.amount || "" }}</h3>
-        <v-chip
-          :class="transaction?.data.orderStatus"
-          v-if="transaction?.data.orderStatus"
-          label
-          size="small"
-          >{{ transaction?.data.orderStatus || "" }}</v-chip
-        >
+        <div class="payin">
+          payin: -{{ transaction[1]?.data.payin?.currencyCode || "" }}
+          {{ formattedAmount(transaction[1]?.data.payin?.amount) || "" }}
+        </div>
+        <span class="payout">
+          payout: +{{ transaction[1]?.data.payout?.currencyCode || "" }}
+          {{ formattedAmount(transaction[1]?.data.payout?.amount) || "" }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getDate, getPFIName, getTransactionIcon} from "@/utils/formatter";
+import {
+  formatAmount,
+  getDate,
+  getPFIName,
+  getTransactionIcon,
+} from "@/utils/formatter";
 
 export default {
   props: {
@@ -50,9 +71,12 @@ export default {
       return getDate(date);
     },
 
-    getTransactionIconValue(kind){
-        return getTransactionIcon(kind)
-    }
+    getTransactionIconValue(kind) {
+      return getTransactionIcon(kind);
+    },
+    formattedAmount(amount) {
+      return formatAmount(parseFloat(amount));
+    },
   },
 };
 </script>
@@ -79,13 +103,18 @@ export default {
   background: #cdf2fc;
 }
 
-.date{
-    font-size: 10px
+.date {
+  font-size: 10px;
 }
 
-h3{
-    margin:-5px 0px;
-    padding: 0px;
-    font-size: 17px
+h3 {
+  margin: 0px 0px;
+  padding: 0px;
+  font-size: 17px;
+}
+
+.payout {
+  color: #9ba3a6;
+  font-size: 12px;
 }
 </style>

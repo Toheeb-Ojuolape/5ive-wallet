@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h2>Complete your order</h2>
+    <v-btn @click="goBack" flat size="small" icon depressed><v-icon>mdi-arrow-left</v-icon></v-btn>
+    <h2 class="mt-2">Confirm your Order</h2>
 
     <OrderCard
       :offering="bestOffer"
       :amount="amount"
       @closeOrder="closeOrder"
       @submitOrder="submitOrder"
+      :loading="loading"
     />
 
     <ReasonForm
@@ -31,14 +33,15 @@ export default {
     ...mapState(useSwapStore, {
       bestOffer: "bestOffer",
       amount: "amount",
+      loading:"loading"
     }),
   },
 
   setup() {
     const swapStore = useSwapStore();
-    const { isCancel } = storeToRefs(swapStore);
+    const { isCancel, swapStep } = storeToRefs(swapStore);
 
-    return { swapStore, isCancel };
+    return { swapStore, isCancel, swapStep };
   },
 
   methods: {
@@ -57,6 +60,10 @@ export default {
     closeBtn() {
       this.isCancel = false;
     },
+
+    goBack(){
+      this.swapStep--
+    }
   },
 };
 </script>
