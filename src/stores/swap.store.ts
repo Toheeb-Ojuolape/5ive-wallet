@@ -204,10 +204,16 @@ export const useSwapStore = defineStore("swapStore", {
           localStorage.setItem("customerDid", JSON.stringify(exportedDid));
         }
 
-        this.customerCredential = PresentationExchange.selectCredentials({
-          vcJwts: this.vcs,
-          presentationDefinition: this.bestOffer.data.requiredClaims,
-        });
+        if (this.vcs.length) {
+          this.customerCredential = PresentationExchange.selectCredentials({
+            vcJwts: this.vcs,
+            presentationDefinition: this.bestOffer.data.requiredClaims,
+          });
+        } else {
+          this.isVcActive = true;
+          return 
+        }
+
         const response = await offeringsService.requestQuote(
           this.bestOffer,
           this.did,
@@ -234,7 +240,12 @@ export const useSwapStore = defineStore("swapStore", {
         this.loading = true;
         this.loadingMessage = "Cancelling order..";
 
-        await offeringsService.cancelOrder(this.bestOffer,this.did,this.rfq, reason)
+        await offeringsService.cancelOrder(
+          this.bestOffer,
+          this.did,
+          this.rfq,
+          reason
+        );
         this.loading = false;
         handleSuccess("Order closed successfully");
         setTimeout(() => location.reload(), 3000);
@@ -248,9 +259,9 @@ export const useSwapStore = defineStore("swapStore", {
       try {
         this.loading = true;
         this.loadingMessage = "Submitting order..";
-        await offeringsService.submitOrder(this.bestOffer,this.did,this.rfq)
-        this.loading = false
-        this.swapStep = 3
+        await offeringsService.submitOrder(this.bestOffer, this.did, this.rfq);
+        this.loading = false;
+        this.swapStep = 3;
       } catch (error) {
         this.loading = false;
         handleErrors(error);

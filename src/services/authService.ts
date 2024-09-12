@@ -9,7 +9,7 @@ export default {
     let did: BearerDid;
     if (storedDid) {
       did = await DidDht.import({
-        portableDid: JSON.parse(this.storedDid),
+        portableDid: JSON.parse(storedDid),
       });
     } else {
       did = await DidDht.create({
@@ -18,6 +18,7 @@ export default {
       const exportedDid = await did.export();
       localStorage.setItem("customerDid", JSON.stringify(exportedDid));
     }
+    console.log(did)
     return did;
   },
 

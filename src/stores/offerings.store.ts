@@ -10,7 +10,7 @@ import {
 import { handleErrors } from "@/utils/handlers";
 import offeringsService from "@/services/offerings/offeringsService";
 import { useMessageStore } from "./message.store";
-import { BearerDid, DidDht } from "@web5/dids";
+import { DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
 // import dwn from "@/utils/dwn";
 import { CurrencyPair } from "@/interfaces/currency";
