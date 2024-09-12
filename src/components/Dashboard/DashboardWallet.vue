@@ -4,6 +4,8 @@
       <v-avatar>
         <v-icon
           v-if="!user?.image"
+          size="40"
+          color="white"
           icon="mdi-account-circle"
         ></v-icon>
         <v-img v-if="user?.image" :src="user?.image"></v-img>

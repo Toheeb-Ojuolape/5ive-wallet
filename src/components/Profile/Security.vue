@@ -3,12 +3,12 @@
         <h4>Security</h4>
 
         <div class="security-card-grid mt-2">
-        <v-card color="#f8fafc" flat>
+        <v-card rounded="lg" color="#f8fafc" flat>
             <div><v-icon color="#32c36c">mdi-check-circle</v-icon></div>
             <div>Web5 DID enabled</div>
         </v-card>
 
-        <v-card color="#f8fafc" flat>
+        <v-card rounded="lg" color="#f8fafc" flat>
             <div><v-icon color="#32c36c">mdi-check-circle</v-icon></div>
             <div>VC available</div>
         </v-card>
@@ -32,6 +32,6 @@ export default {
 }
 
 .security-card-grid > * {
-    padding: 8px 10px
+    padding: 20px 15px
 }
 </style>

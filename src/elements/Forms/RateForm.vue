@@ -2,18 +2,22 @@
   <bottom-sheet :isActive="isActive" @closeBtn="closeBtn">
     <v-window v-model="step">
       <v-window-item :value="1">
-        <div>
-          <h2>Thank you for patronizing {{ pfiName(offering) }}!</h2>
-          <div>Kindly rate the PFI</div>
-
+        <div class="mx-4">
+          <h1>Thank you for patronizing <br/> {{ pfiName(offering) }}!</h1>
+        
+          <div class="d-flex justify-center text-center">
           <v-form class="my-3">
+            <p class="rating-label">Kindly rate the PFI</p>
             <v-rating
               v-model="rating"
-              density="comfortable"
+              density="compact"
               size="x-large"
               hover
               color="#FFD600"
+              clearable
             ></v-rating>
+          </v-form>
+          </div>
 
             <div class="mt-4">
               <v-btn
@@ -26,7 +30,7 @@
                 Submit</v-btn
               >
             </div>
-          </v-form>
+        
         </div>
       </v-window-item>
 
@@ -72,7 +76,6 @@ export default {
     },
 
     handleSubmit(){
-        // store the rating of PFI in localStorage
         const offeringStore = useOfferingsStore()
         offeringStore.submitRating({
             pfi: getPFIName(this.offering),
@@ -88,3 +91,12 @@ export default {
   },
 };
 </script>
+
+
+
+<style scoped>
+.rating-label{
+  font-size: 23px;
+  margin: 10px 0px
+}
+</style>

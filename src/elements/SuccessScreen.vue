@@ -1,16 +1,25 @@
 <template>
   <div class="text-center d-flex justify-center">
     <div class="success-screen">
-      <img src="../assets/success.gif" width="200px"/>
+      <img src="../assets/hifive.gif" width="200px" />
 
       <div>
-      <h3>{{ title }}</h3>
-      <p>{{ message }}</p>
-    </div>
+        <h1>{{ title }}</h1>
+        <p class="mb-2">{{ message }}</p>
+      </div>
 
-    <div>
-      <v-btn @click="handleContinue" block :color="BRANDCOLOR" size="x-large" rounded="pill"> {{ btnTitle }}</v-btn>
-    </div>
+      <div>
+        <v-btn
+          @click="handleContinue"
+          block
+          size="x-large"
+          rounded="pill"
+          flat
+          variant="outlined"
+        >
+          {{ btnTitle }}</v-btn
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -26,9 +35,9 @@ export default {
     message: {
       type: String,
     },
-    btnTitle:{
-      type: String
-    }
+    btnTitle: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -36,17 +45,16 @@ export default {
     };
   },
 
-  methods:{
-    handleContinue(){
-        this.$emit("handleContinue")
-    }
-  }
+  methods: {
+    handleContinue() {
+      this.$emit("handleContinue");
+    },
+  },
 };
 </script>
 
-
 <style scoped>
-.success-screen > *{
-    margin: 0px 0px 18px 0px
+.success-screen > * {
+  margin: 0px 0px 18px 0px;
 }
 </style>

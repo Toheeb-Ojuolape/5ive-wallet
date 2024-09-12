@@ -3,19 +3,12 @@ import { defineStore } from "pinia";
 import router from "@/router";
 import { CURRENCY, DEFAULTCURRENCY } from "@/constants/constant";
 import { handleErrors, handleSuccess } from "@/utils/handlers";
-import {
-  Close,
-  Offering,
-  Order,
-  Rfq,
-  TbdexHttpClient,
-} from "@tbdex/http-client";
+import { Offering, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import pfiData from "../pfis/pfis.json";
 import { formatAmount } from "@/utils/formatter";
 import { PresentationExchange } from "@web5/credentials";
 import offeringsService from "@/services/offerings/offeringsService";
-import dwn from "@/utils/dwn";
-import { DidDht } from "@web5/dids";
+import authService from "@/services/authService";
 
 export const useSwapStore = defineStore("swapStore", {
   state: () => ({
@@ -29,11 +22,8 @@ export const useSwapStore = defineStore("swapStore", {
     bestOffer: null,
     isSubmitLoading: false,
     vcs: (JSON.parse(localStorage.getItem("vc")) as string[]) || [],
-    offering: Offering,
     customerCredential: [] as string[],
     amount: "",
-    did: "",
-    storedDid: localStorage.getItem("customerDid"),
     rfq: Rfq,
     order: Order,
     reason: "",
@@ -92,8 +82,6 @@ export const useSwapStore = defineStore("swapStore", {
           );
 
           this.loading = false;
-
-          // if no offers were found for the currency pair
           if (!this.offerings.length) {
             return handleErrors({
               message:
@@ -115,7 +103,6 @@ export const useSwapStore = defineStore("swapStore", {
           );
         } catch (error) {
           this.loading = false;
-          console.log(error);
           handleErrors(error);
         }
       } else {
@@ -132,41 +119,18 @@ export const useSwapStore = defineStore("swapStore", {
     async requestVc(user) {
       this.isVcLoading = true;
       const { name, country } = user;
-      //request did for user here
-
-      //TODO: move did request to first instance of signing on to the platform
+      console.log(country)
       try {
-        if (this.storedDid) {
-          this.did = await DidDht.import({
-            portableDid: JSON.parse(this.storedDid),
-          });
-        } else {
-          const did = await DidDht.create({
-            options: { publish: true },
-          });
-          this.did = did;
-          const exportedDid = await did.export();
-
-          localStorage.setItem("customerDid", JSON.stringify(exportedDid));
-        }
-
-        console.log("the did", this.did);
-
-        const response = await offeringsService.requestVc({
+        authService.setUser(user);
+        const did = await authService.getDid();
+        const response = await authService.requestVc({
           name,
-          country,
-          did: this.did,
+          country: country.code,
+          did: did,
         });
 
-        console.log(this.vcs);
         this.vcs.push(response.data);
-
-        console.log(this.vcs);
-
-        // save the Verifiable credentials to local storage
         localStorage.setItem("vc", JSON.stringify(this.vcs));
-        // this.customerCredential = this.vcs.map((jwt) => retrieveCredentials(jwt))
-
         this.customerCredential = PresentationExchange.selectCredentials({
           vcJwts: this.vcs,
           presentationDefinition: this.bestOffer.data.requiredClaims,
@@ -174,8 +138,7 @@ export const useSwapStore = defineStore("swapStore", {
 
         this.vcstep = 2;
       } catch (error) {
-        console.log(error);
-        handleErrors(error.message);
+        handleErrors(error);
       } finally {
         this.isVcLoading = false;
       }
@@ -185,32 +148,35 @@ export const useSwapStore = defineStore("swapStore", {
       try {
         this.isSubmitLoading = true;
 
-        if (!this.storedDid) {
+        const did = await authService.getDid();
+
+        if (this.vcs.length) {
+          this.customerCredential = PresentationExchange.selectCredentials({
+            vcJwts: this.vcs,
+            presentationDefinition: this.bestOffer.data.requiredClaims,
+          });
+        } else if (authService.getUser()) {
+          const vc = await authService.requestVc({
+            name: authService.getUser().name,
+            country: authService.getUser().country.code,
+            did,
+          });
+
+          this.vcs.push(vc.data);
+          localStorage.setItem("vc", JSON.stringify(this.vcs));
+          this.customerCredential = PresentationExchange.selectCredentials({
+            vcJwts: this.vcs,
+            presentationDefinition: this.bestOffer.data.requiredClaims,
+          });
+        } else {
           this.isVcActive = true;
+          this.isSubmitLoading = false;
           return;
         }
 
-        if (this.storedDid) {
-          this.did = await DidDht.import({
-            portableDid: JSON.parse(this.storedDid),
-          });
-        } else {
-          const did = await DidDht.create({
-            options: { publish: true },
-          });
-          this.did = did;
-          const exportedDid = await did.export();
-
-          localStorage.setItem("customerDid", JSON.stringify(exportedDid));
-        }
-
-        this.customerCredential = PresentationExchange.selectCredentials({
-          vcJwts: this.vcs,
-          presentationDefinition: this.bestOffer.data.requiredClaims,
-        });
         const response = await offeringsService.requestQuote(
           this.bestOffer,
-          this.did,
+          did,
           this.amount.toString(),
           paymentDetails,
           this.customerCredential
@@ -219,7 +185,6 @@ export const useSwapStore = defineStore("swapStore", {
         this.order = response.order;
         this.rfq = response.rfq;
 
-        console.log(this.order);
         this.isSubmitLoading = false;
         this.swapStep = 2;
       } catch (error) {
@@ -233,8 +198,14 @@ export const useSwapStore = defineStore("swapStore", {
         this.reason = reason;
         this.loading = true;
         this.loadingMessage = "Cancelling order..";
+        const did = await authService.getDid();
 
-        await offeringsService.cancelOrder(this.bestOffer,this.did,this.rfq, reason)
+        await offeringsService.cancelOrder(
+          this.bestOffer,
+          did,
+          this.rfq,
+          reason
+        );
         this.loading = false;
         handleSuccess("Order closed successfully");
         setTimeout(() => location.reload(), 3000);
@@ -248,9 +219,10 @@ export const useSwapStore = defineStore("swapStore", {
       try {
         this.loading = true;
         this.loadingMessage = "Submitting order..";
-        await offeringsService.submitOrder(this.bestOffer,this.did,this.rfq)
-        this.loading = false
-        this.swapStep = 3
+        const did = await authService.getDid();
+        await offeringsService.submitOrder(this.bestOffer, did, this.rfq);
+        this.loading = false;
+        this.swapStep = 3;
       } catch (error) {
         this.loading = false;
         handleErrors(error);
