@@ -106,8 +106,6 @@ export default {
       did,
       value,
     }));
-
-    console.log(result);
     return result;
   },
 };
