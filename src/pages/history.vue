@@ -1,7 +1,7 @@
 <template>
   <div class="history-container">
     <div class="ml-6">
-      <h4>History</h4>
+      <h4>Activity</h4>
 
       <div class="drop-down">
         <DropDown

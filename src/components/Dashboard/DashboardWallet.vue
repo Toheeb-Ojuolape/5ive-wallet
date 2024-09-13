@@ -44,9 +44,8 @@
         rounded="pill"
         size="large"
         variant="outlined"
-        append-icon="mdi-flash"
       >
-        Swap</v-btn
+        Swap ⚡️</v-btn
       >
     </div>
   </div>
@@ -66,7 +65,6 @@ export default defineComponent({
   components: { CurrencySelector },
   data() {
     return {
-      amount: "1000",
       currency: DEFAULTCURRENCY as Currency,
     };
   },

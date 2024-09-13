@@ -1,8 +1,10 @@
 <template>
   <div @click="goToUrl(article.url)" class="article-container">
     <v-img width="200px" :src="article.image" />
-    <h3 class="article-title">{{ article.title }}</h3>
-    <div class="article-meta">By {{ article.author }}</div>
+    <div class="article-meta">
+      <h3 class="article-title">{{ article.title }}</h3>
+      <div class="article-author">By {{ article.author }}</div>
+    </div>
     <div class="article-date">{{ article.date }} • {{ article.time }}</div>
   </div>
 </template>
@@ -34,18 +36,19 @@ export default {
   cursor: pointer;
 }
 
-.article-title {
-  font-size: 14px;
+.article-meta {
   position: absolute;
   top: 10;
+}
+
+.article-title {
+  font-size: 14px;
   margin: 8px 0px 0px 0px;
 }
 
-.article-meta {
+.article-author {
   font-size: 12px;
-  position: absolute;
-  top: 10;
-  margin: 55px 0px 0px 0px;
+  margin: 5px 0px 0px 0px
 }
 
 .article-date {

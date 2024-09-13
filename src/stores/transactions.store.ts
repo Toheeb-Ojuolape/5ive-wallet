@@ -10,14 +10,47 @@ export const useTransactionStore = defineStore("transactionStore", {
     balance: [],
     loading: false,
     alltransactions: [],
+    payinbalance: [],
+    ratings: JSON.parse(localStorage.getItem("rating")) || [],
   }),
+
+  getters: {
+    balances() {
+      return this.balance.map((balance) => balance.amount);
+    },
+
+    currencies() {
+      return this.balance.map((balance) => balance.currencyCode);
+    },
+
+    payinbalances() {
+      return this.payinbalance.map((balance) => balance.amount);
+    },
+
+    payincurrencies() {
+      return this.payinbalance.map((balance) => balance.currencyCode);
+    },
+
+    groupedPFIsbyRating() {
+      return transactionService.groupAndAveragePFIRating(this.ratings);
+    },
+
+    groupTransactionsByPFIs() {
+      return transactionService.groupTransactionsByDid(this.alltransactions);
+    },
+  },
 
   actions: {
     getBalance(transactions) {
       this.balance = transactionService.getBalance(transactions);
       return this.balance;
     },
-    
+
+    getPayinBalance(transactions) {
+      this.payinbalance = transactionService.getPayinBalance(transactions);
+      return this.payinbalance;
+    },
+
     async fetchTransactions() {
       try {
         this.loading = true;
@@ -25,9 +58,16 @@ export const useTransactionStore = defineStore("transactionStore", {
         const transactions = await transactionService.fetchTransactions(
           customerDid
         );
+
+        // group transactions by exchangeId
         this.transactions = groupTransactions(transactions);
         this.alltransactions = groupTransactions(transactions);
+
+        // set the balances for payin and payout
         this.balance = this.getBalance(this.alltransactions);
+        this.payinbalance = this.getPayinBalance(this.alltransactions);
+        console.log(this.alltransactions);
+
         this.loading = false;
       } catch (error) {
         handleErrors(error);

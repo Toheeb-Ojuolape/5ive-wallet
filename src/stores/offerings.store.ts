@@ -8,7 +8,7 @@ import {
   TbdexHttpClient,
 } from "@tbdex/http-client";
 import { handleErrors } from "@/utils/handlers";
-import offeringsService from "@/services/offerings/offeringsService";
+import offeringsService from "@/services/offeringsService";
 import { useMessageStore } from "./message.store";
 import { DidDht } from "@web5/dids";
 import { PresentationExchange } from "@web5/credentials";
