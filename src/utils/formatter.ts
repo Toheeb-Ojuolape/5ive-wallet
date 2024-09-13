@@ -6,6 +6,11 @@ export const currentTime = () => {
   return moment(date).format("LT");
 };
 
+export const currentDateTime = () => {
+  const date = new Date();
+  return moment(date).format("lll");
+};
+
 export const getDate = (date) => {
   return moment(date).format("lll");
 };
@@ -71,4 +76,11 @@ export const groupTransactions = (transactions) => {
 
   const result = Object.values(consolidatedData);
   return result;
+};
+
+export const getBalances = (balances, currencyCode) => {
+  return (
+    balances?.find((balance) => balance.currencyCode === currencyCode)
+      ?.amount || 0
+  );
 };

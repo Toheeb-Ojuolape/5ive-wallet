@@ -21,7 +21,7 @@
         <div class="my-4">
           <h3>Learn Web5</h3>
           <p class="description">
-            Discover how Web5 powers your wallet for a decentralized future
+            Discover how Web5 powers your decentralized wallet
           </p>
         </div>
       </v-card>
@@ -33,7 +33,7 @@
 .quick-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 21px;
   margin: 6px 0px;
 }
 

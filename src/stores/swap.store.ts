@@ -5,7 +5,7 @@ import { CURRENCY, DEFAULTCURRENCY } from "@/constants/constant";
 import { handleErrors, handleSuccess } from "@/utils/handlers";
 import { Offering, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import pfiData from "../pfis/pfis.json";
-import { formatAmount } from "@/utils/formatter";
+import { currentDateTime, formatAmount, getPFIName } from "@/utils/formatter";
 import { PresentationExchange } from "@web5/credentials";
 import offeringsService from "@/services/offerings/offeringsService";
 import authService from "@/services/authService";
@@ -119,7 +119,7 @@ export const useSwapStore = defineStore("swapStore", {
     async requestVc(user) {
       this.isVcLoading = true;
       const { name, country } = user;
-      console.log(country)
+      console.log(country);
       try {
         authService.setUser(user);
         const did = await authService.getDid();
@@ -223,6 +223,17 @@ export const useSwapStore = defineStore("swapStore", {
         await offeringsService.submitOrder(this.bestOffer, did, this.rfq);
         this.loading = false;
         this.swapStep = 3;
+        console.log(this.bestOffer);
+        authService.setNotification({
+          title: "Swap order created successfully",
+          message: `You have successfully created an order to swap ${
+            this.bestOffer.data?.payin.currencyCode
+          } ${formatAmount(this.amount)} for ${
+            this.bestOffer.data?.payout.currencyCode
+          } ${this.receiverAmount} with ${getPFIName(this.bestOffer)}`,
+          time: currentDateTime(),
+          status: false,
+        });
       } catch (error) {
         this.loading = false;
         handleErrors(error);

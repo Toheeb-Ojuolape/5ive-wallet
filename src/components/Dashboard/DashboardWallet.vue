@@ -1,10 +1,10 @@
 <template>
   <div class="bg-black text-center px-9 py-6">
     <div class="d-flex justify-space-between mb-3">
-      <v-avatar>
+      <v-avatar class="mt-2">
         <v-icon
           v-if="!user?.image"
-          size="40"
+          size="50"
           color="white"
           icon="mdi-account-circle"
         ></v-icon>
@@ -12,10 +12,15 @@
       </v-avatar>
       <v-btn
         density="compact"
-        icon="mdi-bell-outline"
-        size="x-large"
+        size="50"
         class="glass-button"
-      />
+        to="/notification"
+        icon
+      >
+        <v-badge color="error" dot :content="getUnreadNotification"
+          ><v-icon size="small">mdi-bell-outline</v-icon></v-badge
+        >
+      </v-btn>
     </div>
 
     <div class="glass-container">
@@ -28,7 +33,7 @@
         :classname="'dashboard-currency-selector'"
       />
       <h1 class="dashboard-amount">
-        {{ currency.code }} {{ formattedAmount() }}
+        {{ currency.code }} {{ formattedAmount(balanceAmount(currency.code)) }}
       </h1>
     </div>
 
@@ -51,8 +56,9 @@
 import { DEFAULTCURRENCY } from "@/constants/constant";
 import CurrencySelector from "@/elements/Currencies/CurrencySelector.vue";
 import { Currency } from "@/interfaces/currency";
+import { useTransactionStore } from "@/stores/transactions.store";
 import { useUserStore } from "@/stores/user.store";
-import { formatAmount } from "@/utils/formatter";
+import { formatAmount, getBalances } from "@/utils/formatter";
 import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
@@ -68,6 +74,11 @@ export default defineComponent({
   computed: {
     ...mapState(useUserStore, {
       user: "user",
+      getUnreadNotification: "getUnreadNotification",
+    }),
+
+    ...mapState(useTransactionStore, {
+      balance: "balance",
     }),
   },
   methods: {
@@ -79,8 +90,12 @@ export default defineComponent({
       this.currency = e;
     },
 
-    formattedAmount() {
-      return formatAmount(parseFloat(this.amount));
+    formattedAmount(amount) {
+      return formatAmount(amount);
+    },
+
+    balanceAmount(currencyCode) {
+      return getBalances(this.balance, currencyCode);
     },
   },
 });

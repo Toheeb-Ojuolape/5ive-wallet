@@ -13,6 +13,11 @@ export const useTransactionStore = defineStore("transactionStore", {
   }),
 
   actions: {
+    getBalance(transactions) {
+      this.balance = transactionService.getBalance(transactions);
+      return this.balance;
+    },
+    
     async fetchTransactions() {
       try {
         this.loading = true;
@@ -20,9 +25,9 @@ export const useTransactionStore = defineStore("transactionStore", {
         const transactions = await transactionService.fetchTransactions(
           customerDid
         );
-        console.log(groupTransactions(transactions))
         this.transactions = groupTransactions(transactions);
-        this.alltransactions = groupTransactions(transactions)
+        this.alltransactions = groupTransactions(transactions);
+        this.balance = this.getBalance(this.alltransactions);
         this.loading = false;
       } catch (error) {
         handleErrors(error);

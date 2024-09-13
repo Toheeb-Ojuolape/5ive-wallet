@@ -2,12 +2,7 @@
   <div class="transaction-card">
     <div class="d-flex">
       <div>
-        <v-btn
-        flat
-        variant="outlined"
-          :class="transaction[transaction.length - 2]?.data.orderStatus || ''"
-          icon
-        >
+        <v-btn flat variant="outlined" icon>
           <v-icon> mdi-cube-send </v-icon>
         </v-btn>
       </div>
