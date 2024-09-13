@@ -86,7 +86,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         messageStore.addMessage("", "", "offers");
       } catch (error) {
-        console.log(error);
         handleErrors(error);
       }
     },
@@ -139,15 +138,10 @@ export const useOfferingsStore = defineStore("offeringStore", {
           country,
           did,
         });
-
-        console.log(this.vcs);
         this.vcs.push(response.data);
-
-        console.log(this.vcs);
 
         // save the Verifiable credentials to local storage
         localStorage.setItem("vc", JSON.stringify(this.vcs));
-        console.log(this.offering);
         // this.customerCredential = this.vcs.map((jwt) => retrieveCredentials(jwt))
 
         this.customerCredential = PresentationExchange.selectCredentials({
@@ -159,7 +153,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
         const messageStore = useMessageStore();
         messageStore.setStage("ENTER AMOUNT");
       } catch (error) {
-        console.log(error);
         handleErrors(error);
       } finally {
         this.isVcLoading = false;
@@ -205,17 +198,10 @@ export const useOfferingsStore = defineStore("offeringStore", {
         this.rfq = rfq;
 
         await rfq.sign(this.did);
-        console.log(rfq.exchangeId);
 
         await TbdexHttpClient.createExchange(rfq);
 
-        const exchange = await TbdexHttpClient.getExchange({
-          exchangeId: rfq.exchangeId,
-          pfiDid: this.offering.metadata.from,
-          did: this.did,
-        });
 
-        console.log(exchange);
 
         this.order = Order.create({
           metadata: {
@@ -225,16 +211,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
             protocol: PROTOCOL,
           },
         });
-
-        console.log(this.order);
-
-        const getExchange = await TbdexHttpClient.getExchange({
-          pfiDid: this.offering.metadata.from,
-          did: this.did,
-          exchangeId: rfq.exchangeId,
-        });
-
-        console.log("the exchange", getExchange);
 
         this.loading = false;
 
@@ -247,7 +223,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         messageStore.addMessage("", "", "order");
       } catch (error) {
-        console.log(error);
         handleErrors(error);
         this.loading = false;
       }
@@ -272,8 +247,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
         await order.sign(this.did);
 
         const response = await TbdexHttpClient.submitOrder(order);
-
-        console.log(response);
         this.loading = false;
 
         const messageStore = useMessageStore();

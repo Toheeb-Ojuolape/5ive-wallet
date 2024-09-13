@@ -85,7 +85,6 @@ export default {
     },
 
     handleCreateVc() {
-      console.log('lg')
       this.$emit("handleCreateVc", { name: this.name, country: this.country });
     },
 

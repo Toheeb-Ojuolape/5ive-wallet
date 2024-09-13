@@ -1,5 +1,5 @@
 <template>
-  <div class="transaction-card">
+  <div @click="viewTransaction(transaction)" class="transaction-card">
     <div class="d-flex">
       <div>
         <v-btn flat variant="outlined" icon>
@@ -71,6 +71,11 @@ export default {
     },
     formattedAmount(amount) {
       return formatAmount(parseFloat(amount));
+    },
+
+    viewTransaction(transaction) {
+      sessionStorage.setItem("transaction", JSON.stringify(transaction));
+      this.$router.push("/transaction");
     },
   },
 };

@@ -60,7 +60,6 @@ export default {
 
   methods: {
     getPFIName() {
-      console.log(this.offering);
       return pfis.pfis.find((pfi) => pfi.did === this.offering.metadata.from)
         .name;
     },

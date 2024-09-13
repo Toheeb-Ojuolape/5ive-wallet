@@ -90,3 +90,50 @@ export const getBalances = (balances, currencyCode) => {
       ?.amount || 0
   );
 };
+
+export const getStepTitle = (step, index, steps) => {
+  switch (index) {
+    case 0:
+      return "Request for Quote submitted";
+    case 1:
+      return "PFI responded with a quote";
+    case 2:
+      if (index === steps.length-1) {
+        return "Quote closed";
+      } else {
+        return "Order Submitted Successfully";
+      }
+    case 3:
+      return "Order is being processed"
+    case 4:
+      return "Order is being processed"
+    case 5:
+      return "Order processed successfully"
+    case 6:
+      return " Order closed by PFI"
+       
+  }
+};
+
+export const getStepDescription = (step, index, steps) => {
+  switch (index) {
+    case 0:
+      return "You successfully created an offer with your selected PFI";
+    case 1:
+      return "PFI successfully sent a quote to you";
+    case 2:
+      if (index === steps.length-1) {
+        return `You requested to cancel the quote with reason: ${step.data.reason}`;
+      } else {
+        return "You successfully submitted your Order to the PFI";
+      }
+    case 3:
+      return `Order currently has status: ${step.data.orderStatus}`
+    case 4:
+      return `Order currently has status: ${step.data.orderStatus}`
+    case 5:
+      return `Order processed with status: ${step.data.orderStatus}`
+    case 6:
+      return `Order closed by PFI with reason: ${step.data.reason}`
+  }
+};

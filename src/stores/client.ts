@@ -24,11 +24,8 @@ export async function sendMessage(
       data: requestBody, // requestBody passed directly in data
     });
   } catch (e) {
-    console.log(e);
     handleErrors(e);
   }
-
-  console.log(response)
 }
 
 
