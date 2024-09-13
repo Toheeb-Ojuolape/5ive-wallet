@@ -7,7 +7,7 @@ import { Offering, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import pfiData from "../pfis/pfis.json";
 import { currentDateTime, formatAmount, getPFIName } from "@/utils/formatter";
 import { PresentationExchange } from "@web5/credentials";
-import offeringsService from "@/services/offerings/offeringsService";
+import offeringsService from "@/services/offeringsService";
 import authService from "@/services/authService";
 
 export const useSwapStore = defineStore("swapStore", {
@@ -155,7 +155,10 @@ export const useSwapStore = defineStore("swapStore", {
             vcJwts: this.vcs,
             presentationDefinition: this.bestOffer.data.requiredClaims,
           });
-        } else if (authService.getUser()) {
+        } else if (
+          authService.getUser().name &&
+          authService.getUser().country
+        ) {
           const vc = await authService.requestVc({
             name: authService.getUser().name,
             country: authService.getUser().country.code,

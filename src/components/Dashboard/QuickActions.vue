@@ -3,7 +3,7 @@
     <h3>Quick actions</h3>
 
     <div class="quick-actions">
-      <v-card class="rounded-xl px-6 cursor-pointer py-5" flat>
+      <v-card to="/statistics" class="rounded-xl px-6 cursor-pointer py-5" flat>
         <v-chip size="x-large" class="rounded-lg" label color="#d5e4ff"
           ><v-icon color="#2181fc"> mdi-chart-donut</v-icon></v-chip
         >

@@ -32,6 +32,12 @@ export const getPFIName = (offering) => {
   return pfi ? pfi.name : "";
 };
 
+export const getPFINameByDid = (did) => {
+  let pfi = pfis.pfis.find((pfi) => pfi.did === did);
+
+  return pfi ? pfi.name : "";
+};
+
 export const formatAmount = (number) => {
   return number.toLocaleString("en-US", {
     minimumFractionDigits: 2,
