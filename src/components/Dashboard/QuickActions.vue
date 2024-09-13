@@ -14,7 +14,7 @@
           </p>
         </div>
       </v-card>
-      <v-card class="rounded-xl px-6 cursor-pointer py-5" flat>
+      <v-card to="/learn" class="rounded-xl px-6 cursor-pointer py-5" flat>
         <v-chip size="x-large" class="rounded-lg" label color="#eaf9f0"
           ><v-icon color="#5fd293"> mdi-play-circle-outline </v-icon></v-chip
         >
@@ -33,7 +33,7 @@
 .quick-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 21px;
+  gap: 16px;
   margin: 6px 0px;
 }
 

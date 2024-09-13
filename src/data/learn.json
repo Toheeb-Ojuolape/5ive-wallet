@@ -1,0 +1,44 @@
+{
+  "videos": [
+    "https://www.youtube.com/embed/KgZYtsj9-V0?si=JIVZPALPFKTOAm63",
+    "https://www.youtube.com/embed/k9CL1ETxCkU?si=98zEAADPDbeKXydk",
+    "https://www.youtube.com/embed/KiJH2pgwh5U?si=Or-lZDgWoivLJS3n",
+    "https://www.youtube.com/embed/oN5cB5ACC-8?si=QLkslO6_VqbCimcm",
+    "https://www.youtube.com/embed/MWMm513SCKA?si=_wfDgWZ1YkRb7DBL"
+  ],
+  "articles": [
+    {
+      "title": "Beyond Blockchain: How Web5 Enables Fully Decentralized Apps",
+      "image": "https://developer.tbd.website/assets/images/blog-decentralized-apps-64390c260a8ec957e939aa841c5e76bb.png",
+      "author": "Chris Giglio",
+      "date": "April 23, 2024",
+      "time": "9 min read",
+      "url": "https://developer.tbd.website/blog/decentralized-apps"
+    },
+    {
+      "title": "9 Things You Didn't Know About Decentralized Identifiers",
+      "image": "https://developer.tbd.website/assets/images/things-you-didnt-know-dids-23a6d9c83bf1a1e91b44f9b8bca8ec51.png",
+      "author": "Rizèl Scarlett",
+      "date": "April 29, 2024",
+      "time": "7 min read",
+      "url": "https://developer.tbd.website/blog/things-you-didnt-know-about-dids"
+    },
+    {
+      "title": "Simplifying Cross-Platform Payments with DAPs",
+      "image": "https://developer.tbd.website/assets/images/dap-blog-banner-d55bb8a8e9be07140115da693c79fa21.png",
+      "author": "Rizèl Scarlett",
+      "date": "July 31, 2024",
+      "time": "2 min read",
+      "url": "https://developer.tbd.website/blog/simplifying-cross-platform-payments-daps"
+    },
+
+    {
+      "title": "7 Unexpected Ways Verifiable Credentials Are Used Today",
+      "image": "https://developer.tbd.website/assets/images/7-ways-we-use-vcs-banner-8a8dea8051868deb97d246064cb5aef0.png",
+      "author": "Rizèl Scarlett",
+      "date": "July 29, 2024 ",
+      "time": "7 min read",
+      "url": "https://developer.tbd.website/blog/7-ways-we-use-vcs-today"
+    }
+  ]
+}
