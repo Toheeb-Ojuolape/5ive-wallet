@@ -18,9 +18,10 @@ import { useSwapStore } from "@/stores/swap.store";
 import { storeToRefs } from "pinia";
 import SelectCurrency from "@/elements/SelectCurrency.vue";
 import QuickActions from "@/components/Dashboard/QuickActions.vue";
+import DashboardWallet from "@/components/Dashboard/DashboardWallet.vue";
 
 export default {
-  components: { SelectCurrency, QuickActions },
+  components: { SelectCurrency, QuickActions, DashboardWallet},
   setup() {
     const swapStore = useSwapStore();
     const { selectcurrency } = storeToRefs(swapStore);
@@ -51,6 +52,6 @@ export default {
 .home-container {
   overflow-y: auto;
   padding: 25px;
-  height: 60vh
+  height: 55vh
 }
 </style>
