@@ -1,6 +1,6 @@
 <template>
   <BottomSheet :isActive="isActive" @closeBtn="closeBtn">
-    <p class="text-h6 font-weight-bold my-2">Send money from</p>
+    <p class="text-h6 font-weight-bold my-2">Send money to:</p>
     <div v-for="(currency, i) in CURRENCIES" :key="i">
       <div @click="setCurrency(currency)" class="currency-btn">
         <span :class="`fi fi-${currency.country} mr-2 rounded-icon`"></span>

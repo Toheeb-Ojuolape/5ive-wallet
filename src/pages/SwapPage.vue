@@ -21,14 +21,13 @@
 
       <template v-if="swapStep === 3">
         <v-card flat class="rounded-xl pa-7">
-        <SuccessScreen
-          :title="'Order submitted Successfully'"
-          :message="'You have successfully submitted your order. You can track it on the transactions page'"
-          @handleContinue="isRating = true"
-          :btnTitle="'Rate PFI'"
-        />
-
-      </v-card>
+          <SuccessScreen
+            :title="'Order submitted Successfully'"
+            :message="'You have successfully submitted your order. You can track it on the transactions page'"
+            @handleContinue="isRating = true"
+            :btnTitle="'Rate PFI'"
+          />
+        </v-card>
         <RateForm
           :isActive="isRating"
           @handleContinue="handleRating"
@@ -47,6 +46,13 @@
       @handleContinue="handleContinue"
       @closeBtn="closeVc"
     />
+
+    <PremiumFeature
+      :isActive="isPremium && !isSubscribed"
+      @closeBtn="isPremium = false"
+      :title="'Instant Swap'"
+      :features="INSTANTSWAPFEATURES"
+    />
   </div>
 </template>
 
@@ -56,11 +62,23 @@ import SubmitOrder from "@/components/Swap/SubmitOrder.vue";
 import Overlayloader from "../elements/Loader/OverlayLoader.vue";
 import VcForm from "@/elements/Forms/VcForm.vue";
 import { useSwapStore } from "@/stores/swap.store";
-import { storeToRefs } from "pinia";
+import { mapState, storeToRefs } from "pinia";
 import SuccessScreen from "@/elements/SuccessScreen.vue";
 import RateForm from "@/elements/Forms/RateForm.vue";
+import PremiumFeature from "@/components/Modal/PremiumFeature.vue";
+import { INSTANTSWAPFEATURES } from "@/constants/constant";
+import { useUserStore } from "@/stores/user.store";
 
 export default {
+  components: {
+    SendScreen,
+    SubmitOrder,
+    Overlayloader,
+    VcForm,
+    SuccessScreen,
+    RateForm,
+    PremiumFeature,
+  },
   setup() {
     const swapStore = useSwapStore();
     const {
@@ -99,17 +117,17 @@ export default {
     };
   },
 
-  components: {
-    SendScreen,
-    SubmitOrder,
-    Overlayloader,
-    VcForm,
-    SuccessScreen,
-    RateForm,
+  computed: {
+    ...mapState(useUserStore, {
+      isSubscribed: "isSubscribed",
+    }),
   },
+
   data: () => ({
     headers: ["Payment Details", "Confirmation", "Success"],
     isRating: false,
+    isPremium: true,
+    INSTANTSWAPFEATURES,
   }),
 
   methods: {
@@ -117,13 +135,13 @@ export default {
       this.isVcActive = false;
     },
     handleContinue() {
-      this.isVcActive = false
-      this.loading = false
+      this.isVcActive = false;
+      this.loading = false;
     },
 
-    handleRating(){
-      window.location.href='/history'
-    }
+    handleRating() {
+      window.location.href = "/history";
+    },
   },
 };
 </script>
@@ -133,6 +151,6 @@ export default {
   margin: auto 0px;
   overflow-y: auto;
   height: 90vh;
-  padding: 0px 15px
+  padding: 0px 15px;
 }
 </style>

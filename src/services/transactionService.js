@@ -15,6 +15,25 @@ export default {
     return allTransactions.flat();
   },
 
+  async fetchSingleTransaction(pfiDid, customerDid, exchangeId) {
+    const transaction = await TbdexHttpClient.getExchange({
+      pfiDid,
+      did: customerDid,
+      exchangeId,
+    });
+
+    return transaction;
+  },
+
+  async fetchBalance(pfiDid, did) {
+    const balance = await TbdexHttpClient.getBalances({
+      pfiDid,
+      did,
+    });
+
+    return balance;
+  },
+
   getBalance(transactions) {
     const balances = {};
     for (const transaction of transactions) {

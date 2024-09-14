@@ -53,17 +53,20 @@ export const useTransactionStore = defineStore("transactionStore", {
 
     async fetchTransactions() {
       try {
+        //using this to implement some form of caching so transactions don't fetch all the time
+        if (this.transactions.length) {
+          return;
+        }
+
         this.loading = true;
         const customerDid = await authService.getDid();
         const transactions = await transactionService.fetchTransactions(
           customerDid
         );
 
-        // group transactions by exchangeId
         this.transactions = groupTransactions(transactions);
         this.alltransactions = groupTransactions(transactions);
 
-        // set the balances for payin and payout
         this.balance = this.getBalance(this.alltransactions);
         this.payinbalance = this.getPayinBalance(this.alltransactions);
 

@@ -1,3 +1,4 @@
+import { getDate } from "@/utils/formatter";
 import { handleErrors, handleSuccess } from "@/utils/handlers";
 import { DidDht } from "@web5/dids";
 import axios from "axios";
@@ -60,4 +61,9 @@ export default {
     notifications.push(notification);
     localStorage.setItem("notifications", JSON.stringify(notifications));
   },
+
+  getNextSubscriptionDueDate(date){
+    const millisecondsInOneYear = 365 * 24 * 60 * 60 * 1000 + date;
+    return getDate(millisecondsInOneYear)
+  }
 };
