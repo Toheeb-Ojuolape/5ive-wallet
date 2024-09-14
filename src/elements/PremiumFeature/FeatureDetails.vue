@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="feature-details">
     <h1>{{ title }} is a premium feature!</h1>
     <div class="my-4">With {{ title }} you get:</div>
 
@@ -87,3 +87,13 @@ export default {
   },
 };
 </script>
+
+
+
+<style scoped>
+.feature-details{
+  overflow-y: auto;
+  max-height: 550px;
+  padding: 0px 0px 30px 0px
+}
+</style>

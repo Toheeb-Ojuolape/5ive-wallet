@@ -48,7 +48,8 @@ export default {
 .profile-container {
   margin: 20px 0px;
   width: 100%;
-  height: 100vh;
+  height: 95vh;
   overflow-y: auto;
+  
 }
 </style>

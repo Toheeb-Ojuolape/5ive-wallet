@@ -67,7 +67,12 @@ export default {
 
     viewTransaction(transaction) {
       sessionStorage.setItem("transaction", JSON.stringify(transaction));
-      this.$router.push("/transaction");
+      this.$router.push(
+        "/transaction/" +
+          transaction[1].metadata.exchangeId +
+          "?pfi=" +
+          transaction[1].metadata.from
+      );
     },
   },
 };

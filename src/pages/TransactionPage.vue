@@ -4,7 +4,7 @@
       <v-icon> mdi-chevron-left</v-icon>
     </v-btn>
     <h3 class="my-3">Transaction details</h3>
-    <v-card class="rounded-xl pa-6 my-4" flat>
+    <v-card v-if="transaction" class="rounded-xl pa-6 my-4" flat>
       <div class="d-flex">
         <h2>
           {{ transaction[1]?.data.payin.currencyCode }}
@@ -21,35 +21,45 @@
       </p>
 
       <span style="font-size: 14px"
-        >created at: {{ getTransactionDate(transaction[0]?.metadata.createdAt) }}</span
+        >created at:
+        {{ getTransactionDate(transaction[0]?.metadata.createdAt) }}</span
       >
     </v-card>
 
-    <v-card flat class="rounded-xl pa-3">
+    <v-card v-if="transaction" flat class="rounded-xl pa-3">
       <VerticalSteps :steps="transaction" />
     </v-card>
+
+    <OverlayLoader :loading="!transaction" :text="'Fetching transaction details'"/>
   </div>
 </template>
 
 <script>
 import VerticalSteps from "@/elements/Transaction/VerticalSteps.vue";
+import { useTransactionStore } from "@/stores/transactions.store";
 import { formatAmount, getDate, getPFIName } from "@/utils/formatter";
+import { mapState } from "pinia";
+import OverlayLoader from '@/elements/Loader/OverlayLoader.vue';
 
 export default {
-  components: { VerticalSteps },
+  components: { VerticalSteps, OverlayLoader },
 
-  data() {
-    return {
-      steps: [
-        { title: "Step 1", description: "This is the description for step 1." },
-        { title: "Step 2", description: "This is the description for step 2." },
-        { title: "Step 3", description: "This is the description for step 3." },
-        { title: "Step 4", description: "This is the description for step 4." },
-        { title: "Step 5", description: "This is the description for step 4." },
-      ],
+  setup() {
+    const transactionStore = useTransactionStore();
+    return { transactionStore };
+  },
 
-      transaction: JSON.parse(sessionStorage.getItem("transaction")),
-    };
+  computed:{
+    ...mapState(useTransactionStore, {
+      transaction: 'transaction'
+    })
+  },
+
+  created() {
+    this.transactionStore.fetchSingleTransaction(
+      this.$route.query.pfi,
+      this.$route.params.id
+    );
   },
 
   methods: {
