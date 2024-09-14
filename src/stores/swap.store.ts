@@ -209,7 +209,7 @@ export const useSwapStore = defineStore("swapStore", {
           title: "Swap order created successfully",
           message: `You have successfully created an order to swap ${
             this.bestOffer.data?.payin.currencyCode
-          } ${formatAmount(this.amount)} for ${
+          } ${formatAmount(parseFloat(this.amount))} for ${
             this.bestOffer.data?.payout.currencyCode
           } ${this.receiverAmount} with ${getPFIName(this.bestOffer)}`,
           time: currentDateTime(),

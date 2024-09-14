@@ -87,6 +87,7 @@ export default {
   padding: 20px 10px;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .IN_PROGRESS {

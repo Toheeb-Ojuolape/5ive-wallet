@@ -42,12 +42,16 @@ export const getPFINameByDid = (did) => {
 export const getRequiredPayinDetails = (offering, payin) => {
   const requiredFields =
     offering?.data.payin.methods[payin].requiredPaymentDetails.required;
-  return requiredFields.reduce((result, field) => {
-    if (DEFAULTPAYIN.hasOwnProperty(field)) {
-      result[field] = DEFAULTPAYIN[field];
-    }
-    return result;
-  }, {});
+  if (requiredFields) {
+    return requiredFields?.reduce((result, field) => {
+      if (DEFAULTPAYIN.hasOwnProperty(field)) {
+        result[field] = DEFAULTPAYIN[field];
+      }
+      return result;
+    }, {});
+  } else {
+    return {};
+  }
 };
 
 export const formatAmount = (number) => {
@@ -93,7 +97,7 @@ export const groupTransactions = (transactions) => {
   }, {});
 
   const result = Object.values(consolidatedData);
-  
+
   return result.sort(
     (a, b) =>
       Date.parse(b[0].metadata.createdAt) - Date.parse(a[0].metadata.createdAt)

@@ -12,7 +12,14 @@ export const useUserStore = defineStore("userStore", {
 
   getters: {
     getUnreadNotification() {
-      return this.notifications && this.notifications.filter((notification) => !notification.status).length;
+      return (
+        this.notifications &&
+        this.notifications.filter((notification) => !notification.status).length
+      );
+    },
+
+    getNotifications() {
+      return this.notifications && this.notifications.reverse();
     },
   },
   actions: {
@@ -21,17 +28,15 @@ export const useUserStore = defineStore("userStore", {
       this.user = { ...this.user, ...data };
     },
 
-    getNotifications() {
-      return this.notifications;
-    },
-
     viewNotifications() {
-      this.notifications = this.notifications && this.notifications.map((item) => {
-        return {
-          ...item,
-          status: true,
-        };
-      });
+      this.notifications =
+        this.notifications &&
+        this.notifications.map((item) => {
+          return {
+            ...item,
+            status: true,
+          };
+        });
 
       localStorage.setItem("notifications", JSON.stringify(this.notifications));
     },
