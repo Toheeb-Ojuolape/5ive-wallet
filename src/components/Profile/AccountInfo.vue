@@ -1,12 +1,12 @@
 <template>
-  <v-card flat class="pa-4" rounded-lg>
+  <v-card flat class="pa-4 rounded-lg">
     <h4>Account Information</h4>
 
     <v-form class="profile-form">
       <div>
         <label>Name</label>
         <v-text-field
-          rounded-lg
+          class="rounded-lg"
           variant="outlined"
           density="comfortable"
           :placeholder="user?.name"

@@ -1,5 +1,5 @@
 <template>
-    <v-card flat class="pa-4 my-4" rounded-lg>
+    <v-card  flat class="px-4 my-4 pt-4 pb-6 rounded-lg">
         <h4>Security</h4>
 
         <div class="security-card-grid mt-2">

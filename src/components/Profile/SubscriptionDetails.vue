@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="pa-4 my-4" rounded-lg>
+  <v-card flat class="pa-4 my-4 rounded-lg">
     <h4>Subscription</h4>
 
     <div>

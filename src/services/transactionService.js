@@ -15,13 +15,12 @@ export default {
     return allTransactions.flat();
   },
 
-  async fetchSingleTransaction(pfiDid, customerDid, exchangeId) {
+  async fetchSingleTransaction(pfiDid, did, exchangeId) {
     const transaction = await TbdexHttpClient.getExchange({
       pfiDid,
-      did: customerDid,
+      did,
       exchangeId,
     });
-
     return transaction;
   },
 

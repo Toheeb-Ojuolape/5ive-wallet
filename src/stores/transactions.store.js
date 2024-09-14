@@ -11,6 +11,7 @@ export const useTransactionStore = defineStore("transactionStore", {
     loading: false,
     alltransactions: [],
     payinbalance: [],
+    transaction: JSON.parse(sessionStorage.getItem("transaction")), // this was used to make fetching single transaction faster,
     ratings: JSON.parse(localStorage.getItem("rating")) || [],
   }),
 
@@ -74,6 +75,15 @@ export const useTransactionStore = defineStore("transactionStore", {
       } catch (error) {
         handleErrors(error);
         this.loading = false;
+      }
+    },
+
+    async fetchSingleTransaction(pfi, exchangeId) {
+      try {
+        const did = await authService.getDid();
+        this.transaction = await transactionService.fetchSingleTransaction(pfi, did, exchangeId);
+      } catch (error) {
+        handleErrors(error);
       }
     },
 

@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="500px" :model-value="isActive" persistent>
     <v-card
-      class="mx-auto rounded-xl bottom-sheet px-6 py-6"
+      class="mx-auto rounded-xl modal px-6 py-6"
       width="100%"
       max-width="500px"
     >
@@ -88,3 +88,12 @@ export default {
   },
 };
 </script>
+
+
+
+
+<style scoped>
+.modal{
+    overflow-y: scroll
+}
+</style>
