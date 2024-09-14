@@ -3,7 +3,11 @@
     <h4 class="ml-6">Profile</h4>
     <div class="text-center">
       <v-avatar :size="120">
-        <v-icon v-if="!user?.image" :size="120" icon="mdi-account-circle"></v-icon>
+        <v-icon
+          v-if="!user?.image"
+          :size="120"
+          icon="mdi-account-circle"
+        ></v-icon>
         <v-img v-if="user?.image" :size="120" :src="user?.image"></v-img>
       </v-avatar>
     </div>
@@ -13,6 +17,8 @@
 
       <Theme />
       <AccountInfo />
+
+      <SubscriptionDetails />
 
       <Security />
     </div>
@@ -26,14 +32,15 @@ import Security from "@/components/Profile/SecurityComponent.vue";
 import Theme from "@/components/Profile/ThemeComponent.vue";
 import { useUserStore } from "@/stores/user.store";
 import { mapState } from "pinia";
+import SubscriptionDetails from "@/components/Profile/SubscriptionDetails.vue";
 
 export default {
-  components: { AccountInfo, Security, Avatars, Theme },
-  computed:{
+  components: { AccountInfo, Security, Avatars, Theme, SubscriptionDetails },
+  computed: {
     ...mapState(useUserStore, {
-        user: 'user'
-    })
-  }
+      user: "user",
+    }),
+  },
 };
 </script>
 

@@ -32,7 +32,7 @@
       @closeBtn="isRating = false"
     />
 
-    <overlayloader :loading="loading" :text="loadingMessage" />
+    <OverlayLoader :loading="loading" :text="loadingMessage" />
   </div>
 </template>
 
@@ -41,7 +41,8 @@ import { defineComponent } from "vue";
 import { useMessageStore } from "@/stores/message.store";
 import { storeToRefs } from "pinia";
 import ChatView from "../components/Chat/ChatView.vue";
-import overlayloader from "@/elements/Loader/OverlayLoader.vue";
+import ChatInput from "@/components/Chat/ChatInput.vue";
+import OverlayLoader from "@/elements/Loader/OverlayLoader.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
 import VcForm from "@/elements/Forms/VcForm.vue";
 import { handleErrors } from "@/utils/handlers";
@@ -49,7 +50,14 @@ import RateForm from "@/elements/Forms/RateForm.vue";
 import PayoutForm from "@/elements/Forms/PayoutForm.vue";
 
 export default defineComponent({
-  components: { ChatView, overlayloader, VcForm, RateForm, PayoutForm },
+  components: {
+    ChatView,
+    ChatInput,
+    OverlayLoader,
+    VcForm,
+    RateForm,
+    PayoutForm,
+  },
 
   setup() {
     const messageStore = useMessageStore();
@@ -109,6 +117,7 @@ export default defineComponent({
 
     const closeRating = () => {
       offeringStore.closeRating();
+      window.location.href = '/history'
     };
 
     return {

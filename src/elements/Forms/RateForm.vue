@@ -3,7 +3,7 @@
     <v-window v-model="step">
       <v-window-item :value="1">
         <div class="mx-4">
-          <h1>Thank you for patronizing <br/> {{ pfiName(offering) }}!</h1>
+          <h2>Thank you for patronizing <br/> {{ pfiName(offering) }}!</h2>
         
           <div class="d-flex justify-center text-center">
           <v-form class="my-3">
@@ -95,7 +95,7 @@ export default {
 
 <style scoped>
 .rating-label{
-  font-size: 23px;
+  font-size: 18px;
   margin: 10px 0px
 }
 </style>

@@ -126,5 +126,19 @@ export const DEFAULTCOUNTRY = {
 export const DEFAULTPAYIN = {
   accountNumber: "1234567890",
   routingNumber: "1234567890",
-  IBAN: "1234567890"
+  IBAN: "1234567890",
 };
+
+export const INSTANTSWAPFEATURES = [
+  "Wallet automatically selects the best offers/rates",
+  "Send money 5 times faster",
+  "Complete your transaction in 3 simple steps",
+];
+
+export const INSIGHTSFEATURES = [
+  "A deeper understanding of your activities on 5ive",
+  "Insights needed to make better financial decisions",
+  "Track your progress and optimize your money moves",
+];
+
+export const SUBSCRIPTIONFEE = 1000;

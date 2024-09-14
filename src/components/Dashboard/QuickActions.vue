@@ -33,7 +33,7 @@
 .quick-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
   margin: 6px 0px;
 }
 

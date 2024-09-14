@@ -37,7 +37,7 @@ export default {
     },
 
     goToHome() {
-      this.$router.push("/home");
+      window.location.href = "/home"
     },
   },
 };

@@ -4,12 +4,14 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("userStore", {
   state: () => ({
     user: JSON.parse(localStorage.getItem("user")),
-    notifications: JSON.parse(
-      localStorage.getItem("notifications")
-    ),
+    notifications: JSON.parse(localStorage.getItem("notifications")),
   }),
 
   getters: {
+    isSubscribed() {
+      return this.user && this.user?.isSubscribed;
+    },
+
     getUnreadNotification() {
       return (
         this.notifications &&

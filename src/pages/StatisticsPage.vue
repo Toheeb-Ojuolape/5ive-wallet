@@ -4,6 +4,12 @@
     <PayinStats />
     <PayoutStats />
     <PFIStats />
+    <PremiumFeature
+      :isActive="isPremium && !isSubscribed"
+      @closeBtn="isPremium = false"
+      :title="'Wallet Insights'"
+      :features="INSIGHTSFEATURES"
+    />
   </div>
 </template>
 
@@ -12,16 +18,40 @@ import PayinStats from "@/components/Statistics/PayinStats.vue";
 import PayoutStats from "@/components/Statistics/PayoutStats.vue";
 import PFIStats from "@/components/Statistics/PFIStats.vue";
 import StatOverview from "@/components/Statistics/StatOverview.vue";
+import PremiumFeature from "@/components/Modal/PremiumFeature.vue";
+import { INSIGHTSFEATURES } from "@/constants/constant";
 import { useTransactionStore } from "@/stores/transactions.store";
+import { useUserStore } from "@/stores/user.store";
+import { mapState } from "pinia";
 
 export default {
-  components: { StatOverview, PayinStats, PayoutStats, PFIStats },
+  components: {
+    StatOverview,
+    PayinStats,
+    PayoutStats,
+    PFIStats,
+    PremiumFeature,
+  },
   setup() {
     const transactionStore = useTransactionStore();
     return {
       transactionStore,
     };
   },
+
+  computed: {
+    ...mapState(useUserStore, {
+      isSubscribed: "isSubscribed",
+    }),
+  },
+
+  data() {
+    return {
+      INSIGHTSFEATURES,
+      isPremium: true,
+    };
+  },
+
   created() {
     this.transactionStore.fetchTransactions();
   },
