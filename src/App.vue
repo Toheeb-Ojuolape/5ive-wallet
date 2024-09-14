@@ -9,3 +9,8 @@
 <script setup>
   //
 </script>
+
+
+<style>
+@import "./styles/animations.css";
+</style>

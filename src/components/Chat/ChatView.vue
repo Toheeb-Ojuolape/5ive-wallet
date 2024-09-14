@@ -30,6 +30,7 @@
           :offering="offering"
           :amount="amount"
           @closeOrder="closeOrder"
+          @submitOrder="submitOrder"
         />
       </div>
     </div>

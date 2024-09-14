@@ -19,9 +19,10 @@ import { storeToRefs } from "pinia";
 import SelectCurrency from "@/elements/SelectCurrency.vue";
 import QuickActions from "@/components/Dashboard/QuickActions.vue";
 import DashboardWallet from "@/components/Dashboard/DashboardWallet.vue";
+import RecentTransactions from "@/components/Dashboard/RecentTransactions.vue";
 
 export default {
-  components: { SelectCurrency, QuickActions, DashboardWallet},
+  components: { SelectCurrency, QuickActions, DashboardWallet, RecentTransactions},
   setup() {
     const swapStore = useSwapStore();
     const { selectcurrency } = storeToRefs(swapStore);

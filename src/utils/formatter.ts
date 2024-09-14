@@ -1,5 +1,6 @@
 import moment from "moment";
 import pfis from "../pfis/pfis.json";
+import { DEFAULTPAYIN } from "@/constants/constant";
 
 export const currentTime = () => {
   const date = new Date();
@@ -36,6 +37,17 @@ export const getPFINameByDid = (did) => {
   let pfi = pfis.pfis.find((pfi) => pfi.did === did);
 
   return pfi ? pfi.name : "";
+};
+
+export const getRequiredPayinDetails = (offering, payin) => {
+  const requiredFields =
+    offering?.data.payin.methods[payin].requiredPaymentDetails.required;
+  return requiredFields.reduce((result, field) => {
+    if (DEFAULTPAYIN.hasOwnProperty(field)) {
+      result[field] = DEFAULTPAYIN[field];
+    }
+    return result;
+  }, {});
 };
 
 export const formatAmount = (number) => {
@@ -81,7 +93,11 @@ export const groupTransactions = (transactions) => {
   }, {});
 
   const result = Object.values(consolidatedData);
-  return result;
+  
+  return result.sort(
+    (a, b) =>
+      Date.parse(b[0].metadata.createdAt) - Date.parse(a[0].metadata.createdAt)
+  );
 };
 
 export const getBalances = (balances, currencyCode) => {
@@ -98,20 +114,19 @@ export const getStepTitle = (step, index, steps) => {
     case 1:
       return "PFI responded with a quote";
     case 2:
-      if (index === steps.length-1) {
+      if (index === steps.length - 1) {
         return "Quote closed";
       } else {
         return "Order Submitted Successfully";
       }
     case 3:
-      return "Order is being processed"
+      return "Order is being processed";
     case 4:
-      return "Order is being processed"
+      return "Order is being processed";
     case 5:
-      return "Order processed successfully"
+      return "Order processed successfully";
     case 6:
-      return " Order closed by PFI"
-       
+      return " Order closed by PFI";
   }
 };
 
@@ -122,18 +137,18 @@ export const getStepDescription = (step, index, steps) => {
     case 1:
       return "PFI successfully sent a quote to you";
     case 2:
-      if (index === steps.length-1) {
+      if (index === steps.length - 1) {
         return `You requested to cancel the quote with reason: ${step.data.reason}`;
       } else {
         return "You successfully submitted your Order to the PFI";
       }
     case 3:
-      return `Order currently has status: ${step.data.orderStatus}`
+      return `Order currently has status: ${step.data.orderStatus}`;
     case 4:
-      return `Order currently has status: ${step.data.orderStatus}`
+      return `Order currently has status: ${step.data.orderStatus}`;
     case 5:
-      return `Order processed with status: ${step.data.orderStatus}`
+      return `Order processed with status: ${step.data.orderStatus}`;
     case 6:
-      return `Order closed by PFI with reason: ${step.data.reason}`
+      return `Order closed by PFI with reason: ${step.data.reason}`;
   }
 };

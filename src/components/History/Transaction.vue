@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="transaction-sheet">
     <div v-if="loading">
-      <div v-for="(_, i) in length" :key="i">
+      <div v-for="(_, i) in 5" :key="i">
         <TransactionCardLoading />
       </div>
     </div>
