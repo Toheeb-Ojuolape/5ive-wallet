@@ -1,0 +1,72 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+
+:root {
+  --brandcolor: #1e90ff;
+}
+
+@font-face {
+  font-family: "InterDisplay";
+  src: url("../src/assets/fonts/InterDisplay-Medium.otf");
+}
+
+@font-face {
+  font-family: "SFPRO Display";
+  src: url("../src/assets/fonts/SFPRODISPLAYBOLD.OTF");
+}
+
+.v-btn {
+  text-transform: none;
+}
+
+iframe {
+  border: 0px;
+  outline: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "InterDisplay" !important;
+  font-weight: 600 !important;
+}
+
+p,
+div,
+body,
+.v-btn {
+  font-family: "InterDisplay";
+}
+
+.custom-select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%204%205%27%3E%3Cpath%20fill%3D%27%23333%27%20d%3D%27M2%200L0%202h4zM2%205l2-2H0z%27%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.custom-select option {
+  padding: 10px;
+}
