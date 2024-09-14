@@ -9,7 +9,7 @@ import Learn from "@/pages/LearnPage.vue";
 import Statistics from "@/pages/StatisticsPage.vue";
 import Transaction from "@/pages/TransactionPage.vue";
 import Notification from "@/pages/NotificationPage.vue";
-import { isAuthenticated } from "@/services/authService";
+import authService from "@/services/authService";
 
 const routes = [
   {
@@ -80,14 +80,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isAuthenticated()) {
+  if (to.meta.requiresAuth && !authService.isAuthenticated()) {
     next("/");
   } else next();
 });
 
 //prevent logged in users from accessing auth pages
 router.beforeEach((to, from, next) => {
-  if (to.meta.isAuth && isAuthenticated()) {
+  if (to.meta.isAuth && authService.isAuthenticated()) {
     next("/home");
   } else next();
 });

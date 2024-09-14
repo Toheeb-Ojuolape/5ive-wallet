@@ -5,6 +5,12 @@ import axios from "axios";
 const storedDid = localStorage.getItem("customerDid");
 
 export default {
+  isAuthenticated() {
+    if (storedDid == null) {
+      return false;
+    }
+    return true;
+  },
   async getDid() {
     let did;
     if (storedDid) {
@@ -54,12 +60,4 @@ export default {
     notifications.push(notification);
     localStorage.setItem("notifications", JSON.stringify(notifications));
   },
-};
-
-
-export const isAuthenticated = () => {
-  if(storedDid == null){
-    return false
-  }
-  return true;
 };
