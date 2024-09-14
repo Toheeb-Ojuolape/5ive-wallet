@@ -106,6 +106,7 @@ export default {
       did,
       value,
     }));
-    return result;
+
+    return result.sort((a, b) => Number(b.value) - Number(a.value));
   },
 };

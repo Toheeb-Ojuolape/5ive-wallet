@@ -28,7 +28,7 @@ export default {
   components: { EmptyNotification, Notification },
   computed: {
     ...mapState(useUserStore, {
-      notifications: "notifications",
+      notifications: "getNotifications",
     }),
   },
 
@@ -47,7 +47,7 @@ export default {
 .notifications-container {
   margin: 20px 0px;
   width: 100%;
-  height: 100vh;
+  height: 90vh;
   overflow-y: auto;
   padding: 0px 20px;
 }

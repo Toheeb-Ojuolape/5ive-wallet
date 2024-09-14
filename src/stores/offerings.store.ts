@@ -7,6 +7,7 @@ import { CurrencyPair } from "@/interfaces/currency";
 import authService from "@/services/authService";
 import offeringsService from "@/services/offeringsService";
 import { BearerDid } from "@web5/dids";
+import { currentDateTime, formatAmount, getPFIName } from "@/utils/formatter";
 
 export const useOfferingsStore = defineStore("offeringStore", {
   state: () => ({
@@ -178,6 +179,19 @@ export const useOfferingsStore = defineStore("offeringStore", {
           "Order submitted successfully. You can track the status of your order on your activity page",
           "text"
         );
+
+        authService.setNotification({
+          title: "Send order created successfully",
+          message: `You have successfully created an order to send ${
+            this.offering.data?.payin.currencyCode
+          } ${formatAmount(parseFloat(this.amount))} for ${
+            this.offering.data?.payout.currencyCode
+          } ${formatAmount(
+            this.amount * this.offering.data?.payoutUnitsPerPayinUnit
+          )} with ${getPFIName(this.offering)}`,
+          time: currentDateTime(),
+          status: false,
+        });
 
         this.loading = false;
         setTimeout(() => {

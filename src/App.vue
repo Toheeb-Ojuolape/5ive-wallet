@@ -1,15 +1,14 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <Layout>
+    <router-view />
+    <BottomMenu v-if="$route.path != '/'" />
+  </Layout>
 </template>
 
 <script setup>
-  //
+import Layout from "@/layouts/default.vue";
+import BottomMenu from "./components/BottomMenu.vue";
 </script>
-
 
 <style>
 @import "./styles/animations.css";

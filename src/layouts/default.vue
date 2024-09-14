@@ -1,20 +1,20 @@
 <template>
   <v-app>
     <v-responsive
-      class="align-centerfill-height mx-auto"
+      class="align-centerfill-height mx-auto layout"
       height="99vh"
       max-width="500px"
       width="100%"
       :style="`background: ${theme === 'dark' ? '' : '#f8fafc'}; border: ${theme === 'dark' ? '#f8fafc' : ''}'`"
     >
-      <router-view />
-      <BottomMenu v-if="$route.path != '/'" />
+      <slot></slot>
     </v-responsive>
   </v-app>
 </template>
 
 <script>
 export default {
+  name: "Layout",
   data() {
     return {
       theme: localStorage.getItem("theme"),
@@ -23,4 +23,3 @@ export default {
 };
 </script>
 
-<style scoped></style>

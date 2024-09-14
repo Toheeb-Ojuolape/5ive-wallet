@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation :elevation="2" fixed grow rounded="large" class="bottom-navigation">
+  <v-bottom-navigation absolute grow :elevation="2" fixed rounded="large" class="bottom-navigation">
     <v-btn to="/home">
       <v-icon icon="mdi-security"></v-icon>
       <span>Home</span>
