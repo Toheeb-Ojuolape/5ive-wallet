@@ -55,3 +55,11 @@ export default {
     localStorage.setItem("notifications", JSON.stringify(notifications));
   },
 };
+
+
+export const isAuthenticated = () => {
+  if(storedDid == null){
+    return false
+  }
+  return true;
+};
