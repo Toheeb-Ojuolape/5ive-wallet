@@ -1,13 +1,40 @@
-import { Close, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import {
+  Close,
+  Offering,
+  Order,
+  Rfq,
+  TbdexHttpClient,
+} from "@tbdex/http-client";
 import { DEFAULTPAYIN, PROTOCOL } from "@/constants/constant";
+import pfiData from "../pfis/pfis.json";
+import { getRequiredPayinDetails } from "@/utils/formatter";
 
 export default {
+  async fetchOfferings(offering) {
+    const { pfis } = pfiData;
+    const selectedPFIs = pfis.filter((pfi) => pfi.offerings.includes(offering));
+    const dids = selectedPFIs.map((pfi) => pfi.did);
+
+    const allOfferings: Offering[] = [];
+    for (const did of dids) {
+      const fetchedOfferings = await TbdexHttpClient.getOfferings({
+        pfiDid: did,
+      });
+
+      allOfferings.push(...fetchedOfferings);
+    }
+
+    return allOfferings;
+  },
+
   async requestQuote(
     offering,
     did,
     amount,
+    payin,
     paymentDetails,
-    customerCredential
+    customerCredential,
+
   ) {
     const rfq = Rfq.create({
       metadata: {
@@ -18,19 +45,17 @@ export default {
       data: {
         offeringId: offering.metadata.id,
         payin: {
-          kind: offering.data.payin.methods[0].kind,
+          kind: offering.data.payin.methods[payin].kind,
           amount: amount,
-          paymentDetails: DEFAULTPAYIN,
+          paymentDetails: getRequiredPayinDetails(offering,payin),
         },
         payout: {
-          kind: offering.data.payout.methods[0].kind,
+          kind: offering.data.payout.methods[payin].kind,
           paymentDetails: paymentDetails,
         },
         claims: customerCredential,
       },
     });
-
-    localStorage.setItem("rfq", JSON.stringify(rfq));
 
     await rfq.sign(did);
 
@@ -62,7 +87,6 @@ export default {
     return response;
   },
 
-  
   async cancelOrder(offer, did, rfq, reason) {
     const close = Close.create({
       metadata: {

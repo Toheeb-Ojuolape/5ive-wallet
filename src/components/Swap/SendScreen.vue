@@ -136,9 +136,9 @@ export default {
   },
 
   methods: {
-    formatPayinName(name){
-      return formatPayinLabel(name)
-    }, 
+    formatPayinName(name) {
+      return formatPayinLabel(name);
+    },
 
     handleSenderInput(e) {
       this.fetchBestOfferings({
@@ -168,7 +168,7 @@ export default {
 
     async submitSwap() {
       try {
-        await this.swapStore.submitSwap(this.paymentDetails);
+        await this.swapStore.submitSwap(this.paymentDetails, this.payin);
       } catch (error) {
         handleErrors(error);
       }
@@ -180,32 +180,10 @@ export default {
 <style scoped>
 .send-screen {
   padding: 0px 0px 65px 0px;
-  margin: 0px 3px
+  margin: 0px 3px;
 }
 
 .send-screen > * {
   margin: 10px 0px 0px 0px;
-}
-
-.custom-select {
-  width: 100%; 
-  padding: 12px; 
-  font-size: 16px; 
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%204%205%27%3E%3Cpath%20fill%3D%27%23333%27%20d%3D%27M2%200L0%202h4zM2%205l2-2H0z%27%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
-}
-
-.custom-select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.custom-select option {
-  padding: 10px;
 }
 </style>

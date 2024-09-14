@@ -18,11 +18,18 @@
       @handleContinue="handleContinue"
     />
 
+    <PayoutForm
+      :isActive="isPayout"
+      :offering="offering"
+      @handleContinue="handleRequestQuote"
+      @closeBtn="closePayout"
+    />
+
     <RateForm
       :isActive="isRating"
       :offering="offering"
       @handleContinue="closeRating"
-      @closeBtn = "isRating = false"
+      @closeBtn="isRating = false"
     />
 
     <overlayloader :loading="loading" :text="loadingMessage" />
@@ -32,16 +39,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useMessageStore } from "@/stores/message.store";
-import { mapState, storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 import ChatView from "../components/Chat/ChatView.vue";
 import overlayloader from "@/elements/overlayloader.vue";
 import { useOfferingsStore } from "@/stores/offerings.store";
 import VcForm from "@/elements/Forms/VcForm.vue";
 import { handleErrors } from "@/utils/handlers";
 import RateForm from "@/elements/Forms/RateForm.vue";
+import PayoutForm from "@/elements/Forms/PayoutForm.vue";
 
 export default defineComponent({
-  components: { ChatView, overlayloader, VcForm, RateForm },
+  components: { ChatView, overlayloader, VcForm, RateForm, PayoutForm },
 
   setup() {
     const messageStore = useMessageStore();
@@ -55,6 +63,7 @@ export default defineComponent({
       vcstep,
       isVcActive,
       isVcLoading,
+      isPayout,
     } = storeToRefs(offeringStore);
 
     const addMessage = (message: string) => {
@@ -62,7 +71,8 @@ export default defineComponent({
         if (isNaN(parseFloat(message))) {
           return handleErrors({ message: "Please enter a valid amount" });
         }
-        offeringStore.requestQuote(message);
+        //request for payin and show payout here
+        offeringStore.setAmount(message);
       }
 
       if (messageStore.stage === "CLOSE") {
@@ -93,6 +103,10 @@ export default defineComponent({
       offeringStore.toggleVc();
     };
 
+    const handleRequestQuote = ({ paymentDetails, payin }) => {
+      offeringStore.requestQuote(paymentDetails, payin);
+    };
+
     const closeRating = () => {
       offeringStore.closeRating();
     };
@@ -110,12 +124,18 @@ export default defineComponent({
       vcstep,
       isVcLoading,
       isVcActive,
+      handleRequestQuote,
+      isPayout,
     };
   },
 
   methods: {
     closeVc() {
       this.isVcActive = false;
+    },
+
+    closePayout() {
+      this.isPayout = false;
     },
   },
 });

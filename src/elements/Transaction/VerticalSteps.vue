@@ -1,6 +1,11 @@
 <template>
   <div class="stepper">
-    <div v-for="(step, index) in steps" :key="index" class="stepper-item">
+    <div
+      v-for="(step, index) in steps"
+      :key="index"
+      class="stepper-item fade-in"
+      :style="`--fade-delay: ${index/5}s`"
+    >
       <div class="stepper-header">
         <div class="step-number">
           <v-icon color="#00ab73">mdi-check</v-icon>
@@ -11,8 +16,10 @@
       </div>
 
       <div class="step-description">
-        <div style="font-size:15px">{{ stepDescription(step, index) }}</div>
-        <span style="font-size: 12px"> {{ getDateValue(step.metadata.createdAt) }}</span>
+        <div style="font-size: 15px">{{ stepDescription(step, index) }}</div>
+        <span style="font-size: 12px">
+          {{ getDateValue(step.metadata.createdAt) }}</span
+        >
       </div>
 
       <div v-if="index < steps.length - 1" class="stepper-line"></div>
@@ -35,12 +42,12 @@ export default {
     stepTitle(step, index) {
       return getStepTitle(step, index, this.steps);
     },
-    stepDescription(step, index){
-        return getStepDescription(step, index, this.steps);
+    stepDescription(step, index) {
+      return getStepDescription(step, index, this.steps);
     },
-    getDateValue(date){
-        return getDate(date)
-    }
+    getDateValue(date) {
+      return getDate(date);
+    },
   },
 };
 </script>

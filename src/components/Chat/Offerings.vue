@@ -25,6 +25,6 @@ export default {
     display: flex;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
-    overflow-x: scroll
+    overflow-x: auto
 }
 </style>

@@ -66,7 +66,6 @@ export const useTransactionStore = defineStore("transactionStore", {
         // set the balances for payin and payout
         this.balance = this.getBalance(this.alltransactions);
         this.payinbalance = this.getPayinBalance(this.alltransactions);
-        console.log(this.alltransactions);
 
         this.loading = false;
       } catch (error) {

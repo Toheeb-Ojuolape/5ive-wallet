@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import router from "@/router";
 import { CURRENCY, DEFAULTCURRENCY } from "@/constants/constant";
 import { handleErrors, handleSuccess } from "@/utils/handlers";
-import { Offering, Order, Rfq, TbdexHttpClient } from "@tbdex/http-client";
+import { Offering, Rfq, TbdexHttpClient } from "@tbdex/http-client";
 import pfiData from "../pfis/pfis.json";
 import { currentDateTime, formatAmount, getPFIName } from "@/utils/formatter";
 import { PresentationExchange } from "@web5/credentials";
@@ -25,7 +25,6 @@ export const useSwapStore = defineStore("swapStore", {
     customerCredential: [] as string[],
     amount: "",
     rfq: Rfq,
-    order: Order,
     reason: "",
     isRating: false,
     vcstep: 1,
@@ -45,70 +44,52 @@ export const useSwapStore = defineStore("swapStore", {
     },
 
     toggleVc() {
-      console.log(this.isVcActive);
       this.isVcActive = !this.isVcActive;
     },
 
     async fetchBestOffering(senderInput) {
       const { amount, from, to } = senderInput;
       this.amount = amount;
-      console.log(amount, from, to);
 
-      if (!this.bestOffer) {
-        this.loading = true;
-        this.loadingMessage = "Fetching best available offer";
-        let offering = from + " to " + to;
-
-        const { pfis } = pfiData;
-        const selectedPFIs = pfis.filter((pfi) =>
-          pfi.offerings.includes(offering)
-        );
-        const dids = selectedPFIs.map((pfi) => pfi.did);
-
-        const allOfferings: Offering[] = [];
-        try {
-          for (const did of dids) {
-            const fetchedOfferings = await TbdexHttpClient.getOfferings({
-              pfiDid: did,
-            });
-
-            allOfferings.push(...fetchedOfferings);
-          }
-
-          this.offerings = allOfferings.filter(
-            (offering) =>
-              offering.data.payin.currencyCode === from &&
-              offering.data.payout.currencyCode === to
-          );
-
-          this.loading = false;
-          if (!this.offerings.length) {
-            return handleErrors({
-              message:
-                "No offers available for this currency pair. Try another set",
-            });
-          }
-
-          //select the best offer with the lowest exchange rate
-          this.bestOffer = this.offerings.sort(
-            (a, b) =>
-              parseFloat(a.data.payoutUnitsPerPayinUnit) -
-              parseFloat(b.data.payoutUnitsPerPayinUnit)
-          )[0];
-
-          console.log(this.bestOffer);
-
-          this.receiverAmount = formatAmount(
-            amount * parseFloat(this.bestOffer.data.payoutUnitsPerPayinUnit)
-          );
-        } catch (error) {
-          this.loading = false;
-          handleErrors(error);
-        }
-      } else {
+      if (this.bestOffer) {
         this.receiverAmount = formatAmount(
           amount * parseFloat(this.bestOffer.data.payoutUnitsPerPayinUnit)
         );
+        return;
+      }
+
+      this.loading = true;
+      this.loadingMessage = "Fetching best available offer";
+      let offering = from + " to " + to;
+
+      try {
+        const allOfferings = await offeringsService.fetchOfferings(offering);
+        this.offerings = allOfferings.filter(
+          (offering) =>
+            offering.data.payin.currencyCode === from &&
+            offering.data.payout.currencyCode === to
+        );
+
+        this.loading = false;
+        if (!this.offerings.length) {
+          return handleErrors({
+            message:
+              "No offers available for this currency pair. Please try another",
+          });
+        }
+
+        this.bestOffer = this.offerings.sort(
+          (a, b) =>
+            parseFloat(a.data.payoutUnitsPerPayinUnit) -
+            parseFloat(b.data.payoutUnitsPerPayinUnit)
+        )[0];
+
+        this.receiverAmount = formatAmount(
+          amount * parseFloat(this.bestOffer.data.payoutUnitsPerPayinUnit)
+        );
+      } catch (error) {
+        this.loading = false;
+        handleErrors(error);
       }
     },
 
@@ -119,7 +100,6 @@ export const useSwapStore = defineStore("swapStore", {
     async requestVc(user) {
       this.isVcLoading = true;
       const { name, country } = user;
-      console.log(country);
       try {
         authService.setUser(user);
         const did = await authService.getDid();
@@ -144,7 +124,7 @@ export const useSwapStore = defineStore("swapStore", {
       }
     },
 
-    async submitSwap(paymentDetails) {
+    async submitSwap(paymentDetails, payin) {
       try {
         this.isSubmitLoading = true;
 
@@ -181,11 +161,10 @@ export const useSwapStore = defineStore("swapStore", {
           this.bestOffer,
           did,
           this.amount.toString(),
+          payin,
           paymentDetails,
           this.customerCredential
         );
-
-        this.order = response.order;
         this.rfq = response.rfq;
 
         this.isSubmitLoading = false;
@@ -226,7 +205,6 @@ export const useSwapStore = defineStore("swapStore", {
         await offeringsService.submitOrder(this.bestOffer, did, this.rfq);
         this.loading = false;
         this.swapStep = 3;
-        console.log(this.bestOffer);
         authService.setNotification({
           title: "Swap order created successfully",
           message: `You have successfully created an order to swap ${

@@ -3,28 +3,28 @@
     <div class="ml-6">
       <h4>Activity</h4>
 
-      <div class="drop-down">
+      <!-- <div class="drop-down">
         <DropDown
           :type="'status'"
           :items="STATUS"
           @handleFilter="handleFilter"
         />
-      </div>
+      </div> -->
     </div>
 
-    <Transaction :length="5" />
+    <Transaction :length="transactions.length" />
   </div>
 </template>
 
 <script>
 import Transaction from "@/components/History/Transaction.vue";
-import DropDown from "@/elements/DropDown.vue";
+// import DropDown from "@/elements/DropDown.vue";
 import { useTransactionStore } from "@/stores/transactions.store";
 import { mapState } from "pinia";
 
 export default {
   components: {
-    DropDown,
+    // DropDown,
     Transaction,
   },
   setup() {
