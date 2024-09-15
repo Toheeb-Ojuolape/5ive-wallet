@@ -17,7 +17,7 @@ The wallet has a set of free and premium features that enable users to send mone
   
 - **Wallet Insights 📈:** an analytics feature that enables users to gain deeper insights into their activities on the 5ive wallet so they get to make better money moves 💰.
 
-All Premium features are available for only 1000 SATS (BTC) per year, for now 😉. 
+All Premium features are available for only 1,000 SATS (BTC) per year (for now 😉). 
 
 Subscription payments are being processed using the Alby's JS lightning tool to generate a Lightning invoice and listen for payments. 
 
