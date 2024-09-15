@@ -48,6 +48,10 @@ This shows a list of all transactions carried out by the User on the 5ive wallet
 This screen contains details about the user and enables them to update their profile, select a nice memoji avatar, switch to Light/Dark mode, Track their subscription status and export their DID for logging in later. 
 
 
+
+# 👨🏾‍💻 Code Architecture
+As much as I could, I tried to follow Clean Architecture to separate business logic, constants and Third-party integrations within the wallet. So about 90% of the logic code for the app would be found in the services and utils folder in src. Constants can be found in the constants folder. I also used Pinia for state management and most of the services were accessed through Pinia. 
+
 # 🚦 Project Setup
 
 ## Pre-requisites

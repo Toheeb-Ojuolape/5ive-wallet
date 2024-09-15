@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { DEFAULTCOUNTRY } from "@/constants";
 import CountrySelector from "@/elements/Countries/CountrySelector.vue";
 import { useUserStore } from "@/stores/user.store";
 import { mapState } from "pinia";
@@ -68,20 +69,22 @@ export default {
     },
     async updateProfile() {
       // generate vc from profile update if user doesn't already a vc
+      this.loading = true;
       if (!this.vcs.length) {
-        this.loading = true;
         await this.userStore.requestVc({
           name: this.name ? this.name : this.user?.name,
-          country: this.country ? this.country : this.user?.country,
+          country: this.user?.country ? this.user?.country: DEFAULTCOUNTRY,
         });
         this.loading = false;
         return;
       }
 
-      this.userStore.setUser({
+      await this.userStore.setUser({
         name: this.name ? this.name : this.user?.name,
         country: this.country ? this.country : this.user?.country,
       });
+
+      this.loading = false;
     },
   },
 };
