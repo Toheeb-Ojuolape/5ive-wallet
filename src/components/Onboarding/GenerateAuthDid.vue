@@ -3,7 +3,7 @@
     <div class="d-flex justify-center text-center">
       <div>
         <div style="width: 200px; margin: auto" class="d-flex justify-center">
-          <v-img alt="Vue logo" src="../../assets/hfive.gif" />
+          <v-img alt="highfive" src="../../assets/hfive.gif" />
         </div>
 
         <h2>BearerDid Generated Successfully!</h2>

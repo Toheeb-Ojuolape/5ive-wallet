@@ -10,19 +10,30 @@
 
       <v-card rounded="lg" color="#f8fafc" flat>
         <div>
-          <v-icon :color="vcs?.length ? '#32c36c' : '#ff2000'"> {{ vcs.length ? 'mdi-check-circle' :'mdi-close-circle' }}</v-icon>
+          <v-icon :color="vcs?.length ? '#32c36c' : '#ff2000'">
+            {{ vcs.length ? "mdi-check-circle" : "mdi-close-circle" }}</v-icon
+          >
         </div>
-        <div class="my-2"> {{ vcs.length ? 'VC available' :'VC not available' }} </div>
+        <div class="my-2">
+          {{ vcs.length ? "VC available" : "VC not available" }}
+        </div>
       </v-card>
+    </div>
+
+    <div class="my-3">
+      <label>Your DID (export it to login on 5ive wallet)</label>
+      <DIDComponent />
     </div>
   </v-card>
 </template>
 
 <script>
+import DIDComponent from "@/elements/DIDComponent.vue";
 import { useUserStore } from "@/stores/user.store";
 import { mapState } from "pinia";
 
 export default {
+  components: { DIDComponent },
   computed: {
     ...mapState(useUserStore, {
       vcs: "vcs",

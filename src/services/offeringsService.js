@@ -5,7 +5,7 @@ import {
   TbdexHttpClient,
 } from "@tbdex/http-client";
 import { PROTOCOL } from "@/constants/constant";
-import pfiData from "../pfis/pfis.json";
+import pfiData from "@/data/pfis.json";
 import { getRequiredPayinDetails } from "@/utils/formatter";
 
 export default {

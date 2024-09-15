@@ -1,4 +1,4 @@
-import pfis from "@/pfis/pfis.json";
+import pfis from "@/data/pfis.json";
 import { TbdexHttpClient } from "@tbdex/http-client";
 
 export default {
