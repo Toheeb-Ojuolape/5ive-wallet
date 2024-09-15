@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="did-component">
-      <p class="did-text">{{ storedDid.uri }}</p>
+      <p @click="exportDid" class="did-text">{{ storedDid.uri }}</p>
       <div>
         <v-btn @click="exportDid" flat icon><v-icon>mdi-cloud-download-outline</v-icon></v-btn>
       </div>
@@ -53,6 +53,7 @@ export default {
   overflow: hidden; 
   text-overflow: ellipsis; 
   margin: 10px 0px;
+  cursor: pointer;
 }
 
 .info {

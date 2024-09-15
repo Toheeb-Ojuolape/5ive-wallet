@@ -38,7 +38,6 @@ export default {
   methods: {
     async payInvoice() {
       const isWebLn = await lnService.checkWebln();
-      console.log(isWebLn);
       if (isWebLn) {
         await window.webln.sendPayment(this.invoice.paymentRequest);
       }
@@ -48,7 +47,7 @@ export default {
         const paid = await invoice.isPaid();
         if (paid) {
           clearInterval(intervalId);
-          authService.setUser({
+          await authService.setUser({
             isSubscribed: true,
             subscriptionDate: Date.now(),
           });

@@ -98,12 +98,6 @@ export const useOfferingsStore = defineStore("offeringStore", {
       this.isRating = false;
     },
 
-    submitRating(rating) {
-      const ratings = JSON.parse(localStorage.getItem("rating")) || [];
-      ratings.push(rating);
-      localStorage.setItem("rating", JSON.stringify(ratings));
-    },
-
     async requestVc(user) {
       this.isVcLoading = true;
       const { name, country } = user;
@@ -214,6 +208,19 @@ export const useOfferingsStore = defineStore("offeringStore", {
           reason
         );
 
+        authService.setNotification({
+          title: "Send order closed successfully",
+          message: `You have successfully closed an order to send ${
+            this.offering?.data?.payin.currencyCode
+          } ${formatAmount(parseFloat(this.amount))} for ${
+            this.offering?.data?.payout.currencyCode
+          } ${formatAmount(
+            this.amount * this.offering?.data?.payoutUnitsPerPayinUnit
+          )} with ${getPFIName(this.offering)}`,
+          time: currentDateTime(),
+          status: false,
+        });
+
         this.loading = false;
         const messageStore = useMessageStore();
         messageStore.addMessage(
@@ -221,7 +228,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
           "Order cancelled successfully. This chat will self-destruct in 3,2,1...",
           "text"
         );
-        setTimeout(() => location.reload(), 3000);
+        setTimeout(() => location.reload(), 2000);
       } catch (error) {
         this.loading = false;
         handleErrors(error);

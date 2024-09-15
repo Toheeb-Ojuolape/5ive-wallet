@@ -2,6 +2,9 @@ export const PROTOCOL = "1.0";
 
 export const BRANDCOLOR = "#0582D2";
 
+export const DWN_API_URL =
+  process.env.VUE_API_URL || "https://api-ymsap77jma-uc.a.run.app";
+
 export const CURRENCYPAIRS = [
   {
     from: "GHS",
@@ -82,7 +85,7 @@ export const CURRENCIES = [
   {
     code: "EUR",
     name: "Euro",
-    country: "eu", // The Euro is used by many European countries
+    country: "eu",
   },
   {
     code: "GBP",
@@ -92,7 +95,7 @@ export const CURRENCIES = [
   {
     code: "BTC",
     name: "Bitcoin",
-    country: "btc", // Decentralized currency, no specific country
+    country: "btc",
   },
   {
     code: "AUD",
@@ -109,7 +112,7 @@ export const CURRENCIES = [
 export const CURRENCY = {
   code: "KES",
   name: "Kenyan Shilling",
-  country: "ke", // Decentralized currency, no specific country
+  country: "ke"
 };
 
 export const DEFAULTCURRENCY = {
