@@ -1,6 +1,6 @@
 <template>
   <div class="send-screen">
-    <p>Enter the amount you would like to send</p>
+    <p class="mb-2">Enter the amount you would like to send</p>
     <currency-input
       :label="'You send'"
       :currency="defaultcurrency"
@@ -8,6 +8,7 @@
       @handleSelectCountry="handleSenderCurrency"
       :type="'number'"
     />
+    <SmallStepper :steps="exchange" :exchangerate="exchangerate"/>
     <currency-input
       :label="'Receiver gets'"
       :currency="currency"
@@ -102,9 +103,10 @@ import { handleErrors } from "@/utils/handlers";
 import { storeToRefs } from "pinia";
 import { DEFAULTPAYIN } from "@/constants/constant";
 import { formatPayinLabel } from "@/utils/formatter";
+import SmallStepper from "./SmallStepper.vue";
 
 export default {
-  components: { CurrencyInput },
+  components: { CurrencyInput, SmallStepper },
   props: {
     currency: {
       type: Object,
@@ -125,14 +127,15 @@ export default {
       payin: "",
       DEFAULTPAYIN,
       paymentDetails: {},
+      exchange:['']
     };
   },
 
   setup() {
     const swapStore = useSwapStore();
-    const { bestOffer, isSubmitLoading } = storeToRefs(swapStore);
+    const { bestOffer, isSubmitLoading, exchangerate } = storeToRefs(swapStore);
 
-    return { swapStore, bestOffer, isSubmitLoading };
+    return { swapStore, bestOffer, isSubmitLoading, exchangerate };
   },
 
   methods: {
@@ -184,6 +187,6 @@ export default {
 }
 
 .send-screen > * {
-  margin: 10px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 </style>

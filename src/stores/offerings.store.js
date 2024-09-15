@@ -155,7 +155,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
 
         messageStore.addMessage("", "", "order");
       } catch (error) {
-        handleErrors(error);
+        handleErrors({message:"Something's wrong 🤔. Did you enter payment details?"});
         this.loading = false;
       }
     },

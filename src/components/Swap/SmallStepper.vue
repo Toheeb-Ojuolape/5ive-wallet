@@ -6,56 +6,33 @@
       class="stepper-item fade-in"
       :style="`--fade-delay: ${index / 5}s`"
     >
+      <!-- Line before stepper header -->
+      <div class="stepper-line" v-if="index !== 0"></div>
+
       <div class="stepper-header">
         <div class="step-number">
-          <v-icon
-            :color="
-              steps.length === index + 1 && steps.length === 3 ? '#eb3f3f' : '#00ab73'
-            "
-            >{{
-              steps.length === index + 1 && steps.length === 3
-                ? "mdi-close"
-                : "mdi-check"
-            }}</v-icon
-          >
+          <v-icon color="#00ab73">mdi-sync</v-icon>
         </div>
-        <div class="step-title">
-          {{ stepTitle(step, index) }}
+        <div v-if="exchangerate" class="step-title">
+          Exchange Rate: {{ exchangerate }}
         </div>
       </div>
 
-      <div class="step-description">
-        <div style="font-size: 15px">{{ stepDescription(step, index) }}</div>
-        <span style="font-size: 12px">
-          {{ getDateValue(step.metadata.createdAt) }}</span
-        >
-      </div>
-
-      <div v-if="index < steps.length - 1" class="stepper-line"></div>
+      <!-- Line after stepper header -->
+      <div class="stepper-line"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { getStepTitle, getStepDescription, getDate } from "@/utils/formatter";
-
 export default {
   props: {
     steps: {
       type: Array,
       required: true,
     },
-  },
-
-  methods: {
-    stepTitle(step, index) {
-      return getStepTitle(step, index, this.steps);
-    },
-    stepDescription(step, index) {
-      return getStepDescription(step, index, this.steps);
-    },
-    getDateValue(date) {
-      return getDate(date);
+    exchangerate: {
+      type: [String, Number],
     },
   },
 };
@@ -96,8 +73,7 @@ export default {
 }
 
 .step-title {
-  font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .step-description {
@@ -107,11 +83,12 @@ export default {
 
 .stepper-line {
   position: absolute;
-  top: 40px;
+  top: 0;
   left: 15px;
   width: 2px;
   height: 100%;
   background-color: #ddd;
+  z-index: -1;
 }
 
 @media (max-width: 768px) {

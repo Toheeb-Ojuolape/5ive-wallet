@@ -124,7 +124,7 @@ export default {
       localStorage.setItem("notifications", JSON.stringify(notifications));
       localStorage.setItem("vc", JSON.stringify(vc));
     } catch (error) {
-      handleErrors(error);
+      console.log(error)
     }
   },
 
