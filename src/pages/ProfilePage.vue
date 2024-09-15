@@ -21,6 +21,8 @@
       <SubscriptionDetails />
 
       <Security />
+
+      <LogOut />
     </div>
   </v-main>
 </template>
@@ -33,9 +35,10 @@ import Theme from "@/components/Profile/ThemeComponent.vue";
 import { useUserStore } from "@/stores/user.store";
 import { mapState } from "pinia";
 import SubscriptionDetails from "@/components/Profile/SubscriptionDetails.vue";
+import LogOut from "@/components/Profile/LogOut.vue";
 
 export default {
-  components: { AccountInfo, Security, Avatars, Theme, SubscriptionDetails },
+  components: { AccountInfo, Security, Avatars, Theme, SubscriptionDetails, LogOut },
   computed: {
     ...mapState(useUserStore, {
       user: "user",

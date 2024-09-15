@@ -14,7 +14,7 @@
         />
 
         <CountrySelector
-          :country="user?.country"
+          :countryvalue="user?.country"
           @handleInput="selectCountry"
         />
       </div>
@@ -26,6 +26,7 @@
           variant="outlined"
           rounded="pill"
           size="x-large"
+          :loading="loading"
           >Update Profile</v-btn
         >
       </div>
@@ -49,13 +50,15 @@ export default {
   computed: {
     ...mapState(useUserStore, {
       user: "user",
+      vcs: "vcs",
     }),
   },
 
   data() {
     return {
       name: "",
-      country: null,
+      country: this.user?.country,
+      loading: false,
     };
   },
 
@@ -63,7 +66,18 @@ export default {
     selectCountry(country) {
       this.country = country;
     },
-    updateProfile() {
+    async updateProfile() {
+      // generate vc from profile update if user doesn't already a vc
+      if (!this.vcs.length) {
+        this.loading = true;
+        await this.userStore.requestVc({
+          name: this.name ? this.name : this.user?.name,
+          country: this.country ? this.country : this.user?.country,
+        });
+        this.loading = false;
+        return;
+      }
+
       this.userStore.setUser({
         name: this.name ? this.name : this.user?.name,
         country: this.country ? this.country : this.user?.country,

@@ -2,7 +2,7 @@
   <v-card class="rounded-xl pa-6 my-3" flat>
     <h3>PFI Statistics</h3>
 
-    <h4 class="my-4">Most rated PFIs</h4>
+    <h4 v-if="groupedPFIsbyRating.length" class="my-4">Most rated PFIs</h4>
     <div v-for="(pfi, i) in groupedPFIsbyRating" :key="i">
       <PFIChart :name="pfi.pfi" :value="pfi.rating" />
     </div>
