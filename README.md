@@ -33,7 +33,7 @@ Users also have the option to export their DID from the profile page and use it 
 After an order has been submitted successfully, customers have the ability to rate the PFIs on a 5-star scale. This data gets fed into the Wallets Insights feature which gives users a better understanding of their preferences. The data is also uploaded to 5ive's Decentralized Web Node so that users continue have access to this information moving forward. 
 
 
-## Other features (Built for Fun 🥳 and....ofcourse better User Experience 🙃)
+# Other features (Built for Fun 🥳 and....ofcourse better User Experience 🙃)
 
 ## Home Screen 🏡
 - **Wallet 🪪** : The dashboard screen shows Activity balance which is the amount of **Payment Received (i.e payout)** from PFIs once orders have been completed.
@@ -41,25 +41,24 @@ After an order has been submitted successfully, customers have the ability to ra
 - **Notifications 🔔** : This screen shows a list of notifications based on your activities on the 5ive wallet
 - **Recent Transactions 🪵**: This feature shows the user's 5 most recent transactions arranged chronologically. You can also **click on the transactions** to see the full details of communication between the user and PFI. 
 
-## Activity Screen 🥏: 
+## Activity Screen 🥏
 This shows a list of all transactions carried out by the User on the 5ive wallet. You can also **click on the transactions** to see the full details of communication between the user and PFI. 
 
-## Profile Screen 👤: 
+## Profile Screen 👤
 This screen contains details about the user and enables them to update their profile, select a nice memoji avatar, switch to Light/Dark mode, Track their subscription status and export their DID for logging in later. 
 
 
-## 🚦 Project Setup
+# 🚦 Project Setup
 To run the project locally, you need:
 
-### Pre-requisites
+## Pre-requisites
 To run this project you need:
 
-- Node.js version 16 or
+- Node.js version 16 or greater
 - Text Editor, preferably Visual Studio Code.
 - Web Browser,  preferably Google Chrome.
 
-
-###  🛠️ Setup
+## 🛠️ Setup
 **Step 1:**  Clone the repo:
 ```
 git clone https://github.com/Toheeb-Ojuolape/5ive-wallet.git
@@ -76,8 +75,7 @@ npm install
 ```
 npm run serve
 ```
-
-### 👨🏾‍💻 Configuration
+## 👨🏾‍💻 Configuration
 You can optionally create a .env file which would contain some key constants I used like:
 
 ```
@@ -87,10 +85,11 @@ You can optionally create a .env file which would contain some key constants I u
 
 These values are also sorta hard-coded in the constants file in src, so no issues if you don't specify 😉.
 
-### 🔗 Deployment
+## 🔗 Deployment
 The wallet is deployed on Netlify, you can test with this URL:
-👉🏾 (([Link](https://5ive.netlify.app)))
+
+- 👉🏾 ([Link](https://5ive.netlify.app))
 
 
-## 👋🏽 Final Remark 
+# 👋🏽 Final Remark 
 Working on this project was alot of ~~headaches~~ ~~bugs~~ ~~issues~~ ~~errors~~ ~~fixes~~ **FUN**. Tbd's Web5's technology is truly revolutionary and is exactly what the global south needs and I'm glad I decided to participate. I hope you find my project worthy to be selected as a finalist 🥺
