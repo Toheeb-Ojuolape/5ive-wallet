@@ -30,6 +30,7 @@ export const useSwapStore = defineStore("swapStore", {
     isVcLoading: false,
     swapStep: 1,
     isCancel: false,
+    exchangerate: "",
   }),
 
   actions: {
@@ -53,6 +54,7 @@ export const useSwapStore = defineStore("swapStore", {
         this.receiverAmount = formatAmount(
           amount * parseFloat(this.bestOffer.data.payoutUnitsPerPayinUnit)
         );
+        this.exchangerate = this.bestOffer.data.payoutUnitsPerPayinUnit;
         return;
       }
 
@@ -85,6 +87,7 @@ export const useSwapStore = defineStore("swapStore", {
         this.receiverAmount = formatAmount(
           amount * parseFloat(this.bestOffer.data.payoutUnitsPerPayinUnit)
         );
+        this.exchangerate = this.bestOffer.data.payoutUnitsPerPayinUnit;
       } catch (error) {
         this.loading = false;
         handleErrors(error);
@@ -169,7 +172,7 @@ export const useSwapStore = defineStore("swapStore", {
         this.isSubmitLoading = false;
         this.swapStep = 2;
       } catch (error) {
-        handleErrors(error);
+        handleErrors({message:"Something's wrong 🤔. Did you enter payment details?"});
         this.isSubmitLoading = false;
       }
     },

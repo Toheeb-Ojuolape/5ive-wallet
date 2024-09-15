@@ -54,10 +54,8 @@ export default {
 
 .rounded-icon {
   display: inline-block;
-  width: 30px; /* Adjust as needed */
-  height: 30px; /* Adjust as needed */
-  border-radius: 50%;
-  background-color: #ccc; /* Replace with the desired background color */
+  width: 30px;
+  height: 30px; 
 }
 
 .currency-name {
