@@ -49,7 +49,6 @@ This screen contains details about the user and enables them to update their pro
 
 
 # 🚦 Project Setup
-To run the project locally, you need:
 
 ## Pre-requisites
 To run this project you need:
