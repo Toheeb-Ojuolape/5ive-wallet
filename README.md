@@ -87,7 +87,7 @@ These values are also sorta hard-coded in the constants file in src, so no issue
 ## 🔗 Deployment
 The wallet is deployed on Netlify, you can test with this URL:
 
-- 👉🏾 ([Link](https://5ive.netlify.app))
+- ### 👉🏾 ([https://5ive.netlify.app](https://5ive.netlify.app))
 
 
 # 👋🏽 Final Remark 
