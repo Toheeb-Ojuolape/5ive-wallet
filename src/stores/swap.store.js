@@ -99,11 +99,11 @@ export const useSwapStore = defineStore("swapStore", {
       this.isVcLoading = true;
       const { name, country } = user;
       try {
-        authService.setUser(user);
+        await authService.setUser(user);
         const did = await authService.getDid();
         const response = await authService.requestVc({
           name,
-          country: country.code,
+          country: country,
           did: did,
         });
 
@@ -140,7 +140,7 @@ export const useSwapStore = defineStore("swapStore", {
         ) {
           const vc = await authService.requestVc({
             name: authService.getUser().name,
-            country: authService.getUser().country.code,
+            country: authService.getUser().country,
             did,
           });
 
@@ -187,6 +187,18 @@ export const useSwapStore = defineStore("swapStore", {
           this.rfq,
           reason
         );
+
+        authService.setNotification({
+          title: "Swap order created successfully",
+          message: `You have successfully created an order to swap ${
+            this.bestOffer.data?.payin.currencyCode
+          } ${formatAmount(parseFloat(this.amount))} for ${
+            this.bestOffer.data?.payout.currencyCode
+          } ${this.receiverAmount} with ${getPFIName(this.bestOffer)}`,
+          time: currentDateTime(),
+          status: false,
+        });
+
         this.loading = false;
         handleSuccess("Order closed successfully");
         setTimeout(() => location.reload(), 3000);

@@ -6,7 +6,7 @@
           <v-img alt="upload" src="../../assets/upload.svg" />
         </div>
 
-        <h2 class="mb-3">Upload your DID file to login</h2>
+        <h2 class="mb-3">Upload your DID JSON file to login</h2>
         <v-file-input v-model="file" label="DID JSON file" variant="outlined" />
 
         <v-btn
@@ -16,6 +16,7 @@
           rounded="pill"
           @click="handleSync"
           :disabled="!file"
+          :loading="loading"
         >
           Sync Data</v-btn
         >
@@ -27,7 +28,7 @@
 <script>
 import authService from "@/services/authService";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
-import { handleErrors } from "@/utils/handlers";
+import { handleErrors, handleSuccess } from "@/utils/handlers";
 
 export default {
   components: { BottomSheet },
@@ -39,14 +40,22 @@ export default {
   data() {
     return {
       file: null,
+      loading: false,
     };
   },
   methods: {
     async handleSync() {
       try {
+        this.loading = true;
         await authService.syncDid(this.file);
+        this.loading = false;
+        handleSuccess("Data synced successfully. Logging in...");
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
       } catch (error) {
         handleErrors(error);
+        this.loading = false;
       }
     },
   },

@@ -3,34 +3,37 @@
     <v-window v-model="step">
       <v-window-item :value="1">
         <div class="mx-4">
-          <h2>Thank you for patronizing <br/> {{ pfiName(offering) }}!</h2>
-        
+          <h2>
+            Thank you for patronizing <br />
+            {{ pfiName(offering) }}!
+          </h2>
+
           <div class="d-flex justify-center text-center">
-          <v-form class="my-3">
-            <p class="rating-label">Kindly rate the PFI</p>
-            <v-rating
-              v-model="rating"
-              density="compact"
-              size="x-large"
-              hover
-              color="#FFD600"
-              clearable
-            ></v-rating>
-          </v-form>
+            <v-form class="my-3">
+              <p class="rating-label">Kindly rate the PFI</p>
+              <v-rating
+                v-model="rating"
+                density="compact"
+                size="x-large"
+                hover
+                color="#FFD600"
+                clearable
+              ></v-rating>
+            </v-form>
           </div>
 
-            <div class="mt-4">
-              <v-btn
-                @click="handleSubmit"
-                rounded="pill"
-                block
-                variant="outlined"
-                size="x-large"
-              >
-                Submit</v-btn
-              >
-            </div>
-        
+          <div class="mt-4">
+            <v-btn
+              @click="handleSubmit"
+              rounded="pill"
+              block
+              variant="outlined"
+              size="x-large"
+              :loading="loading"
+            >
+              Submit</v-btn
+            >
+          </div>
         </div>
       </v-window-item>
 
@@ -51,13 +54,14 @@ import SuccessScreen from "@/elements/SuccessScreen.vue";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
 import { getPFIName } from "@/utils/formatter";
 import { Offering } from "@tbdex/http-client";
-import { useOfferingsStore } from "@/stores/offerings.store";
+import authService from "@/services/authService";
 export default {
-  components: {  SuccessScreen, BottomSheet },
+  components: { SuccessScreen, BottomSheet },
   data() {
     return {
       step: 1,
       rating: 0,
+      loading: false
     };
   },
   props: {
@@ -74,28 +78,30 @@ export default {
       return getPFIName(offering);
     },
 
-    handleSubmit(){
-        const offeringStore = useOfferingsStore()
-        offeringStore.submitRating({
-            pfi: getPFIName(this.offering),
-            rating: this.rating,
-            did: this.offering.metadata.from
-        })
-        this.step++
+    async handleSubmit() {
+      try {
+        this.loading = true;
+        await authService.submitRating({
+          pfi: getPFIName(this.offering),
+          rating: this.rating,
+          did: this.offering.metadata.from,
+        });
+      } finally {
+        this.step++;
+        this.loading = false;
+      }
     },
 
-    handleContinue(){
-        this.$emit('handleContinue')
-    }
+    handleContinue() {
+      this.$emit("handleContinue");
+    },
   },
 };
 </script>
 
-
-
 <style scoped>
-.rating-label{
+.rating-label {
   font-size: 18px;
-  margin: 10px 0px
+  margin: 10px 0px;
 }
 </style>

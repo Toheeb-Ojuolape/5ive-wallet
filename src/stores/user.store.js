@@ -26,8 +26,8 @@ export const useUserStore = defineStore("userStore", {
     },
   },
   actions: {
-    setUser(data) {
-      authService.setUser(data);
+    async setUser(data) {
+      await authService.setUser(data);
       this.user = { ...this.user, ...data };
     },
 
@@ -47,11 +47,11 @@ export const useUserStore = defineStore("userStore", {
     async requestVc(user) {
       const { name, country } = user;
       try {
-        authService.setUser(user);
+        await authService.setUser(user);
         const did = await authService.getDid();
         const response = await authService.requestVc({
           name,
-          country: country.code,
+          country: country,
           did: did,
         });
 
