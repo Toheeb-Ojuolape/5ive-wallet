@@ -10,7 +10,7 @@ I initially started with Typescript but had to switch to Javascript due to some 
 ## ⚙️ Design Consideration
 In meeting with the design requirements for the hackathon, several features were developed into the 5ive app: 
 
-### 🤑 Profitability:
+- ### 🤑 Profitability:
 The wallet has a set of free and premium features that enable users to send money, manage their data and connect with Available PFIs. The premium features include:
 
 - **Instant Swap ⚡️:** a feature where the wallet automatically selects the best available offers based on the exchange rate and enables users to send money in 3 simple steps
