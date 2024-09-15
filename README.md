@@ -33,7 +33,7 @@ Users also have the option to export their DID from the profile page and use it 
 After an order has been submitted successfully, customers have the ability to rate the PFIs on a 5-star scale. This data gets fed into the Wallets Insights feature which gives users a better understanding of their preferences. The data is also uploaded to 5ive's Decentralized Web Node so that users continue have access to this information moving forward. 
 
 
-# Other features (Built for Fun 🥳 and....ofcourse better User Experience 🙃)
+# Other features (Built for Fun 🥳 and....better User Experience 🙃)
 
 ## Home Screen 🏡
 - **Wallet 🪪** : The dashboard screen shows Activity balance which is the amount of **Payment Received (i.e payout)** from PFIs once orders have been completed.
