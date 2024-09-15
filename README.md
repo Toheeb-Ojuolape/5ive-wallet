@@ -42,7 +42,7 @@ After an order has been submitted successfully, customers have the ability to ra
 - **Recent Transactions 🪵**: This feature shows the user's 5 most recent transactions arranged chronologically. You can also **click on the transactions** to see the full details of communication between the user and PFI. 
 
 ## 2. Activity Screen 🥏
-This shows a list of all transactions carried out by the User on the 5ive wallet. You can also **click on the transactions** to see the full details of communication between the user and PFI. 
+This shows a list of all transactions carried out by the User on the 5ive wallet. You can also **click on the transactions** to see the full details of communication between the user and PFI. The feature was implemented using the getExchanges and getExchange by ExchangeId method in Tbdex.
 
 ## 3. Profile Screen 👤
 This screen contains details about the user and enables them to update their profile, select a nice memoji avatar, switch to Light/Dark mode, Track their subscription status and export their DID for logging in later. 
@@ -87,7 +87,7 @@ These values are also sorta hard-coded in the constants file in src, so no issue
 ## 🔗 Deployment
 The wallet is deployed on Netlify, you can test with this URL:
 
-- ### 👉🏾 ([https://5ive.netlify.app](https://5ive.netlify.app))
+- ## 👉🏾 ([https://5ive.netlify.app](https://5ive.netlify.app))
 
 
 # 👋🏽 Final Remark 
