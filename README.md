@@ -1,4 +1,4 @@
-# 5ive-wallet - Web 5 in your pocket!
+# 5ive wallet - Web 5 in your pocket!
 
 # 💸 Overview
 The 5ive wallet is a web-based mobile wallet application that leverages Tbdex and Web5 to enable users to seamlessly send money across the world without the need for a 3rd party, KYC or middleman while retaining ownership and control over their personal data. This solution is really important as it solves a key problem faced especially by countries in Africa and the global south. 

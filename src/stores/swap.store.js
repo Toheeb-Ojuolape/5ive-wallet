@@ -78,8 +78,8 @@ export const useSwapStore = defineStore("swapStore", {
 
         this.bestOffer = this.offerings.sort(
           (a, b) =>
-            parseFloat(a.data.payoutUnitsPerPayinUnit) -
-            parseFloat(b.data.payoutUnitsPerPayinUnit)
+            parseFloat(b.data.payoutUnitsPerPayinUnit) -
+            parseFloat(a.data.payoutUnitsPerPayinUnit)
         )[0];
 
         this.receiverAmount = formatAmount(

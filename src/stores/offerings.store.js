@@ -189,7 +189,7 @@ export const useOfferingsStore = defineStore("offeringStore", {
         this.loading = false;
         setTimeout(() => {
           this.isRating = true;
-        }, 3500);
+        }, 1700);
       } catch (error) {
         handleErrors(error);
         this.loading = false;

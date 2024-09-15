@@ -23,6 +23,8 @@ export default {
       allOfferings.push(...fetchedOfferings);
     }
 
+    allOfferings.sort((a, b) => b.data.payoutUnitsPerPayinUnit - a.data.payoutUnitsPerPayinUnit);
+
     return allOfferings;
   },
 
