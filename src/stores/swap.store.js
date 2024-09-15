@@ -107,7 +107,7 @@ export const useSwapStore = defineStore("swapStore", {
           did: did,
         });
 
-        this.vcs.push(response.data);
+        this.vcs.push(response?.data);
         localStorage.setItem("vc", JSON.stringify(this.vcs));
         this.customerCredential = PresentationExchange.selectCredentials({
           vcJwts: this.vcs,

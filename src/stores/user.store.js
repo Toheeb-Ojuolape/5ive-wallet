@@ -1,10 +1,12 @@
 import authService from "@/services/authService";
+import { handleErrors } from "@/utils/handlers";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
     user: JSON.parse(localStorage.getItem("user")),
     notifications: JSON.parse(localStorage.getItem("notifications")),
+    vcs: JSON.parse(localStorage.getItem("vc")) || [],
   }),
 
   getters: {
@@ -40,6 +42,24 @@ export const useUserStore = defineStore("userStore", {
         });
 
       localStorage.setItem("notifications", JSON.stringify(this.notifications));
+    },
+
+    async requestVc(user) {
+      const { name, country } = user;
+      try {
+        authService.setUser(user);
+        const did = await authService.getDid();
+        const response = await authService.requestVc({
+          name,
+          country: country.code,
+          did: did,
+        });
+
+        this.vcs.push(response?.data);
+        localStorage.setItem("vc", JSON.stringify(this.vcs));
+      } catch (error) {
+        handleErrors(error);
+      }
     },
   },
 });

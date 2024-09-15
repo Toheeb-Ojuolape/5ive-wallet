@@ -6,6 +6,10 @@
         <CurrencyCard :value="amount" />
       </div>
     </div>
+
+    <div class="my-3" v-if="!balance.length">
+      <p>No insights to show, yet</p>
+    </div>
   </v-card>
 </template>
 
@@ -28,10 +32,10 @@ export default {
 </script>
 
 <style scoped>
-.overview-container{
+.overview-container {
   display: flex;
   flex: 1;
   overflow-x: auto;
-  gap: 10px
+  gap: 10px;
 }
 </style>

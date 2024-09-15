@@ -33,11 +33,14 @@ export default {
     name: {
       type: String,
     },
+    countryvalue:{
+      type: Object
+    }
   },
   emits: ["handleInput"],
   setup(props, { emit }) {
     const country = ref(
-      props.country || {
+      props.countryvalue || {
         code: "NG",
         name: "Nigeria",
       }

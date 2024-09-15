@@ -2,7 +2,7 @@
   <div class="d-flex my-5">
     <h3 class="pfi-name">{{ name }}</h3>
     <div style="position: relative; display: flex">
-      <div class="pfi-bar" :style="`width:${Math.min(value,5) * 50}px`">...</div>
+      <div class="pfi-bar" :style="`width:${Math.min(value,5) * 40}px`">...</div>
       <div class="pfi-rating ml-2 mt-2">{{ value }}</div>
     </div>
   </div>
