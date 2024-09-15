@@ -1,5 +1,5 @@
 import moment from "moment";
-import pfis from "../pfis/pfis.json";
+import pfis from "@/data/pfis.json";
 import { DEFAULTPAYIN } from "@/constants/constant";
 
 export const currentTime = () => {

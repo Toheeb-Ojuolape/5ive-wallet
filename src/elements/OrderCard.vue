@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import pfis from "../pfis/pfis.json";
+import pfis from "@/data/pfis.json";
 import ExchangeRate from "./ExchangeRate.vue";
 export default {
   components: { ExchangeRate },

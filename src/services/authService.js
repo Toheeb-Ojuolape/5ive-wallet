@@ -28,6 +28,46 @@ export default {
     return did;
   },
 
+  exportDid(did, filename) {
+    const dataStr = JSON.stringify(did, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  },
+
+  syncDid(file) {
+    let did;
+    if (file.type !== "application/json") {
+      handleErrors({
+        message: "Please upload a valid JSON file containing your DID",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        did = JSON.parse(e.target.result);
+        localStorage.setItem("customerDid", JSON.stringify(did));
+         // query your DWN here with your did and set the did
+      } catch (error) {
+        console.log(error);
+        handleErrors(error);
+      }
+    };
+
+    reader.readAsText(file);
+    
+    
+  },
+
   setUser(data) {
     let user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -62,8 +102,8 @@ export default {
     localStorage.setItem("notifications", JSON.stringify(notifications));
   },
 
-  getNextSubscriptionDueDate(date){
+  getNextSubscriptionDueDate(date) {
     const millisecondsInOneYear = 365 * 24 * 60 * 60 * 1000 + date;
-    return getDate(millisecondsInOneYear)
-  }
+    return getDate(millisecondsInOneYear);
+  },
 };
