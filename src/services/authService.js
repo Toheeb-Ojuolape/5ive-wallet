@@ -76,7 +76,7 @@ export default {
 
       await this.syncWithDWN(did.uri);
     } catch (error) {
-      handleErrors(error);
+      console.log(error)
     }
   },
 

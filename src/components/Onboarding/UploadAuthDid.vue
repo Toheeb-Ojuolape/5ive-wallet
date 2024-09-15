@@ -28,7 +28,7 @@
 <script>
 import authService from "@/services/authService";
 import BottomSheet from "../../components/BottomSheet/BottomSheet.vue";
-import { handleErrors, handleSuccess } from "@/utils/handlers";
+import { handleSuccess } from "@/utils/handlers";
 
 export default {
   components: { BottomSheet },
@@ -54,7 +54,7 @@ export default {
           location.reload();
         }, 2000);
       } catch (error) {
-        handleErrors(error);
+        console.log(error);
         this.loading = false;
       }
     },
