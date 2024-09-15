@@ -30,7 +30,7 @@ Users **DO NOT** need to provide their name, email or address when signing up on
 Users also have the option to export their DID from the profile page and use it to login on the platform on the same device or another device after logging out while still retaining their user data and preferences on the wallet. This feature is powered by 5ive's Decentralized Web Node ([available here](https://github.com/Toheeb-Ojuolape/5ive-api)) that contains two simple endpoints for creating/updating a record in Web5 and for querying the record using the user's Decentralized Identifier (DID) as a filter.
 
 ## 4. 🌟 Customer Satisfaction:
-After an order has been submitted successfully, customers have the ability to rate the PFIs on a 5-star scale. This data gets fed into the Wallets Insights feature which gives users a better understanding of their preferences. The data is also uploaded to 5ive's Decentralized Web Node so that users continue have access to this information moving forward. 
+After an order has been submitted successfully, customers have the ability to rate the PFIs on a 5-star scale. This data gets fed into the premium Wallets Insights feature which gives users a better understanding of their preferences. The data is also uploaded to 5ive's Decentralized Web Node so that users continue to have access to this information moving forward. 
 
 
 # Other features (Built for Fun 🥳 and....better User Experience 🙃)
@@ -39,10 +39,10 @@ After an order has been submitted successfully, customers have the ability to ra
 - **Wallet 🪪** : The dashboard screen shows Activity balance which is the amount of **Payment Received (i.e payout)** from PFIs once orders have been completed.
 - **Learn 📚** : The technologies behind Web5 are so brilliant and yet so novel, so there is a Learn feature that enables users to watch and read useful content related to Web5
 - **Notifications 🔔** : This screen shows a list of notifications based on your activities on the 5ive wallet
-- **Recent Transactions 🪵**: This feature shows the user's 5 most recent transactions arranged chronologically. You can also **click on the transactions** to see the full details of communication between the user and PFI. 
+- **Recent Transactions 🪵**: This feature shows the user's 5 most recent transactions arranged chronologically. You can also **click on a transaction** to see the full details of communication between the user and PFI. 
 
 ## 2. Activity Screen 🥏
-This shows a list of all transactions carried out by the User on the 5ive wallet. You can also **click on the transactions** to see the full details of communication between the user and PFI. The feature was implemented using the getExchanges and getExchange by ExchangeId method in Tbdex.
+This shows a list of all transactions carried out by the User on the 5ive wallet. You can also **click on a transaction** to see the full details of communication between the user and PFI. The feature was implemented using the getExchanges and getExchange by ExchangeId method in Tbdex.
 
 ## 3. Profile Screen 👤
 This screen contains details about the user and enables them to update their profile, select a nice memoji avatar, switch to Light/Dark mode, Track their subscription status and export their DID for logging in later. 
@@ -50,7 +50,7 @@ This screen contains details about the user and enables them to update their pro
 
 
 # 👨🏾‍💻 Code Architecture
-As much as I could, I tried to follow Clean Architecture to separate business logic, constants and Third-party integrations within the wallet. So about 90% of the logic code for the app would be found in the services and utils folder in src. Constants can be found in the constants folder. I also used Pinia for state management and most of the services were accessed through Pinia. 
+As much as I could, I tried to follow Clean Architecture to separate business logic, constants and Third-party integrations within the wallet. So about 90% of the logic code for the app would be found in the services and utils folder in src. Constants can be found in the constants folder. I also used Pinia for state management and most of the services were accessed through Pinia stores. 
 
 # 🚦 Project Setup
 
