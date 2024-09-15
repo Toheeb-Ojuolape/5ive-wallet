@@ -92,3 +92,6 @@ The wallet is deployed on Netlify, you can test with this URL:
 
 # 👋🏽 Final Remark 
 Working on this project was alot of ~~headaches~~ ~~bugs~~ ~~issues~~ ~~errors~~ ~~fixes~~ **FUN**. Tbd's Web5's technology is truly revolutionary and is exactly what the global south needs and I'm glad I decided to participate. I hope you find my project worthy to be selected as a finalist 🥺
+
+# 🪪 License
+This project is licensed under the  [MIT License](https://github.com/Toheeb-Ojuolape/5ive-wallet/blob/master/LICENSE) - see the LICENSE file for details.
