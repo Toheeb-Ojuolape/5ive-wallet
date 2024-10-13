@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import { BRANDCOLOR } from "@/constants/constant";
-
 export default {
   props: {
     title: {
@@ -38,11 +36,6 @@ export default {
     btnTitle: {
       type: String,
     },
-  },
-  data() {
-    return {
-      BRANDCOLOR,
-    };
   },
 
   methods: {

@@ -2,12 +2,15 @@
   <div>
     <div class="onboarding">
       <div class="container">
-       
-        <iframe height="300px" width="300px" :src="onboarding[index-1].image"></iframe>
+        <iframe
+          height="300px"
+          width="300px"
+          :src="onboarding[index - 1].image"
+        ></iframe>
 
-        <h2>{{ onboarding[index-1].title }}</h2>
+        <h2>{{ onboarding[index - 1].title }}</h2>
 
-        <p>{{ onboarding[index-1].text }}</p>
+        <p>{{ onboarding[index - 1].text }}</p>
       </div>
     </div>
   </div>

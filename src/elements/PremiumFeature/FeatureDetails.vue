@@ -25,7 +25,7 @@
     <div class="my-6 fade-in" :style="`--fade-delay: 0.8s`">
       <v-btn
         @click="handleSubscribe"
-        color="black"
+        :color="themecolor"
         flat
         rounded="pill"
         size="x-large"
@@ -50,8 +50,16 @@
 <script>
 import lnService from "@/services/lnService";
 import { handleErrors } from "@/utils/handlers";
+import { useUserStore } from "@/stores/user.store"
 
 export default {
+  setup(){
+    const {themecolor} = useUserStore()
+
+    return {
+      themecolor
+    }
+  },
   props: {
     title: {
       type: String,

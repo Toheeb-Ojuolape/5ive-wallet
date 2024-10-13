@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black text-center px-9 py-6">
+  <div class="text-center px-9 py-6" :style="`background:${themecolor}`">
     <div class="d-flex justify-space-between mb-3">
       <v-avatar @click="viewProfile" class="mt-2 cursor-pointer">
         <v-icon
@@ -38,12 +38,13 @@
     </div>
 
     <div class="dashboard-actions">
-      <v-btn rounded="pill" size="large" to="/send"> Send</v-btn>
+      <v-btn rounded="pill" size="large" to="/send" flat> Send</v-btn>
       <v-btn
         @click="selectCurrency"
         rounded="pill"
         size="large"
         variant="outlined"
+        color="white"
       >
         Swap ⚡️</v-btn
       >
@@ -71,6 +72,7 @@ export default defineComponent({
   computed: {
     ...mapState(useUserStore, {
       user: "user",
+      themecolor: "themecolor",
       getUnreadNotification: "getUnreadNotification",
     }),
 
@@ -83,8 +85,8 @@ export default defineComponent({
       this.$emit("selectCurrency");
     },
 
-    viewProfile(){
-      this.$router.push('/profile')
+    viewProfile() {
+      this.$router.push("/profile");
     },
 
     handleSelectCountry(e) {

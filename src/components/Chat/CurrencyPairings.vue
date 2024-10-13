@@ -68,9 +68,10 @@ export default {
 <style scoped>
 .currency-pairs {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: auto auto auto;
+  grid-template-rows:  auto auto auto;
+  row-gap: 8px;
+  column-gap: 3px
 }
 
 .selected {

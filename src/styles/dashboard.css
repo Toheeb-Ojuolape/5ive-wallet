@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin: 15px 0px
+  margin: 10px 0px
 }
 
 .glass-container {
@@ -11,7 +11,7 @@
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
   display: inline-block;
   text-align: center;
   color: #fff;
@@ -43,5 +43,5 @@
 
 
 .dashboard-amount{
-    font-size: 40px
+    font-size: 35px
 }

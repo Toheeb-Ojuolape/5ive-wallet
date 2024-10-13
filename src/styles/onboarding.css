@@ -23,28 +23,27 @@
 }
 .onboarding {
   color: white;
-
-  padding: 30px 20px;
+  padding: 30px 20px 0px 20px;
 }
 
 .button {
   font-size: 15px;
-  width: 200px;
+  max-width: 250px;
+  width: 100%;
 }
 
 .onboarding .container {
-  margin: 70px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 .onboarding h2 {
-  font-size: 26px;
-  margin: 10px 0px;
+  font-size: 25px;
 }
 
 .onboarding p {
   max-width: 300px;
   margin: auto;
-  color: #b0afb4;
+  color: #b0afb4
 }
 
 .onboarding button {

@@ -1,6 +1,6 @@
 export const PROTOCOL = "1.0";
 
-export const BRANDCOLOR = "#0582D2";
+export const BRANDCOLOR = localStorage.getItem("theme-color") || "#00000";
 
 export const DWN_API_URL =
   process.env.VUE_API_URL || "https://api-ymsap77jma-uc.a.run.app";

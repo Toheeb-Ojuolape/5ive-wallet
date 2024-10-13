@@ -9,43 +9,41 @@
         flat
         placeholder="Type something here"
         solo
-      >
-      <v-btn
-        class="sendButton"
-        :color="BRANDCOLOR"
-        flat
-        @click="sendMessage"
-      ><v-icon icon="mdi-send" /></v-btn>
+      />
+      <v-btn class="sendButton" :color="themecolor" flat @click="sendMessage"
+        ><v-icon icon="mdi-send"
+      /></v-btn>
     </form>
   </div>
 </template>
 
 <script>
-  import { defineComponent, ref } from 'vue'
-  import { BRANDCOLOR } from '../../constants/constant'
-  import { handleErrors } from '../../utils/handlers'
+import { defineComponent, ref } from "vue";
+import { handleErrors } from "../../utils/handlers";
+import { useUserStore } from "../../stores/user.store";
 
-  export default defineComponent({
-    emits: ['addmessage'],
-    setup (props, { emit }) {
-      const message = ref('')
+export default defineComponent({
+  emits: ["addmessage"],
+  setup(props, { emit }) {
+    const message = ref("");
+    const { themecolor } = useUserStore();
 
-      const sendMessage = () => {
-        if (message.value) {
-          emit('addmessage', message.value)
-          message.value = ''
-        } else {
-          handleErrors({message:'You need to type something'})
-        }
+    const sendMessage = () => {
+      if (message.value) {
+        emit("addmessage", message.value);
+        message.value = "";
+      } else {
+        handleErrors({ message: "You need to type something" });
       }
+    };
 
-      return {
-        message,
-        sendMessage,
-        BRANDCOLOR,
-      }
-    },
-  })
+    return {
+      message,
+      sendMessage,
+      themecolor,
+    };
+  },
+});
 </script>
 
 <style scoped>
