@@ -37,13 +37,14 @@
 }
 
 .onboarding h2 {
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .onboarding p {
   max-width: 300px;
   margin: auto;
-  color: #b0afb4
+  color: #b0afb4;
+  font-size: 14px
 }
 
 .onboarding button {

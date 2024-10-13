@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       name: "",
-      country: this.user?.country,
+      country: this.user?.country || DEFAULTCOUNTRY,
       loading: false,
     };
   },

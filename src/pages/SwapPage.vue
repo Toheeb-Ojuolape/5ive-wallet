@@ -1,12 +1,13 @@
 <template>
   <div class="swap-screen">
     <v-stepper
-      complete-icon=""
+      complete-icon="mdi-check"
       bg-color="transparent"
       flat
       :model-value="swapStep"
       :items="headers"
       hide-actions
+      complete
     >
       <template v-if="swapStep === 1">
         <SendScreen

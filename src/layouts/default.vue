@@ -1,8 +1,8 @@
 <template>
-  <v-app>
+  <v-app :style="`background: ${(theme === 'dark' || $route.path =='/') ? '#15141a' : '#f8fafc'}`">
     <v-responsive
       class="mx-auto layout"
-      max-width="500px"
+      max-width="600px"
       width="100%"
       height=100vh
       :style="`background: ${theme === 'dark' ? '' : '#f8fafc'}; border: ${
@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       theme: localStorage.getItem("theme"),
+      route: this.$router.name
     };
   },
 };

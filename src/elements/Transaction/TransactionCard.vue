@@ -17,12 +17,20 @@
           }}
         </div>
         <v-chip
-          :class="transaction[transaction.length - 2]?.data.orderStatus"
-          v-if="transaction[transaction.length - 2]?.data.orderStatus"
+          :class="
+            transaction[transaction.length - 2]?.data.orderStatus
+              ? transaction[transaction.length - 2]?.data.orderStatus
+              : transaction[transaction.length - 1]?.metadata.kind
+          "
+          v-if="
+            transaction[transaction.length - 2]?.data.orderStatus ||
+            transaction[transaction.length - 1]?.metadata.kind
+          "
           label
           size="x-small"
           >{{
-            transaction[transaction.length - 2]?.data.orderStatus || ""
+            transaction[transaction.length - 2]?.data.orderStatus ||
+            transaction[transaction.length - 1]?.metadata.kind.toUpperCase()
           }}</v-chip
         >
       </div>
@@ -96,7 +104,17 @@ export default {
   background: #beffd897;
 }
 
+.close {
+  color: #ff0000;
+  background: #feeaf3;
+}
+
 .TRANSFERING_FUNDS {
+  color: #1275ff;
+  background: #cdf2fc;
+}
+
+.quote {
   color: #1275ff;
   background: #cdf2fc;
 }
