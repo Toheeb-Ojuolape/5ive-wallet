@@ -10,7 +10,7 @@
       </div>
     </v-card>
 
-    <v-card flat class="rounded-lg px-6  my-3">
+    <v-card flat class="rounded-lg px-6  my-9">
       <div class="py-5">
         <h4>Quick reads</h4>
         <div class="d-flex overflow-x-auto">

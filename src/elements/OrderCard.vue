@@ -1,9 +1,5 @@
 <template>
-  <v-card
-    rounded="xl"
-    flat
-    class="pa-6 pt-4 my-3"
-  >
+  <v-card rounded="xl" flat class="pa-6 pt-4 my-3">
     <h3>{{ getPFIName(offering) }}</h3>
     <div>
       <ExchangeRate
@@ -33,7 +29,13 @@
         Close Order</v-btn
       >
 
-      <v-btn flat @click="submitOrder" :loading="loading" rounded="pill" color="black">
+      <v-btn
+        flat
+        @click="submitOrder"
+        :loading="loading"
+        rounded="pill"
+        :color="themecolor"
+      >
         Submit Order</v-btn
       >
     </div>
@@ -43,9 +45,15 @@
 <script>
 import pfis from "@/data/pfis.json";
 import ExchangeRate from "./ExchangeRate.vue";
+import { useUserStore } from "@/stores/user.store"
 export default {
   components: { ExchangeRate },
-
+  setup(){
+    const {themecolor} = useUserStore()
+    return{
+      themecolor
+    }
+  },
   props: {
     offering: {
       type: Object,
@@ -53,9 +61,9 @@ export default {
     amount: {
       type: String,
     },
-    loading:{
-      type: Boolean
-    }
+    loading: {
+      type: Boolean,
+    },
   },
 
   methods: {
@@ -65,12 +73,11 @@ export default {
     },
 
     closeOrder() {
-      this.$emit('closeOrder')
-      
+      this.$emit("closeOrder");
     },
 
     submitOrder() {
-      this.$emit("submitOrder")
+      this.$emit("submitOrder");
     },
   },
 };

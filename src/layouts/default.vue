@@ -4,7 +4,7 @@
       class="mx-auto layout"
       max-width="500px"
       width="100%"
-      height="100vh"
+      height=100vh
       :style="`background: ${theme === 'dark' ? '' : '#f8fafc'}; border: ${
         theme === 'dark' ? '#f8fafc' : ''
       }'`"
