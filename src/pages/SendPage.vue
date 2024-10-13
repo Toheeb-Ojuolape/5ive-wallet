@@ -1,6 +1,6 @@
 <template>
   <div class="ma-6">
-    <h2>Hello 👋🏽</h2>
+    <h2>Hello {{user?.name }}👋🏽</h2>
     <p>Let's help you send money to any country in the world</p>
     <div>
       <ChatView ref="chatViewRef" :messages="messages" />
@@ -48,6 +48,7 @@ import VcForm from "@/elements/Forms/VcForm.vue";
 import { handleErrors } from "@/utils/handlers";
 import RateForm from "@/elements/Forms/RateForm.vue";
 import PayoutForm from "@/elements/Forms/PayoutForm.vue";
+import { useUserStore } from "@/stores/user.store";
 
 export default defineComponent({
   components: {
@@ -62,6 +63,8 @@ export default defineComponent({
   setup() {
     const messageStore = useMessageStore();
     const offeringStore = useOfferingsStore();
+    const userStore = useUserStore()
+    const { user }  = storeToRefs(userStore)
     const { messages } = storeToRefs(messageStore);
     const {
       loading,
@@ -135,6 +138,7 @@ export default defineComponent({
       isVcActive,
       handleRequestQuote,
       isPayout,
+      user
     };
   },
 

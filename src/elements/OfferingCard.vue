@@ -24,7 +24,7 @@
 
     <div class="my-3">
       <strong>Exchange rate: </strong
-      >{{ offering.data.payoutUnitsPerPayinUnit }}
+      >{{offering.data.payin.currencyCode}} {{ offering.data.payoutUnitsPerPayinUnit }} / {{ offering.data.payout.currencyCode }}
     </div>
 
     <div class="my-3 mb-4">

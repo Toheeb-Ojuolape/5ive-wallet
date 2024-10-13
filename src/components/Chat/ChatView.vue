@@ -118,7 +118,7 @@ export default defineComponent({
   height: 70vh;
   overflow-y: auto;
   overflow-x: auto;
-  padding: 10px 10px 0px 0px;
+  padding: 10px 10px 40px 0px;
 }
 
 .timestamp {

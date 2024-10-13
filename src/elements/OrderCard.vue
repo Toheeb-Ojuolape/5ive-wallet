@@ -13,8 +13,9 @@
     </p>
 
     <div class="my-3">
-      <strong>Exchange rate: </strong
-      >{{ offering.data.payoutUnitsPerPayinUnit }}
+      <strong>Exchange rate: </strong>{{ offering.data.payin.currencyCode }}
+      {{ offering.data.payoutUnitsPerPayinUnit }} /
+      {{ offering.data.payout.currencyCode }}
     </div>
 
     <div class="my-3">
@@ -25,7 +26,7 @@
     </div>
 
     <div class="button-grid">
-      <v-btn @click="closeOrder" variant="outlined" rounded="pill">
+      <v-btn @click="closeOrder" variant="outlined" rounded="pill" size="large">
         Close Order</v-btn
       >
 
@@ -35,6 +36,7 @@
         :loading="loading"
         rounded="pill"
         :color="themecolor"
+        size="large"
       >
         Submit Order</v-btn
       >
@@ -45,14 +47,14 @@
 <script>
 import pfis from "@/data/pfis.json";
 import ExchangeRate from "./ExchangeRate.vue";
-import { useUserStore } from "@/stores/user.store"
+import { useUserStore } from "@/stores/user.store";
 export default {
   components: { ExchangeRate },
-  setup(){
-    const {themecolor} = useUserStore()
-    return{
-      themecolor
-    }
+  setup() {
+    const { themecolor } = useUserStore();
+    return {
+      themecolor,
+    };
   },
   props: {
     offering: {
