@@ -3,8 +3,8 @@
     <div class="onboarding">
       <div class="container">
         <iframe
-          height="300px"
-          width="300px"
+          height="280px"
+          width="280px"
           :src="onboarding[index - 1].image"
         ></iframe>
 
