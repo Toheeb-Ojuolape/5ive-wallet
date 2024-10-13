@@ -1,6 +1,6 @@
 export const PROTOCOL = "1.0";
 
-export const BRANDCOLOR = localStorage.getItem("theme-color") || "#00000";
+export const BRANDCOLOR = "#000000";
 
 export const CURRENCYPAIRS = [
   {

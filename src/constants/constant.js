@@ -1,6 +1,6 @@
 export const PROTOCOL = "1.0";
 
-export const BRANDCOLOR = localStorage.getItem("theme-color") || "#00000";
+export const BRANDCOLOR = "#000000";
 
 export const DWN_API_URL =
   process.env.VUE_API_URL || "https://api-ymsap77jma-uc.a.run.app";
@@ -112,7 +112,7 @@ export const CURRENCIES = [
 export const CURRENCY = {
   code: "KES",
   name: "Kenyan Shilling",
-  country: "ke"
+  country: "ke",
 };
 
 export const DEFAULTCURRENCY = {
