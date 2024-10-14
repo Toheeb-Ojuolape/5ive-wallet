@@ -1,4 +1,4 @@
-import { BRANDCOLOR } from "@/constants";
+import { BRANDCOLOR, DEFAULTTHEME } from "@/constants";
 import authService from "@/services/authService";
 import { handleErrors } from "@/utils/handlers";
 import { defineStore } from "pinia";
@@ -8,7 +8,8 @@ export const useUserStore = defineStore("userStore", {
     user: JSON.parse(localStorage.getItem("user")),
     notifications: JSON.parse(localStorage.getItem("notifications")),
     vcs: JSON.parse(localStorage.getItem("vc")) || [],
-    themecolor: localStorage.getItem("theme-color") || BRANDCOLOR,
+    themecolor: localStorage.getItem("themecolor") || BRANDCOLOR,
+    theme: localStorage.getItem("theme") || DEFAULTTHEME
   }),
 
   getters: {
@@ -33,9 +34,9 @@ export const useUserStore = defineStore("userStore", {
       this.user = { ...this.user, ...data };
     },
 
-    setThemeColor(color) {
+    async setThemeColor(color) {
       this.themecolor = color;
-      localStorage.setItem("theme-color", color);
+      localStorage.setItem("themecolor", color);
     },
 
     viewNotifications() {

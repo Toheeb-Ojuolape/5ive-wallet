@@ -52,6 +52,8 @@ export default {
     ...mapState(useUserStore, {
       user: "user",
       vcs: "vcs",
+      themecolor: "themecolor",
+      theme: "theme"
     }),
   },
 
@@ -82,6 +84,8 @@ export default {
       await this.userStore.setUser({
         name: this.name ? this.name : this.user?.name,
         country: this.country ? this.country : this.user?.country,
+        themecolor: this.themecolor,
+        theme: this.theme
       });
 
       this.loading = false;

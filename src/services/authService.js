@@ -120,6 +120,8 @@ export default {
       const { rating, notifications, user, vc } = response.data.message[0];
 
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("theme", user.theme);
+      localStorage.setItem("themecolor", user.themecolor);
       localStorage.setItem("rating", JSON.stringify(rating));
       localStorage.setItem("notifications", JSON.stringify(notifications));
       localStorage.setItem("vc", JSON.stringify(vc));
