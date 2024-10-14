@@ -28,7 +28,7 @@
 
 .button {
   font-size: 15px;
-  max-width: 250px;
+  max-width: 300px;
   width: 100%;
 }
 
@@ -37,19 +37,13 @@
 }
 
 .onboarding h2 {
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .onboarding p {
   max-width: 300px;
   margin: auto;
   color: #b0afb4;
-  font-size: 14px
-}
-
-.onboarding button {
-  font-size: 15px;
-  width: 200px;
 }
 
 
