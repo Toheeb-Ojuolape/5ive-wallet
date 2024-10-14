@@ -1,9 +1,9 @@
 <template>
-  <v-dialog max-width="500px" :model-value="isActive" persistent>
+  <v-dialog max-width="600px" :model-value="isActive" persistent>
     <v-card
       class="mx-auto rounded-xl modal px-6 py-6"
       width="100%"
-      max-width="500px"
+      max-width="600px"
     >
       <div class="d-flex justify-end">
         <v-col cols="auto">
