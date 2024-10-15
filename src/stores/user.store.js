@@ -1,4 +1,4 @@
-import { BRANDCOLOR, DEFAULTTHEME } from "@/constants";
+import { BRANDCOLOR, DEFAULTCOUNTRY, DEFAULTTHEME } from "@/constants";
 import authService from "@/services/authService";
 import { handleErrors } from "@/utils/handlers";
 import { defineStore } from "pinia";
@@ -30,6 +30,9 @@ export const useUserStore = defineStore("userStore", {
   },
   actions: {
     async setUser(data) {
+      if(!data.country){
+        data.country = DEFAULTCOUNTRY
+      }
       await authService.setUser(data);
       this.user = { ...this.user, ...data };
     },
