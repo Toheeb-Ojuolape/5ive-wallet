@@ -3,6 +3,7 @@ import { handleErrors, handleSuccess } from "@/utils/handlers";
 import { DidDht } from "@web5/dids";
 import axios from "axios";
 import api from "../api";
+import { BRANDCOLOR, DEFAULTTHEME } from "@/constants";
 
 const storedDid = localStorage.getItem("customerDid");
 
@@ -120,8 +121,8 @@ export default {
       const { rating, notifications, user, vc } = response.data.message[0];
 
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("theme", user.theme);
-      localStorage.setItem("themecolor", user.themecolor);
+      localStorage.setItem("theme", user.theme ? user.theme : DEFAULTTHEME);
+      localStorage.setItem("themecolor", user.themecolor ? user.themecolor : BRANDCOLOR);
       localStorage.setItem("rating", JSON.stringify(rating));
       localStorage.setItem("notifications", JSON.stringify(notifications));
       localStorage.setItem("vc", JSON.stringify(vc));

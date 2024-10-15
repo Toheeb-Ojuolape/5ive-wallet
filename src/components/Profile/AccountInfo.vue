@@ -27,6 +27,7 @@
           rounded="pill"
           size="x-large"
           :loading="loading"
+          :color="themecolor"
           >Update Profile</v-btn
         >
       </div>
